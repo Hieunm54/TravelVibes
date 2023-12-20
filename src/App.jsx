@@ -3,7 +3,7 @@ import AppRoutes from "./components/AppRoutes";
 import AuthRoutes from "./components/AuthRoutes";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   return <>{isAuthenticated ? <AppRoutes /> : <AuthRoutes />}</>;
 }
 
