@@ -9,6 +9,10 @@ const attractionSuggestionsMock = [
     id: 1,
     name: "Hanoi Train Street",
     address: "3 Tran Phu Street, Cua Dong Ward, Hoan Kiem District, Hanoi",
+    location: {
+      latitude: 21.0301079,
+      longitude: 105.844027,
+    },
     description:
       "Ngõ 224 Lê Duẩn is a narrow alley in Hanoi’s Old Quarter, known as “The Train Street”, which sees a twice-daily train...",
     relatedPost: [
@@ -35,6 +39,10 @@ const attractionSuggestionsMock = [
     address: "Nha Chung Street, Hoan Kiem District, Hanoi",
     description:
       "Ngõ 224 Lê Duẩn is a narrow alley in Hanoi’s Old Quarter, known as “The Train Street”, which sees a twice-daily train...",
+    location: {
+      latitude: 21.028841,
+      longitude: 105.8491188,
+    },
     relatedPost: [
       {
         id: 1,
@@ -55,11 +63,14 @@ const attractionSuggestionsMock = [
   },
   {
     id: 3,
-    name: "Ngoc Son Temple",
-    address:
-      "Dinh Tien Hoang Street, Hang Trong Ward, Hoan Kiem District, Hanoi",
+    name: "L'etage Cafe",
+    address: "9A Hang Khay Street, Hoan Kiem District, Hanoi",
     description:
       "Ngõ 224 Lê Duẩn is a narrow alley in Hanoi’s Old Quarter, known as “The Train Street”, which sees a twice-daily train...",
+    location: {
+      latitude: 21.0255073,
+      longitude: 105.8527225,
+    },
     relatedPost: [
       {
         id: 1,
