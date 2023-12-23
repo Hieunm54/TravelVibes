@@ -89,6 +89,91 @@ const attractionSuggestionsMock = [
       },
     ],
   },
+  {
+    id: 4,
+    name: "Bach Mai Hospital",
+    address: "78 Giải Phóng, Phương Mai, Đống Đa, Hà Nội",
+    description:
+      "Ngõ 224 Lê Duẩn is a narrow alley in Hanoi’s Old Quarter, known as “The Train Street”, which sees a twice-daily train...",
+    location: {
+      latitude: 21.0027402,
+      longitude: 105.8392475,
+    },
+    relatedPost: [
+      {
+        id: 1,
+        title: "Best experience ever",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...",
+        author: {
+          id: 1,
+          avatarURL: null,
+          name: "John Smith",
+        },
+        createdAt: "15/02/2023",
+        noUpvotes: 12,
+        noComments: 2,
+        noTags: 3,
+      },
+    ],
+  },
+  {
+    id: 5,
+    name: "West Lake",
+    address:
+      "614 đường Lạc Long Quân, phường Nhật Tân, quận Tây Hồ, thành phố Hà Nội",
+    description:
+      "Ngõ 224 Lê Duẩn is a narrow alley in Hanoi’s Old Quarter, known as “The Train Street”, which sees a twice-daily train...",
+    location: {
+      latitude: 21.053238,
+      longitude: 105.8260943,
+    },
+    relatedPost: [
+      {
+        id: 1,
+        title: "Best experience ever",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...",
+        author: {
+          id: 1,
+          avatarURL: null,
+          name: "John Smith",
+        },
+        createdAt: "15/02/2023",
+        noUpvotes: 12,
+        noComments: 2,
+        noTags: 3,
+      },
+    ],
+  },
+  {
+    id: 6,
+    name: "Long Bien Bridge",
+    address: "2VV6+P92, Cầu Long Biên, Ngọc Thụy, Hoàn Kiếm, Hà Nội",
+    description:
+      "Ngõ 224 Lê Duẩn is a narrow alley in Hanoi’s Old Quarter, known as “The Train Street”, which sees a twice-daily train...",
+    location: {
+      latitude: 21.0417839,
+      longitude: 105.8545026,
+    },
+    relatedPost: [
+      {
+        id: 1,
+        title: "Best experience ever",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...",
+        author: {
+          id: 1,
+          avatarURL: null,
+          name: "John Smith",
+        },
+        createdAt: "15/02/2023",
+        noUpvotes: 12,
+        noComments: 2,
+        noTags: 3,
+      },
+    ],
+  },
 ];
 
 const VisitingStop = () => {
@@ -115,9 +200,9 @@ const VisitingStop = () => {
   };
 
   return (
-    <>
+    <div className="px-5 pt-10">
       <div className="flex justify-between items-center">
-        <Link to={"/"}>
+        <Link to={"/"} className="hover:text-blue-500">
           <FontAwesomeIcon icon={faArrowLeft} />
         </Link>
         {attractionDetails && (
@@ -128,6 +213,7 @@ const VisitingStop = () => {
                   (attraction) => attraction.id === attractionDetails.id
                 ) === -1
               ) {
+                attractionDetails.shownOnMap = false;
                 setAttractions([
                   ...attractions.filter(
                     (value) => value.id !== attractionDetails.id
@@ -138,7 +224,7 @@ const VisitingStop = () => {
 
               navigate("/");
             }}
-            className="bg-black text-white px-2 py-1"
+            className="bg-blue-500 text-white rounded-md hover:bg-blue-600 px-2 py-1"
           >
             <FontAwesomeIcon icon={faPlus} /> Add
           </button>
@@ -183,7 +269,7 @@ const VisitingStop = () => {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
