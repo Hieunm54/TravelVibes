@@ -181,7 +181,7 @@ const Home = () => {
                             setAttractions([...attractions]);
                           }}
                         >
-                          <FontAwesomeIcon icon={faArrowUp} />
+                          <FontAwesomeIcon icon="fa-solid fa-arrow-up" />
                         </button>
                         <button
                           disabled={index === attractions.length - 1}
@@ -196,11 +196,11 @@ const Home = () => {
                             setAttractions([...attractions]);
                           }}
                         >
-                          <FontAwesomeIcon icon={faArrowDown} />
+                          <FontAwesomeIcon icon="fa-solid fa-arrow-down" />
                         </button>
                         <button className="hover:text-blue-500">
                           <FontAwesomeIcon
-                            icon={faTrashCan}
+                            icon="fa-solid fa-trash-can"
                             onClick={() => {
                               attractions.splice(index, 1);
                               setAttractions([...attractions]);
@@ -215,7 +215,8 @@ const Home = () => {
                   to={`/attractions`}
                   className="block text-gray-300 px-1 hover:text-blue-500"
                 >
-                  <FontAwesomeIcon icon={faPlus} /> Add an attraction to visit
+                  <FontAwesomeIcon icon="fa-solid fa-plus" /> Add an attraction
+                  to visit
                 </Link>
               </div>
               <div className="px-5 py-4">
