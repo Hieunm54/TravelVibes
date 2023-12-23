@@ -2,7 +2,8 @@ import { ClientRoutesEnum } from "../../enum/routes";
 import Home from "../../pages/Home";
 import NotFoundPage from "../NotFound";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import VisitingStop from "../VisitingStop";
+import Attractions from "../Attractions";
+import Attraction from "../Attraction";
 
 const appRoutes = createBrowserRouter([
   {
@@ -11,8 +12,12 @@ const appRoutes = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       {
-        path: "/visiting-stop",
-        element: <VisitingStop />,
+        path: "/attractions",
+        element: <Attractions />,
+      },
+      {
+        path: "/attractions/:id",
+        element: <Attraction />,
       },
       {
         path: "/chat",

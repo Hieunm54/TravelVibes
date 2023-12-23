@@ -1,3 +1,5 @@
+const mapboxToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
+
 function getBounds(waypoints, directionCoordinates) {
   const lngs = waypoints.map((waypoint) => waypoint[0]);
   const lats = waypoints.map((waypoint) => waypoint[1]);
@@ -12,4 +14,19 @@ function getBounds(waypoints, directionCoordinates) {
   };
 }
 
-export { getBounds };
+async function getDirectionCoordinates(waypoints, errorHandler) {
+  try {
+    const query = await fetch(
+      `https://api.mapbox.com/directions/v5/mapbox/walking/${waypoints
+        .map((waypoint) => waypoint.coordinates)
+        .join(";")}?geometries=geojson&access_token=${mapboxToken}`,
+      { method: "GET" }
+    );
+    const response = await query.json();
+    return response.routes[0].geometry.coordinates;
+  } catch (e) {
+    errorHandler(e);
+  }
+}
+
+export { getBounds, getDirectionCoordinates };

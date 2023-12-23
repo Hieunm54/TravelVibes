@@ -1,13 +1,7 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
-import Map, {
-  Marker,
-  Source,
-  Layer,
-  NavigationControl,
-  Popup,
-} from "react-map-gl";
+import Map, { Marker, NavigationControl } from "react-map-gl";
 import { ToastContainer, toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -22,9 +16,13 @@ import {
   faTrashCan,
   fas,
 } from "@fortawesome/free-solid-svg-icons";
-import { icon, library } from "@fortawesome/fontawesome-svg-core";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import axios from "axios";
 import AttractionsContext from "../../hooks/attraction";
-import { getBounds } from "../../components/Map/utils";
+import { getBounds, getDirectionCoordinates } from "../../components/Map/utils";
+import Direction from "../../components/Map/Direction";
+import LocationInfoPopUp from "../../components/Map/LocationInfoPopUp";
+import LocationMarker from "../../components/Map/LocationMarker";
 
 library.add(
   fas,
@@ -38,6 +36,8 @@ library.add(
   faArrowUp,
   faLocationArrow
 );
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const mapboxToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 const mainNavLinks = [
@@ -60,32 +60,23 @@ const mainNavLinks = [
 ];
 
 const Home = () => {
+  const [captionInput, setCaptionInput] = useState("");
   const [attractions, setAttractions] = useState([]);
   const [coordinates, setCoordinates] = useState(null);
   const [hoveredMarker, setHoveredMarker] = useState(null);
   const mapRef = useRef(null);
   const location = useLocation();
 
-  const getDirectionCoordinates = async () => {
-    const coordinates = attractions.map((attraction) => [
-      attraction.location.longitude,
-      attraction.location.latitude,
-    ]);
-
-    if (coordinates === "") return;
-
+  const createPost = async () => {
     try {
-      const query = await fetch(
-        `https://api.mapbox.com/directions/v5/mapbox/walking/${coordinates.join(
-          ";"
-        )}?geometries=geojson&access_token=${mapboxToken}`,
-        { method: "GET" }
-      );
-      const response = await query.json();
+      await axios.post(`${API_URL}/api/journeys`, {
+        title: captionInput,
+        attractions: attractions.map((attraction) => attraction._id),
+      });
 
-      return response.routes[0].geometry.coordinates;
+      // TODO: navigate to feeds
     } catch (e) {
-      toast.error("Can't get the direction!");
+      toast.error("Unable to share your journey!");
     }
   };
 
@@ -94,20 +85,18 @@ const Home = () => {
       setCoordinates(null);
 
       mapRef.current.flyTo({
-        center: [
-          attractions[0].location.longitude,
-          attractions[0].location.latitude,
-        ],
+        center: attractions[0].coordinates,
         zoom: 17,
       });
     } else if (attractions.length > 1) {
-      const directionCoordinates = await getDirectionCoordinates();
+      if (coordinates === "") return;
 
+      const directionCoordinates = await getDirectionCoordinates(
+        attractions,
+        (e) => toast.error("Can't get the direction!")
+      );
       const { northEast, southWest } = getBounds(
-        attractions.map((attraction) => [
-          attraction.location.longitude,
-          attraction.location.latitude,
-        ]),
+        attractions.map((attraction) => attraction.coordinates),
         directionCoordinates
       );
       mapRef.current.fitBounds([northEast, southWest], { padding: 100 });
@@ -118,7 +107,6 @@ const Home = () => {
 
   useEffect(() => {
     if (!mapRef) return;
-
     updateBounds();
   }, [attractions, mapRef]);
 
@@ -147,22 +135,25 @@ const Home = () => {
         <section className="col-span-4 border-r-2 border-gray-300">
           {location.pathname === "/" ? (
             <div className="h-screen flex flex-col">
-              <h2
-                className={`font-bold text-5xl px-5 pt-10 ${
-                  attractions.length > 0 ? "border-b-2 border-gray-300" : ""
-                } pb-5`}
-              >
-                Your trip
-              </h2>
-              <div className="px-5 pt-4 overflow-y-scroll">
+              <div className="px-5 pt-10 mb-2">
+                <h2 className="font-bold text-5xl">Share your trip</h2>
+                <textarea
+                  value={captionInput}
+                  rows={3}
+                  onChange={(evt) => {
+                    setCaptionInput(evt.target.value);
+                  }}
+                  placeholder="What are your experience?"
+                  className="block w-full mt-7 outline-none p-2 rounded-md border border-gray-300 focus:border-2 focus:border-blue-500 mb-2"
+                />
+              </div>
+              <div className="px-5 overflow-y-scroll">
                 {attractions.map((attraction, index) => (
                   <div
-                    className={`flex space-x-3 px-1 py-1 ${
-                      attraction.shownOnMap ? "bg-gray-200" : ""
-                    }`}
-                    key={attraction.id}
+                    className="flex space-x-3 px-1 py-1"
+                    key={attraction._id}
                   >
-                    <div className="pt-1 flex flex-col items-center space-y-2">
+                    <div className="pt-1.5 flex flex-col items-center space-y-2">
                       <FontAwesomeIcon
                         icon={faCircleDot}
                         className="text-red-500"
@@ -185,7 +176,6 @@ const Home = () => {
                               : "hover:text-blue-500"
                           }
                           onClick={() => {
-                            // TODO: Call API
                             attractions.splice(index, 1);
                             attractions.splice(index - 1, 0, attraction);
                             setAttractions([...attractions]);
@@ -201,7 +191,6 @@ const Home = () => {
                               : "hover:text-blue-500"
                           }
                           onClick={() => {
-                            // TODO: Call API
                             attractions.splice(index, 1);
                             attractions.splice(index + 1, 0, attraction);
                             setAttractions([...attractions]);
@@ -209,14 +198,10 @@ const Home = () => {
                         >
                           <FontAwesomeIcon icon={faArrowDown} />
                         </button>
-                        <Link className="hover:text-blue-500">
-                          <FontAwesomeIcon icon={faPenToSquare} />
-                        </Link>
                         <button className="hover:text-blue-500">
                           <FontAwesomeIcon
                             icon={faTrashCan}
                             onClick={() => {
-                              // TODO: Call API
                               attractions.splice(index, 1);
                               setAttractions([...attractions]);
                             }}
@@ -226,13 +211,21 @@ const Home = () => {
                     </div>
                   </div>
                 ))}
+                <Link
+                  to={`/attractions`}
+                  className="block text-gray-300 px-1 hover:text-blue-500"
+                >
+                  <FontAwesomeIcon icon={faPlus} /> Add an attraction to visit
+                </Link>
               </div>
-              <Link
-                to={`/visiting-stop`}
-                className="block border-t-2 border-gray-300 text-gray-300 px-6 py-2 hover:text-blue-500"
-              >
-                <FontAwesomeIcon icon={faPlus} /> Add an attraction to your trip
-              </Link>
+              <div className="px-5 py-4">
+                <button
+                  className="bg-blue-500 text-white rounded-md hover:bg-blue-600 px-2 py-1"
+                  onClick={createPost}
+                >
+                  Share
+                </button>
+              </div>
             </div>
           ) : (
             <Outlet />
@@ -242,7 +235,7 @@ const Home = () => {
           <Map
             ref={mapRef}
             mapLib={mapboxgl}
-            mapboxAccessToken="pk.eyJ1IjoiaGFycnluMTIzIiwiYSI6ImNscWIwdGE5MjFzbXYya2t6ZTZrcnFpcW4ifQ.aP1eiMiQHgIi6RsGFa0djA"
+            mapboxAccessToken={mapboxToken}
             mapStyle="mapbox://styles/mapbox/streets-v9"
             maxZoom={16}
             initialViewState={{
@@ -250,108 +243,45 @@ const Home = () => {
               longitude: 105.8521484,
               zoom: 17,
             }}
-            onMouseEnter={(e) => console.log(e)}
           >
             <NavigationControl
               className="navigation-control"
               showCompass={true}
             />
             {hoveredMarker && (
-              <Popup
-                longitude={hoveredMarker.location.longitude}
-                latitude={hoveredMarker.location.latitude}
-                anchor="right"
-                offset={10}
-                closeOnClick={false}
+              <LocationInfoPopUp
+                longitude={hoveredMarker.coordinates[0]}
+                latitude={hoveredMarker.coordinates[1]}
                 onClose={(e) => setHoveredMarker(null)}
               >
-                <h4 className="font-bold text-lg">{hoveredMarker.name}</h4>
-                <address>{hoveredMarker.address}</address>
+                <h4 className="font-bold text-lg leading-tight">
+                  {hoveredMarker.name}
+                </h4>
+                <address className="mt-1">{hoveredMarker.address}</address>
                 <div className="flex items-center space-x-2 mt-2">
-                  <FontAwesomeIcon icon={faPenToSquare} />
                   <button>
                     <FontAwesomeIcon
                       icon={faTrashCan}
                       onClick={() => {
-                        // TODO: Call API
-                        attractions.splice(hoveredMarker.id, 1);
+                        attractions.splice(hoveredMarker._id, 1);
                         setAttractions([...attractions]);
                       }}
                     />
                   </button>
                 </div>
-              </Popup>
+              </LocationInfoPopUp>
             )}
-            {attractions.map((attraction, index) => (
-              <div key={attraction.id}>
-                <Marker
-                  latitude={attraction.location.latitude}
-                  longitude={attraction.location.longitude}
-                  onClick={(e) => setHoveredMarker(attraction)}
-                >
-                  <svg
-                    width="32px"
-                    height="32px"
-                    viewBox="-3 0 20 20"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlnsXlink="http://www.w3.org/1999/xlink"
-                  >
-                    <g
-                      id="Page-1"
-                      stroke="none"
-                      strokeWidth="1"
-                      fill="none"
-                      fillRule="evenodd"
-                    >
-                      <g
-                        id="Dribbble-Light-Preview"
-                        transform="translate(-223.000000, -5399.000000)"
-                        fill="#FF0000"
-                      >
-                        <g
-                          id="icons"
-                          transform="translate(56.000000, 160.000000)"
-                        >
-                          <path
-                            d="M174,5248.219 C172.895,5248.219 172,5247.324 172,5246.219 C172,5245.114 172.895,5244.219 174,5244.219 C175.105,5244.219 176,5245.114 176,5246.219 C176,5247.324 175.105,5248.219 174,5248.219 M174,5239 C170.134,5239 167,5242.134 167,5246 C167,5249.866 174,5259 174,5259 C174,5259 181,5249.866 181,5246 C181,5242.134 177.866,5239 174,5239"
-                            id="pin_fill_sharp_circle-[#634]"
-                          ></path>
-                        </g>
-                      </g>
-                    </g>
-                  </svg>
-                </Marker>
-              </div>
-            ))}
-            {coordinates && (
-              <Source
-                id="route"
-                type="geojson"
-                data={{
-                  type: "Feature",
-                  properties: {},
-                  geometry: {
-                    type: "LineString",
-                    coordinates,
-                  },
-                }}
+            {attractions.map((attraction) => (
+              <Marker
+                longitude={attraction.coordinates[0]}
+                latitude={attraction.coordinates[1]}
+                onClick={() => setHoveredMarker(attraction)}
+                key={attraction._id}
               >
-                <Layer
-                  id="route"
-                  type="line"
-                  source="route"
-                  layout={{
-                    "line-join": "round",
-                    "line-cap": "round",
-                  }}
-                  paint={{
-                    "line-color": "#3b82f6",
-                    "line-width": 5,
-                  }}
-                />
-              </Source>
-            )}
+                <LocationMarker />
+              </Marker>
+            ))}
+            {coordinates && <Direction coordinates={coordinates} />}
           </Map>
         </section>
       </main>
