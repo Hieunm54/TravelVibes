@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { appRoutes } from "../enum/routes";
 import Layout from "../components/Layout";
 import VisitingLocationMarker from "../components/VisitingLocationMarker";
@@ -23,9 +22,8 @@ import {
   moveUpAttraction,
   removeAttraction,
 } from "../store/attractions";
-import { authorizationHeader } from "../services/jwt";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { createJourneys } from "../services/journeys";
+import FormInput from "../components/FormInput";
 
 const NewPost = () => {
   const [captionInput, setCaptionInput] = useState("");
@@ -59,18 +57,10 @@ const NewPost = () => {
 
   const handleCreatePost = async () => {
     try {
-      await axios.post(
-        `${API_URL}/api/journeys`,
-        {
-          title: captionInput,
-          attractions: attractions.map((attraction) => attraction._id),
-        },
-        {
-          headers: {
-            Authorization: authorizationHeader(auth.token),
-          },
-        }
-      );
+      await createJourneys(auth.token, {
+        title: captionInput,
+        attractions: attractions.map((attraction) => attraction._id),
+      });
 
       navigate(appRoutes.HOME);
     } catch (e) {
@@ -85,10 +75,15 @@ const NewPost = () => {
           <div className="h-screen flex flex-col">
             <div className="px-5 pt-10 mb-2">
               <h2 className="font-bold text-5xl">Share your trip</h2>
-              <TripCaptionInput
-                textInput={captionInput}
-                onChange={handleCaptionInputChange}
-              />
+              <div className="mt-7">
+                <FormInput
+                  label={false}
+                  multiline={true}
+                  value={captionInput}
+                  onChange={handleCaptionInputChange}
+                  placeholder="What are your experience?"
+                />
+              </div>
             </div>
             <RouteContainer>
               {attractions.map((attraction, index) => (
