@@ -2,6 +2,8 @@ import React from "react";
 import { Popup } from "react-map-gl";
 
 const LocationInfoPopUp = ({ latitude, longitude, children, onClose }) => {
+  const [hoveredMarker, setHoveredMarker] = useState(null);
+
   return (
     <Popup
       longitude={longitude}
