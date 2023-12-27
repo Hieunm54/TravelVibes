@@ -1,60 +1,22 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
-import { Map, NavigationControl, Popup } from "react-map-gl";
-import mapboxgl from "mapbox-gl";
+import React, { useState, useEffect } from "react";
+import { NavigationControl, Popup } from "react-map-gl";
 import VisitingLocationPopUpInfo from "../components/VisitingLocationPopUpInfo";
 import MapMarker from "../components/MapMarker";
-import { getBounds, getDirectionCoordinates } from "../components/Map/utils";
-import AttractionsContext from "../hooks/attraction";
 import Direction from "./Map/Direction";
 import { useSelector } from "react-redux";
-
-const mapConfig = {
-  mapLib: mapboxgl,
-  mapboxAccessToken: import.meta.env.VITE_MAPBOX_ACCESS_TOKEN,
-  mapStyle: "mapbox://styles/mapbox/streets-v9",
-  maxZoom: 16,
-  initialViewState: {
-    latitude: 21.0286669,
-    longitude: 105.8521484,
-    zoom: 17,
-  },
-};
+import Mapbox from "./Mapbox";
+import { useMap } from "../hooks/map";
 
 const NewPostPageLayout = ({ children }) => {
   const attractions = useSelector((state) => state.attractions);
   const [hoveredMarker, setHoveredMarker] = useState(null);
-  const [coordinates, setCoordinates] = useState(null);
-
-  const mapRef = useRef(null);
+  const { coordinates, mapRef, updateBounds } = useMap(attractions, (e) =>
+    toast.error("Unable to retrieve attractions!")
+  );
 
   const handlePopUpDelete = (hoveredMarker) => {
     handleDelete(hoveredMarker);
     setHoveredMarker(null);
-  };
-
-  const updateBounds = async () => {
-    if (attractions.length > 0 && attractions.length <= 1) {
-      setCoordinates(null);
-
-      mapRef.current.flyTo({
-        center: attractions[0].coordinates,
-        zoom: 17,
-      });
-    } else if (attractions.length > 1) {
-      if (coordinates === "") return;
-
-      const directionCoordinates = await getDirectionCoordinates(
-        attractions,
-        (e) => toast.error("Can't get the direction!")
-      );
-      const { northEast, southWest } = getBounds(
-        attractions.map((attraction) => attraction.coordinates),
-        directionCoordinates
-      );
-      mapRef.current.fitBounds([northEast, southWest], { padding: 100 });
-
-      setCoordinates(directionCoordinates);
-    }
   };
 
   useEffect(() => {
@@ -68,7 +30,7 @@ const NewPostPageLayout = ({ children }) => {
         {children}
       </section>
       <section className="col-span-8">
-        <Map ref={mapRef} {...mapConfig}>
+        <Mapbox ref={mapRef}>
           <NavigationControl
             className="navigation-control"
             showCompass={true}
@@ -97,7 +59,7 @@ const NewPostPageLayout = ({ children }) => {
             />
           ))}
           {coordinates && <Direction coordinates={coordinates} />}
-        </Map>
+        </Mapbox>
       </section>
     </div>
   );

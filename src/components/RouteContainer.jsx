@@ -1,7 +1,7 @@
 import React from "react";
 
-const RouteContainer = ({ children }) => {
-  return <div className="px-5 overflow-y-scroll">{children}</div>;
+const RouteContainer = ({ children, className }) => {
+  return <div className={className}>{children}</div>;
 };
 
 export default RouteContainer;

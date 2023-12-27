@@ -9,7 +9,6 @@ import VisitingLocationCTA from "../components/VisitingLocationCTA";
 import VisitingLocationActionBtn from "../components/VisitingLocationActionBtn";
 import VisitingLocationContainer from "../components/VisitingLocationContainer";
 import VisitingLocationInfoContainer from "../components/VisitingLocationInfoContainer";
-import TripCaptionInput from "../components/TripCaptionInput";
 import AddVisitingLocation from "../components/AddVisitingLocation";
 import Button from "../components/Button";
 import NewPostPageLayout from "../components/NewPostPageLayout";
@@ -18,12 +17,13 @@ import ButtonGroup from "../components/ButtonGroup";
 import RouteContainer from "../components/RouteContainer";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  cleanUpAttractions,
   moveDownAttraction,
   moveUpAttraction,
   removeAttraction,
 } from "../store/attractions";
-import { createJourneys } from "../services/journeys";
 import FormInput from "../components/FormInput";
+import { createPost } from "../services/posts";
 
 const NewPost = () => {
   const [captionInput, setCaptionInput] = useState("");
@@ -57,10 +57,11 @@ const NewPost = () => {
 
   const handleCreatePost = async () => {
     try {
-      await createJourneys(auth.token, {
-        title: captionInput,
+      await createPost(auth.token, {
+        caption: captionInput,
         attractions: attractions.map((attraction) => attraction._id),
       });
+      dispatch(cleanUpAttractions());
 
       navigate(appRoutes.HOME);
     } catch (e) {
@@ -85,7 +86,7 @@ const NewPost = () => {
                 />
               </div>
             </div>
-            <RouteContainer>
+            <RouteContainer className="overflow-y-scroll px-5">
               {attractions.map((attraction, index) => (
                 <VisitingLocationContainer key={attraction._id}>
                   <VisitingLocationMarker />

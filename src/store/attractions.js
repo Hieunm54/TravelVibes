@@ -3,6 +3,7 @@ const actionTypes = {
   removeAttraction: "REMOVE_ATTRACTION",
   moveDownAttraction: "MOVE_DOWN_ATTRACTION",
   moveUpAttraction: "MOVE_UP_ATTRACTION",
+  cleanUpAttractions: "CLEAN_UP_ATTRACTION",
 };
 
 const attractions = (state = [], action) => {
@@ -41,6 +42,8 @@ const attractions = (state = [], action) => {
         ...state.slice(0, action.index),
         ...state.slice(action.index + 1),
       ];
+    case actionTypes.cleanUpAttractions:
+      return [];
     default:
       return state;
   }
@@ -67,6 +70,10 @@ export const moveUpAttraction = (index) => ({
 export const removeAttraction = (index) => ({
   type: actionTypes.removeAttraction,
   index,
+});
+
+export const cleanUpAttractions = (index) => ({
+  type: actionTypes.cleanUpAttractions,
 });
 
 export default attractions;
