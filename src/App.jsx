@@ -1,10 +1,54 @@
-import { useState } from "react";
-import AppRoutes from "./components/AppRoutes";
-import AuthRoutes from "./components/AuthRoutes";
+import { combineReducers, createStore } from "redux";
+import { Provider } from "react-redux";
+import {
+  faArrowDown,
+  faArrowUp,
+  faCircleDot,
+  faCircleUser,
+  faCommentDots,
+  faLocationArrow,
+  faPenToSquare,
+  faPlus,
+  faTrashCan,
+  faHouse,
+  faStar,
+  fas,
+} from "@fortawesome/free-solid-svg-icons";
+import { far } from "@fortawesome/free-regular-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+
+import attractions from "./store/attractions";
+import auth from "./store/auth";
+import Navigation from "./components/Navigation";
+import { ToastContainer } from "react-toastify";
+
+library.add(
+  fas,
+  far,
+  faCircleUser,
+  faCommentDots,
+  faPenToSquare,
+  faPlus,
+  faTrashCan,
+  faCircleDot,
+  faArrowDown,
+  faArrowUp,
+  faLocationArrow,
+  faHouse,
+  faStar
+);
+
+const reducers = combineReducers({ attractions, auth });
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  return <>{isAuthenticated ? <AppRoutes /> : <AuthRoutes />}</>;
+  return (
+    <>
+      <ToastContainer />
+      <Provider store={createStore(reducers)}>
+        <Navigation />
+      </Provider>
+    </>
+  );
 }
 
 export default App;
