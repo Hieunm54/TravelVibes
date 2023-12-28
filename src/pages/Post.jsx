@@ -82,7 +82,8 @@ const Post = () => {
         caption: captionInput,
       };
       await updatePost(auth.token, id, editedPost);
-      navigate(0);
+      setPost(editedPost);
+      setIsEditing(false);
     } catch (e) {
       toast.error("Unable to update post.");
     }
@@ -190,7 +191,7 @@ const Post = () => {
   const handleSendComment = async (evt) => {
     evt.preventDefault();
     try {
-      const { data } = await sendComment(auth.token, id, {
+      await sendComment(auth.token, id, {
         content: commentInput,
       });
       getCommentList();

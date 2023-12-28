@@ -8,7 +8,7 @@ const CardAuthorAva = ({ size = 12, src }) => {
           ? src
           : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
       }
-      className={`w-${size} h-${size} rounded-full`}
+      className={`w-12 h-12 rounded-full`}
     />
   );
 };

@@ -24,7 +24,7 @@ const PostMap = ({ attractions }) => {
   useEffect(() => {
     if (!mapRef) return;
     updateBounds();
-  }, [mapRef]);
+  }, [attractions, mapRef]);
 
   return (
     <Mapbox ref={mapRef}>
