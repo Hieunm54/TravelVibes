@@ -10,6 +10,10 @@ import SignInPage from "../pages/SignIn";
 import SignUpPage from "../pages/SignUp";
 import { useDispatch } from "react-redux";
 import { saveLogInInfo } from "../store/auth";
+import PostPage from "../pages/Post";
+import ProfilePage from "../pages/Profile";
+import UserReviewsPage from "../pages/UserReviewsPage";
+import UserEventsPage from "../pages/UserEventsPage";
 
 const routes = createBrowserRouter([
   {
@@ -33,13 +37,22 @@ const routes = createBrowserRouter([
     ],
   },
   {
-    path: appRoutes.ATTRACTIONS,
-    element: <AttractionsPage />,
+    path: appRoutes.POST,
+    element: <PostPage />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: appRoutes.PROFILE,
+    element: <ProfilePage />,
     errorElement: <NotFoundPage />,
     children: [
       {
-        path: appRoutes.ATTRACTION,
-        element: <AttractionPage />,
+        path: appRoutes.USER_REVIEWS,
+        element: <UserReviewsPage />,
+      },
+      {
+        path: appRoutes.USER_EVENTS,
+        element: <UserEventsPage />,
       },
     ],
   },

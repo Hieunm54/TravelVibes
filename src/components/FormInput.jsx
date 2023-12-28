@@ -12,7 +12,7 @@ const FormInput = ({
   ...otherProps
 }) => {
   return (
-    <div>
+    <div className="flex flex-grow">
       <label htmlFor={name}>{label ? name : ""}</label>
       {!multiline ? (
         <input

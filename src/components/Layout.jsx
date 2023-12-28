@@ -77,7 +77,9 @@ const Layout = ({ children }) => {
                 </li>
                 <li
                   className={`text-4xl hover:text-blue-500 ${
-                    location.pathname === appRoutes.PROFILE
+                    location.pathname === appRoutes.PROFILE ||
+                    location.pathname === appRoutes.USER_REVIEWS ||
+                    location.pathname === appRoutes.USER_EVENTS
                       ? "text-blue-500"
                       : ""
                   }`}

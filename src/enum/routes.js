@@ -5,8 +5,9 @@ const appRoutes = {
   NEW_POST_VIEW_ATTRACTION: "/new-post/attraction/:id",
   NOTIFICATION: "/notification",
   PROFILE: "/profile",
-  ATTRACTIONS: "/attractions",
-  ATTRACTION: "/attractions/:id",
+  USER_REVIEWS: "/profile/reviews",
+  USER_EVENTS: "/profile/events",
+  POST: "/posts/:id",
 };
 
 const authRoutes = {
