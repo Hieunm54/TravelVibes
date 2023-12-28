@@ -9,7 +9,7 @@ import VisitingLocationCTA from "../components/VisitingLocationCTA";
 import VisitingLocationActionBtn from "../components/VisitingLocationActionBtn";
 import VisitingLocationContainer from "../components/VisitingLocationContainer";
 import VisitingLocationInfoContainer from "../components/VisitingLocationInfoContainer";
-import AddVisitingLocation from "../components/AddVisitingLocation";
+import AddVisitingLocationBtn from "../components/AddVisitingLocationBtn";
 import Button from "../components/Button";
 import NewPostPageLayout from "../components/NewPostPageLayout";
 import { buttonStyle } from "../styles/button";
@@ -63,10 +63,14 @@ const NewPost = () => {
       });
       dispatch(cleanUpAttractions());
 
-      navigate(appRoutes.HOME);
+      window.location = appRoutes.HOME;
     } catch (e) {
       toast.error("Unable to share your journey!");
     }
+  };
+
+  const handleAddNewLocation = () => {
+    navigate(appRoutes.NEW_POST_FIND_ATTRACTIONS);
   };
 
   return (
@@ -121,7 +125,7 @@ const NewPost = () => {
                   </VisitingLocationInfoContainer>
                 </VisitingLocationContainer>
               ))}
-              <AddVisitingLocation />
+              <AddVisitingLocationBtn onClick={handleAddNewLocation} />
             </RouteContainer>
             <ButtonGroup>
               <Button onClick={handleCreatePost}>Share</Button>

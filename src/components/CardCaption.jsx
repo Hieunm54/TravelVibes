@@ -1,7 +1,7 @@
 import React from "react";
 
-const CardCaption = ({ children }) => {
-  return <p className="mt-3">{children}</p>;
+const CardCaption = ({ children, className = "" }) => {
+  return <p className={className}>{children}</p>;
 };
 
 export default CardCaption;

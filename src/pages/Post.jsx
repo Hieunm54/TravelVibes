@@ -22,8 +22,8 @@ import VisitingLocationInfo from "../components/VisitingLocationInfo";
 import VisitingLocationMarker from "../components/VisitingLocationMarker";
 import FormInput from "../components/FormInput";
 import Button from "../components/Button";
-import CommentForm from "../components/CommentForm";
-import { deletePost, getPost } from "../services/posts";
+import Form from "../components/Form";
+import { deletePost, getPost, updatePost } from "../services/posts";
 import {
   deleteComment,
   getComments,
@@ -32,22 +32,39 @@ import {
 } from "../services/comments";
 import SecondaryButtonGroup from "../components/SecondaryButtonGroup";
 import SecondaryButton from "../components/SecondaryButton";
+import AddVisitingLocationBtn from "../components/AddVisitingLocationBtn";
+import { getAttractions } from "../services/attractions";
+import AttractionSuggestion from "../components/AttractionSuggestion";
+import VisitingLocationCTA from "../components/VisitingLocationCTA";
+import VisitingLocationActionBtn from "../components/VisitingLocationActionBtn";
+import { buttonStyle } from "../styles/button";
 
 const Post = () => {
   const [post, setPost] = useState(null);
+  const [backupPost, setBackupPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [commentInput, setCommentInput] = useState("");
   const [editCommentInput, setEditCommentInput] = useState("");
   const [commentToBeEdited, setCommentToBeEdited] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [captionInput, setCaptionInput] = useState("");
+  const [isFindingAttraction, setIsFindingAttraction] = useState(false);
+  const [attrractionInput, setAttractionInput] = useState("");
+  const [attractionSuggestions, setAttractionSuggestions] = useState([]);
   const auth = useSelector((state) => state.auth);
   const { id } = useParams();
   const navigate = useNavigate();
   const { id: userId } = jwtDecode(auth.token);
 
   const handleCommentInputChange = (evt) => setCommentInput(evt.target.value);
-
   const handleEditCommentInputChange = (evt) =>
     setEditCommentInput(evt.target.value);
+  const handleCaptionInputChange = (evt) => setCaptionInput(evt.target.value);
+  const handleAttractionInput = (evt) => {
+    console.log("Fuck");
+    setAttractionInput(evt.target.value);
+    getAttractionSuggestions();
+  };
 
   const getPostDetails = async () => {
     try {
@@ -56,6 +73,100 @@ const Post = () => {
     } catch (e) {
       toast.error("Unable to retrieve post details.");
     }
+  };
+
+  const handleUpdatePost = async () => {
+    try {
+      const editedPost = {
+        ...post,
+        caption: captionInput,
+      };
+      await updatePost(auth.token, id, editedPost);
+      navigate(0);
+    } catch (e) {
+      toast.error("Unable to update post.");
+    }
+  };
+
+  const activeRearrangeBtnClassName = (callback) =>
+    callback() ? buttonStyle.disabled : buttonStyle.hover;
+
+  const isMovingDownBtnDisabled = (index) =>
+    index === post.attractions.length - 1;
+  const handleMoveDownAttraction = (index) => {
+    setPost({
+      ...post,
+      attractions: [
+        ...post.attractions.slice(0, index),
+        post.attractions[index + 1],
+        post.attractions[index],
+        ...post.attractions.slice(index + 2),
+      ],
+    });
+  };
+
+  const isMovingUpBtnDisabled = (index) => index == 0;
+  const handleMoveUpAttraction = (index) => {
+    setPost({
+      ...post,
+      attractions: [
+        ...post.attractions.slice(0, index - 1),
+        post.attractions[index],
+        post.attractions[index - 1],
+        ...post.attractions.slice(index + 1),
+      ],
+    });
+  };
+
+  const handleDeleteAttraction = (index) => {
+    setPost({
+      ...post,
+      attractions: [
+        ...post.attractions.slice(0, index),
+        ...post.attractions.slice(index + 1),
+      ],
+    });
+  };
+
+  const getAttractionSuggestions = async () => {
+    try {
+      const response = await getAttractions(auth.token, {
+        q: attrractionInput,
+      });
+      setAttractionSuggestions(response.data);
+    } catch (e) {
+      setAttractionSuggestions([]);
+    }
+  };
+
+  const handleAddAttraction = (attraction) => {
+    setPost({
+      ...post,
+      attractions: [...post.attractions, attraction],
+    });
+    setIsFindingAttraction(false);
+    setAttractionSuggestions([]);
+  };
+
+  const handleCancelAddingAttraction = () => {
+    setAttractionSuggestions([]);
+    setIsFindingAttraction(false);
+  };
+
+  const handleFindAttraction = async () => {
+    setIsFindingAttraction(true);
+  };
+
+  const handleEditPost = async () => {
+    setCaptionInput(post.caption);
+    setBackupPost({ ...post });
+    setIsEditing(true);
+  };
+
+  const handleCancelEditingPost = () => {
+    setCaptionInput("");
+    setPost({ ...backupPost });
+    setIsEditing(false);
   };
 
   const handleDeletePost = async () => {
@@ -79,9 +190,11 @@ const Post = () => {
   const handleSendComment = async (evt) => {
     evt.preventDefault();
     try {
-      await sendComment(auth.token, id, { content: commentInput });
-      setCommentInput("");
+      const { data } = await sendComment(auth.token, id, {
+        content: commentInput,
+      });
       getCommentList();
+      setCommentInput("");
     } catch (e) {
       toast.error("Unable to send comment.");
     }
@@ -98,9 +211,15 @@ const Post = () => {
       await updateComment(auth.token, id, commentToBeEdited._id, {
         content: editCommentInput,
       });
+      setComments(
+        comments.map((comment) =>
+          comment._id === commentToBeEdited._id
+            ? { ...comment, content: editCommentInput }
+            : comment
+        )
+      );
       setCommentToBeEdited(null);
       setEditCommentInput("");
-      getCommentList();
     } catch (e) {
       toast.error("Unable to send comment.");
     }
@@ -111,7 +230,8 @@ const Post = () => {
   const handleDeleteComment = async (commentId) => {
     try {
       await deleteComment(auth.token, id, commentId);
-      getCommentList();
+      const index = comments.findIndex((comment) => comment._id === commentId);
+      setComments([...comments.slice(0, index), ...comments.slice(index + 1)]);
     } catch (e) {
       toast.error("Unable to delete comment.");
     }
@@ -135,17 +255,45 @@ const Post = () => {
                     name={`${post.author.firstName} ${post.author.lastName}`}
                   />
                   <SecondaryButtonGroup className="mt-1">
-                    <SecondaryButton>Edit</SecondaryButton>
-                    <SecondaryButton onClick={handleDeletePost}>
-                      Delete
-                    </SecondaryButton>
+                    {isEditing ? (
+                      <>
+                        <SecondaryButton onClick={handleUpdatePost}>
+                          Save
+                        </SecondaryButton>
+                        <SecondaryButton onClick={handleCancelEditingPost}>
+                          Cancel
+                        </SecondaryButton>
+                      </>
+                    ) : (
+                      <>
+                        <SecondaryButton onClick={handleEditPost}>
+                          Edit
+                        </SecondaryButton>
+                        <SecondaryButton onClick={handleDeletePost}>
+                          Delete
+                        </SecondaryButton>
+                      </>
+                    )}
                   </SecondaryButtonGroup>
                 </div>
               </CardAuthor>
-              <CardCaption>{post.caption}</CardCaption>
+              <div className="mt-3">
+                {isEditing ? (
+                  <FormInput
+                    label={false}
+                    multiline={true}
+                    value={captionInput}
+                    onChange={handleCaptionInputChange}
+                    placeholder="What are your experience?"
+                    onFocus={() => getAttractionSuggestions()}
+                  />
+                ) : (
+                  <CardCaption>{post.caption}</CardCaption>
+                )}
+              </div>
               <CardRoute>
                 <RouteContainer>
-                  {post.attractions.map((attraction) => (
+                  {post.attractions.map((attraction, index) => (
                     <VisitingLocationContainer key={attraction._id}>
                       <VisitingLocationMarker />
                       <VisitingLocationInfoContainer>
@@ -153,9 +301,77 @@ const Post = () => {
                           name={attraction.name}
                           address={attraction.address}
                         />
+                        {isEditing && (
+                          <VisitingLocationCTA>
+                            <VisitingLocationActionBtn
+                              disabled={isMovingUpBtnDisabled(index)}
+                              className={activeRearrangeBtnClassName(() =>
+                                isMovingUpBtnDisabled(index)
+                              )}
+                              onClick={() => handleMoveUpAttraction(index)}
+                              icon="fa-solid fa-arrow-up"
+                            />
+                            <VisitingLocationActionBtn
+                              disabled={isMovingDownBtnDisabled(index)}
+                              className={activeRearrangeBtnClassName(() =>
+                                isMovingDownBtnDisabled(index)
+                              )}
+                              onClick={() => handleMoveDownAttraction(index)}
+                              icon="fa-solid fa-arrow-down"
+                            />
+                            <VisitingLocationActionBtn
+                              className={buttonStyle.hover}
+                              onClick={() => handleDeleteAttraction(index)}
+                              icon="fa-solid fa-trash-can"
+                            />
+                          </VisitingLocationCTA>
+                        )}
                       </VisitingLocationInfoContainer>
                     </VisitingLocationContainer>
                   ))}
+                  {isEditing &&
+                    (isFindingAttraction ? (
+                      <>
+                        <div className="flex items-center space-x-2">
+                          <FormInput
+                            label={false}
+                            name="attraction"
+                            placeholder="Where do you want to visit?"
+                            value={attrractionInput}
+                            onChange={handleAttractionInput}
+                            className="grow"
+                          />
+                          <button
+                            className={buttonStyle.hover}
+                            onClick={handleCancelAddingAttraction}
+                          >
+                            <FontAwesomeIcon icon="fa-solid fa-x" />
+                          </button>
+                        </div>
+                        <div
+                          className={
+                            attractionSuggestions.length > 0
+                              ? `border-l border-r border-b border-gray-200`
+                              : ""
+                          }
+                        >
+                          {attractionSuggestions.length > 0 &&
+                            attractionSuggestions.map((suggestion) => (
+                              <button
+                                className="block text-left"
+                                onClick={() => handleAddAttraction(suggestion)}
+                              >
+                                <AttractionSuggestion
+                                  name={suggestion.name}
+                                  address={suggestion.address}
+                                />
+                              </button>
+                            ))}
+                        </div>
+                      </>
+                    ) : (
+                      <AddVisitingLocationBtn onClick={handleFindAttraction} />
+                    ))}
                 </RouteContainer>
               </CardRoute>
               <CardInteractionInfo>
@@ -168,7 +384,7 @@ const Post = () => {
               </CardInteractionInfo>
             </div>
             <div className="border-t border-gray-300 mt-2 py-2">
-              <CommentForm onSubmit={handleSendComment}>
+              <Form onSubmit={handleSendComment}>
                 <CardAuthorAva size={12} />
                 <FormInput
                   label={false}
@@ -184,7 +400,7 @@ const Post = () => {
                     className="text-white"
                   />
                 </Button>
-              </CommentForm>
+              </Form>
               <div className="flex flex-col space-y-3 mt-3">
                 {comments
                   .slice(0)
@@ -195,7 +411,7 @@ const Post = () => {
                       <div className="bg-gray-50 border border-gray-100 w-full px-3 py-2 rounded-md">
                         {commentToBeEdited &&
                         commentToBeEdited._id === comment._id ? (
-                          <CommentForm onSubmit={handleUpdateComment}>
+                          <Form onSubmit={handleUpdateComment}>
                             <FormInput
                               label={false}
                               name="comment"
@@ -210,7 +426,7 @@ const Post = () => {
                                 className="text-white"
                               />
                             </Button>
-                          </CommentForm>
+                          </Form>
                         ) : (
                           <p>{comment.content}</p>
                         )}

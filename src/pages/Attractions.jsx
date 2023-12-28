@@ -4,13 +4,14 @@ import { useSelector } from "react-redux";
 import BackButton from "../components/BackButton";
 import AttractionSuggestion from "../components/AttractionSuggestion";
 import { getAttractions } from "../services/attractions";
+import { Link } from "react-router-dom";
 
 const Attractions = () => {
   const [attrractionInput, setAttractionInput] = useState("");
   const [attractionSuggestions, setAttractionSuggestions] = useState([]);
   const auth = useSelector((state) => state.auth);
 
-  const getAttractionSuggestions = async (text) => {
+  const getAttractionSuggestions = async () => {
     try {
       const response = await getAttractions(auth.token, {
         q: attrractionInput,
@@ -41,12 +42,19 @@ const Attractions = () => {
       <div>
         {attractionSuggestions.length > 0 &&
           attractionSuggestions.map((suggestion) => (
-            <AttractionSuggestion
+            <Link
               key={suggestion._id}
-              id={suggestion._id}
-              name={suggestion.name}
-              address={suggestion.address}
-            />
+              to={appRoutes.NEW_POST_VIEW_ATTRACTION.replace(
+                ":id",
+                suggestion._id
+              )}
+              className="block"
+            >
+              <AttractionSuggestion
+                name={suggestion.name}
+                address={suggestion.address}
+              />
+            </Link>
           ))}
       </div>
     </div>

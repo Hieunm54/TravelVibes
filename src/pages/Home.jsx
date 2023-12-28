@@ -50,7 +50,7 @@ const Home = () => {
                   name={`${post.author.firstName} ${post.author.lastName}`}
                 />
               </CardAuthor>
-              <CardCaption>{post.caption}</CardCaption>
+              <CardCaption className="mt-3">{post.caption}</CardCaption>
               <CardRoute>
                 <RouteContainer>
                   {post.attractions.map((attraction) => (

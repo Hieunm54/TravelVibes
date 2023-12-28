@@ -26,7 +26,7 @@ const FormInput = ({
         />
       ) : (
         <textarea
-          rows={3}
+          rows={5}
           name={name}
           placeholder={placeholder}
           value={value}

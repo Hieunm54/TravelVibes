@@ -1,6 +1,6 @@
 import React from "react";
 
-const CommentForm = ({ onSubmit, children }) => {
+const Form = ({ onSubmit, children }) => {
   return (
     <form className="flex items-center space-x-2" onSubmit={onSubmit}>
       {children}
@@ -8,4 +8,4 @@ const CommentForm = ({ onSubmit, children }) => {
   );
 };
 
-export default CommentForm;
+export default Form;
