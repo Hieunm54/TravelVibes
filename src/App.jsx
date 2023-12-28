@@ -13,6 +13,8 @@ import {
   faHouse,
   faStar,
   fas,
+  faUpLong,
+  faComment,
 } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -35,7 +37,9 @@ library.add(
   faArrowUp,
   faLocationArrow,
   faHouse,
-  faStar
+  faStar,
+  faUpLong,
+  faComment
 );
 
 const reducers = combineReducers({ attractions, auth });
