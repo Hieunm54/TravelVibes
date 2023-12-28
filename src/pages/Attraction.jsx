@@ -36,8 +36,12 @@ const Attraction = () => {
 
     const formData = new FormData();
     formData.append("content", reviewInput);
-    formData.append("rating", reviewRatxing);
-    formData.append("images", uploadedImages);
+    formData.append("rating", reviewRating);
+    if (uploadedImages) {
+      for (let i = 0; i < uploadedImages.length; i++) {
+        formData.append("images", uploadedImages[i]);
+      }
+    }
 
     try {
       await createReview(auth.token, id, formData);
@@ -103,6 +107,7 @@ const Attraction = () => {
           <form
             onSubmit={handleSubmit}
             className="flex flex-col space-y-3 mb-5 border-t border-gray-200 mt-5 pt-3"
+            encType="multipart/form-data"
           >
             <h4 className="font-bold text-2xl">Write a review</h4>
             <FormInput
@@ -131,6 +136,7 @@ const Attraction = () => {
           </form>
           {reviews.map((review) => (
             <Review
+              key={review._id}
               authorName={`${review.user.firstName} ${review.user.lastName}`}
               rating={review.rating}
               content={review.content}

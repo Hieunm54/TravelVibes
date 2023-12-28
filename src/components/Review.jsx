@@ -1,6 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Slider from "react-slick";
+import { CONST } from "../constaints";
 
 const slideSettings = {
   dots: true,
@@ -26,8 +27,8 @@ const Review = ({ authorName, images, rating, content }) => {
       <Slider {...slideSettings} className="mt-5">
         {images.map((image, index) => (
           <img
-            key={index}
-            src={image}
+            key={image._id}
+            src={`${CONST.IMAGE_URL}/${image.fileName}`}
             className="block w-full rounded-sm"
             alt={`${authorName}'s photos`}
           />

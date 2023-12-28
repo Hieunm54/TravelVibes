@@ -42,11 +42,13 @@ const SignIn = () => {
       >
         <FormInput
           name="Email"
+          type="text"
           value={email}
           onChange={(evt) => setEmail(evt.target.value)}
         />
         <FormInput
           name="Password"
+          type="password"
           value={password}
           onChange={(evt) => setPassword(evt.target.value)}
         />
