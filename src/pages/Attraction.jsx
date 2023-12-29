@@ -141,6 +141,7 @@ const Attraction = () => {
               rating={review.rating}
               content={review.content}
               images={review.images}
+              key={review._id}
             />
           ))}
         </div>

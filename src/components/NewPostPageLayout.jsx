@@ -3,20 +3,31 @@ import { NavigationControl, Popup } from "react-map-gl";
 import VisitingLocationPopUpInfo from "../components/VisitingLocationPopUpInfo";
 import MapMarker from "../components/MapMarker";
 import Direction from "./Map/Direction";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Mapbox from "./Mapbox";
 import { useMap } from "../hooks/map";
+import { removeAttraction } from "../store/attractions";
 
-const NewPostPageLayout = ({ children }) => {
+const PostPageLayout = ({ children }) => {
+  const dispatch = useDispatch();
   const attractions = useSelector((state) => state.attractions);
   const [hoveredMarker, setHoveredMarker] = useState(null);
   const { coordinates, mapRef, updateBounds } = useMap(attractions, (e) =>
     toast.error("Unable to retrieve attractions!")
   );
 
-  const handlePopUpDelete = (hoveredMarker) => {
-    handleDelete(hoveredMarker);
+  const handlePopUpDelete = (index) => {
+    dispatch(removeAttraction(index));
     setHoveredMarker(null);
+  };
+
+  const handlePopUpClose = () => {
+    console.log(hoveredMarker);
+    setHoveredMarker(null);
+  };
+
+  const handlePopUpOpen = (attraction, index) => {
+    setHoveredMarker({ attraction, index });
   };
 
   useEffect(() => {
@@ -37,25 +48,26 @@ const NewPostPageLayout = ({ children }) => {
           />
           {hoveredMarker && (
             <Popup
-              longitude={hoveredMarker.coordinates[0]}
-              latitude={hoveredMarker.coordinates[1]}
-              onClose={(e) => setHoveredMarker(null)}
+              longitude={hoveredMarker.attraction.coordinates[0]}
+              latitude={hoveredMarker.attraction.coordinates[1]}
+              onClose={handlePopUpClose}
               anchor="right"
               offset={10}
               closeOnClick={false}
             >
               <VisitingLocationPopUpInfo
-                name={hoveredMarker.name}
-                address={hoveredMarker.address}
-                onDelete={() => handlePopUpDelete(hoveredMarker)}
+                name={hoveredMarker.attraction.name}
+                address={hoveredMarker.attraction.address}
+                onDelete={() => handlePopUpDelete(hoveredMarker.index)}
               />
             </Popup>
           )}
-          {attractions.map((attraction) => (
+          {attractions.map((attraction, index) => (
             <MapMarker
+              key={attraction._id}
               longitude={attraction.coordinates[0]}
               latitude={attraction.coordinates[1]}
-              onClick={() => setHoveredMarker(attraction)}
+              onClick={() => handlePopUpOpen(attraction, index)}
             />
           ))}
           {coordinates && <Direction coordinates={coordinates} />}
@@ -65,4 +77,4 @@ const NewPostPageLayout = ({ children }) => {
   );
 };
 
-export default NewPostPageLayout;
+export default PostPageLayout;

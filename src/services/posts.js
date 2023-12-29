@@ -11,8 +11,32 @@ export const getPosts = async (token) => {
   });
 };
 
+export const getPost = async (token, id) => {
+  return axios.get(`${API_URL}/api/posts/${id}`, {
+    headers: {
+      Authorization: authorizationHeader(token),
+    },
+  });
+};
+
 export const createPost = async (token, data) => {
   return axios.post(`${API_URL}/api/posts`, data, {
+    headers: {
+      Authorization: authorizationHeader(token),
+    },
+  });
+};
+
+export const updatePost = async (token, id, data) => {
+  return axios.put(`${API_URL}/api/posts/${id}`, data, {
+    headers: {
+      Authorization: authorizationHeader(token),
+    },
+  });
+};
+
+export const deletePost = async (token, id) => {
+  return axios.delete(`${API_URL}/api/posts/${id}`, {
     headers: {
       Authorization: authorizationHeader(token),
     },

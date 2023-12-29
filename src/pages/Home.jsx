@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -44,14 +43,14 @@ const Home = () => {
       <div className="grid grid-cols-12 h-screen overflow-hidden">
         <Feeds>
           {posts.map((post) => (
-            <Card key={post._id}>
+            <Card key={post._id} id={post._id}>
               <CardAuthor>
-                <CardAuthorAva src="https://i.pravatar.cc/300" />
+                <CardAuthorAva size={12} />
                 <CardAuthorName
                   name={`${post.author.firstName} ${post.author.lastName}`}
                 />
               </CardAuthor>
-              <CardCaption>{post.caption}</CardCaption>
+              <CardCaption className="mt-3">{post.caption}</CardCaption>
               <CardRoute>
                 <RouteContainer>
                   {post.attractions.map((attraction) => (
