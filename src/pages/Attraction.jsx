@@ -45,7 +45,10 @@ const Attraction = () => {
 
     try {
       await createReview(auth.token, id, formData);
-      getReviewList();
+      await getReviewList();
+      setReviewInput("");
+      setReviewRating(0);
+      setUploadedImages(null);
     } catch (e) {
       toast.error("Unable to create review");
     }
@@ -101,7 +104,10 @@ const Attraction = () => {
                 icon="fa-solid fa-star"
                 className="text-yellow-400"
               />
-              <span>{details.rating} of 5</span>
+              <span>
+                {details.rating ? parseFloat(details.rating).toFixed(1) : 0} of
+                5
+              </span>
             </p>
           )}
           <form
@@ -141,7 +147,6 @@ const Attraction = () => {
               rating={review.rating}
               content={review.content}
               images={review.images}
-              key={review._id}
             />
           ))}
         </div>

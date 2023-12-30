@@ -41,7 +41,7 @@ const Home = () => {
   return (
     <Layout>
       <div className="grid grid-cols-12 h-screen overflow-hidden">
-        <Feeds>
+        <Feeds className="col-span-8 py-10">
           {posts.map((post) => (
             <Card key={post._id} id={post._id}>
               <CardAuthor>

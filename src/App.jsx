@@ -18,6 +18,7 @@ import {
   faPaperPlane,
   faCheck,
   faX,
+  faCirclePlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -45,7 +46,8 @@ library.add(
   faComment,
   faPaperPlane,
   faCheck,
-  faX
+  faX,
+  faCirclePlus
 );
 
 const reducers = combineReducers({ attractions, auth });

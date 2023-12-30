@@ -1,15 +1,20 @@
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const CardAuthorAva = ({ size = 12, src }) => {
+  const imgSize = `w-${size} h-${size}`;
+
   return (
-    <img
-      src={
-        src
-          ? src
-          : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-      }
-      className={`w-12 h-12 rounded-full`}
-    />
+    <>
+      {src ? (
+        <img
+          src={src}
+          className={`${imgSize} rounded-full border border-gray-200`}
+        />
+      ) : (
+        <FontAwesomeIcon icon="fa-solid fa-circle-user" className={imgSize} />
+      )}
+    </>
   );
 };
 
