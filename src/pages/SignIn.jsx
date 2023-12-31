@@ -26,7 +26,7 @@ const SignIn = () => {
       const { token, user } = response.data;
       dispatch(saveLogInInfo(token, user));
       localStorage.setItem("token", token);
-      localStorage.setItem("user", user);
+      localStorage.setItem("user", JSON.stringify(user));
 
       navigate("/");
     } catch (e) {
