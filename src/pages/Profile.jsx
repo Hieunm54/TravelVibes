@@ -1,24 +1,139 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, Outlet, useLocation } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
 
 import Layout from "../components/Layout";
 import CardAuthorAva from "../components/CardAuthorAva";
 import UserPosts from "../components/UserPosts";
+import { getUserProfile, updateUserProfile } from "../services/users";
+import SecondaryButtonGroup from "../components/SecondaryButtonGroup";
+import SecondaryButton from "../components/SecondaryButton";
+import FormInput from "../components/FormInput";
+
+const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 
 const Profile = () => {
-  const { user } = useSelector((state) => state.auth);
+  const [user, setUser] = useState(null);
+  const [isEditingBio, setIsEditingBio] = useState(false);
+  const [bioInput, setBioInput] = useState("");
+  const avatarSelectRef = useRef();
+  const auth = useSelector((state) => state.auth);
   const location = useLocation();
+
+  const getProfile = async () => {
+    try {
+      const decoded = jwtDecode(auth.token);
+      const response = await getUserProfile(auth.token, decoded.id);
+      setUser(response.data);
+    } catch (e) {
+      toast.error("Unable to retrieve profile.");
+    }
+  };
+
+  const handleChangeAvatar = () => {
+    avatarSelectRef.current.click();
+  };
+
+  const handlePhotoSelected = async (evt) => {
+    const formData = new FormData();
+    formData.append("avatar", evt.target.files[0]);
+    try {
+      await updateUserProfile(auth.token, formData);
+      getProfile();
+    } catch (e) {
+      toast.error("Unable to update user's avatar.");
+    }
+  };
+
+  const handleEditBio = () => {
+    setIsEditingBio(true);
+    setBioInput(user.description ? user.description : "");
+  };
+
+  const handleUpdateBio = async (evt) => {
+    evt.preventDefault();
+    const formData = new FormData();
+    formData.append("description", bioInput);
+    try {
+      await updateUserProfile(auth.token, formData);
+      await getProfile();
+      setIsEditingBio(false);
+      setBioInput("");
+    } catch (e) {
+      toast.error("Unable to update user's avatar.");
+    }
+  };
+
+  const handleBioInput = (evt) => setBioInput(evt.target.value);
+  const handleCancelEditingBio = () => setIsEditingBio(false);
+
+  useEffect(() => {
+    getProfile();
+  }, []);
 
   return (
     <Layout>
-      <div className="overflow-hidden h-screen py-10">
-        <div className="overflow-y-scroll h-screen flex flex-col space-y-5 items-center">
-          <div className="mb-7">
-            <CardAuthorAva size={24} />
-            <h2 className="font-bold text-3xl mt-5">Huy Vu</h2>
-          </div>
-          <ul className="flex justify-center space-x-5 border-t border-b border-gray-200 w-full p-2 text-lg">
+      <div className="overflow-hidden h-screen">
+        <div className="overflow-y-scroll h-screen flex flex-col items-center relative">
+          {user && (
+            <div className="pt-10 mb-7 flex flex-col items-center">
+              <div className="relative">
+                <div>
+                  <input
+                    ref={avatarSelectRef}
+                    type="file"
+                    name="Photos"
+                    multiple
+                    accept=".png, .jpg, .jpeg"
+                    className="hidden"
+                    onChange={handlePhotoSelected}
+                  />
+                  <button onClick={handleChangeAvatar}>
+                    <CardAuthorAva
+                      size={56}
+                      src={`${IMAGE_URL}/${user.avatar}`}
+                    />
+                  </button>
+                </div>
+              </div>
+              <h2 className="font-bold text-3xl mt-5">
+                {user.firstName} {user.lastName}
+              </h2>
+              <div className="mt-5">
+                {!user.description && !isEditingBio ? (
+                  <SecondaryButtonGroup>
+                    <SecondaryButton onClick={handleEditBio}>
+                      Let others know a bit about you
+                    </SecondaryButton>
+                  </SecondaryButtonGroup>
+                ) : !isEditingBio ? (
+                  <button className="mt-3 cursor-text" onClick={handleEditBio}>
+                    {user.description}
+                  </button>
+                ) : (
+                  <form onSubmit={handleUpdateBio}>
+                    <FormInput
+                      label={false}
+                      multiline={true}
+                      value={bioInput}
+                      onChange={handleBioInput}
+                      placeholder="Let others know a bit about you"
+                      className="grow"
+                    />
+                    <SecondaryButtonGroup className="justify-center mt-1">
+                      <SecondaryButton>Save</SecondaryButton>
+                      <SecondaryButton onClick={handleCancelEditingBio}>
+                        Cancel
+                      </SecondaryButton>
+                    </SecondaryButtonGroup>
+                  </form>
+                )}
+              </div>
+            </div>
+          )}
+          <ul className="sticky top-0 left-0 z-10 bg-white flex justify-center space-x-5 border-t border-b border-gray-200 w-full p-2 text-lg">
             <li
               className={
                 location.pathname === "/profile" ? "text-blue-500" : ""

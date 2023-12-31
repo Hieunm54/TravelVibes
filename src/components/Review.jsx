@@ -11,9 +11,11 @@ const slideSettings = {
   slidesToScroll: 1,
 };
 
-const Review = ({ authorName, images, rating, content }) => {
+const Review = ({ authorName, images, rating, content, className }) => {
   return (
-    <div className="border-t border-gray-200 py-2">
+    <div
+      className={`first:border-0 border-t border-gray-200 py-2 ${className}`}
+    >
       <h4 className="text-xl font-bold">{authorName}</h4>
       <div className="flex items-center mt-1 text-lg text-yellow-400">
         {Array.from(Array(rating), (_, i) => (
