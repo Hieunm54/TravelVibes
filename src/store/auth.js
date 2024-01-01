@@ -7,17 +7,15 @@ const auth = (state = { token: null, user: null }, action) => {
     case actionTypes.logIn:
       return {
         token: action.token,
-        user: { ...action.user },
       };
     default:
       return state;
   }
 };
 
-export const saveLogInInfo = (token, user) => ({
+export const saveLogInInfo = (token) => ({
   type: actionTypes.logIn,
   token: token,
-  user: user,
 });
 
 export default auth;

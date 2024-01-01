@@ -3,17 +3,22 @@ import { useSelector } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { appRoutes } from "../enum/routes";
+import { appRoutes, authRoutes } from "../enum/routes";
 
 const Layout = ({ children }) => {
   const auth = useSelector((state) => state.auth);
+
+  const handleLogOut = () => {
+    localStorage.clear();
+    window.location = authRoutes.SIGN_IN;
+  };
 
   return (
     <>
       {!auth.token ? (
         <Navigate to="/sign-in" />
       ) : (
-        <main className="grid grid-cols-6 h-screen">
+        <main className="grid grid-cols-5 h-screen">
           <aside className="px-5 pt-10 border-r border-gray-200">
             <nav>
               <ul className="flex flex-col space-y-4">
@@ -60,6 +65,23 @@ const Layout = ({ children }) => {
                 </li>
                 <li
                   className={`hover:text-blue-500 ${
+                    location.pathname === appRoutes.NEW_EVENT
+                      ? "text-blue-500"
+                      : ""
+                  }`}
+                >
+                  <Link to={appRoutes.NEW_EVENT}>
+                    <div className="flex items-center space-x-3">
+                      <FontAwesomeIcon
+                        icon="fa-solid fa-calendar-plus"
+                        className="text-xl w-5"
+                      />
+                      <span className="text-lg">Create an event</span>
+                    </div>
+                  </Link>
+                </li>
+                <li
+                  className={`hover:text-blue-500 ${
                     location.pathname === appRoutes.NOTIFICATION
                       ? "text-blue-500"
                       : ""
@@ -94,10 +116,24 @@ const Layout = ({ children }) => {
                     </div>
                   </Link>
                 </li>
+                <li className="hover:text-blue-500">
+                  <button
+                    onClick={handleLogOut}
+                    className="hover:text-blue-500"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <FontAwesomeIcon
+                        icon="fa-solid fa-right-from-bracket"
+                        className="text-xl w-5"
+                      />
+                      <span className="text-lg">Log out</span>
+                    </div>
+                  </button>
+                </li>
               </ul>
             </nav>
           </aside>
-          <div className="col-span-5">{children}</div>
+          <div className="col-span-4">{children}</div>
         </main>
       )}
     </>

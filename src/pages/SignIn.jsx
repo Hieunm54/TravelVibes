@@ -23,12 +23,11 @@ const SignIn = () => {
         password,
       });
 
-      const { token, user } = response.data;
-      dispatch(saveLogInInfo(token, user));
+      const { token } = response.data;
+      dispatch(saveLogInInfo(token));
       localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
 
-      navigate("/");
+      window.location = "/";
     } catch (e) {
       toast.error("Your email or password is incorrect.");
     }

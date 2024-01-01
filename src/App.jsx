@@ -19,6 +19,11 @@ import {
   faCheck,
   faX,
   faCirclePlus,
+  faCalendarPlus,
+  faSquarePlus,
+  faRightFromBracket,
+  faLocationDot,
+  faBookmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -47,7 +52,12 @@ library.add(
   faPaperPlane,
   faCheck,
   faX,
-  faCirclePlus
+  faCirclePlus,
+  faCalendarPlus,
+  faSquarePlus,
+  faRightFromBracket,
+  faLocationDot,
+  faBookmark
 );
 
 const reducers = combineReducers({ attractions, auth });

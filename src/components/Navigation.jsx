@@ -12,8 +12,11 @@ import { useDispatch } from "react-redux";
 import { saveLogInInfo } from "../store/auth";
 import PostPage from "../pages/Post";
 import ProfilePage from "../pages/Profile";
-import UserReviewsPage from "../pages/UserReviewsPage";
-import UserEventsPage from "../pages/UserEventsPage";
+import UserReviewsPage from "../pages/UserReviews";
+import UserEventsPage from "../pages/UserEvents";
+import NewEventPage from "../pages/NewEvent";
+import EventPage from "../pages/Event";
+import NotificationPage from "../pages/Notification";
 
 const routes = createBrowserRouter([
   {
@@ -57,6 +60,21 @@ const routes = createBrowserRouter([
     ],
   },
   {
+    path: appRoutes.NEW_EVENT,
+    element: <NewEventPage />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: appRoutes.EVENT,
+    element: <EventPage />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: appRoutes.NOTIFICATION,
+    element: <NotificationPage />,
+    errorElement: <NotFoundPage />,
+  },
+  {
     path: authRoutes.SIGN_IN,
     element: <SignInPage />,
     errorElement: <NotFoundPage />,
@@ -72,10 +90,9 @@ const Navigation = () => {
   const dispatch = useDispatch();
 
   const token = localStorage.getItem("token");
-  const user = JSON.parse(localStorage.getItem("user"));
 
-  if (token && user) {
-    dispatch(saveLogInInfo(token, user));
+  if (token) {
+    dispatch(saveLogInInfo(token));
   }
 
   return <RouterProvider router={routes} />;

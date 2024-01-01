@@ -7,7 +7,7 @@ import Direction from "./Map/Direction";
 import { useMap } from "../hooks/map";
 import VisitingLocationPopUpInfo from "./VisitingLocationPopUpInfo";
 
-const PostMap = ({ attractions }) => {
+const PostMap = ({ attractions, style }) => {
   const [hoveredMarker, setHoveredMarker] = useState(null);
   const { coordinates, mapRef, updateBounds } = useMap(attractions, (e) =>
     toast.error("Unable to retrieve direction")
@@ -27,7 +27,7 @@ const PostMap = ({ attractions }) => {
   }, [attractions, mapRef]);
 
   return (
-    <Mapbox ref={mapRef}>
+    <Mapbox style={style} ref={mapRef}>
       <NavigationControl className="navigation-control" showCompass={true} />
       {hoveredMarker && (
         <Popup

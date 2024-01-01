@@ -18,6 +18,8 @@ import CardInteractionInfo from "../components/CardInteractionInfo";
 import CardUpvoteButton from "../components/CardUpvoteButton";
 import CardCommentCount from "../components/CardCommentCount";
 
+const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
+
 const UserPosts = () => {
   const [posts, setPosts] = useState([]);
   const auth = useSelector((state) => state.auth);
@@ -40,7 +42,10 @@ const UserPosts = () => {
       {posts.map((post) => (
         <Card key={post._id} id={post._id}>
           <CardAuthor>
-            <CardAuthorAva size={12} />
+            <CardAuthorAva
+              size={14}
+              src={`${IMAGE_URL}/${post.author.avatar}`}
+            />
             <CardAuthorName
               name={`${post.author.firstName} ${post.author.lastName}`}
             />

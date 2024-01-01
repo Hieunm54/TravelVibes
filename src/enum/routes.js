@@ -8,6 +8,8 @@ const appRoutes = {
   USER_REVIEWS: "/profile/reviews",
   USER_EVENTS: "/profile/events",
   POST: "/posts/:id",
+  NEW_EVENT: "/new-event",
+  EVENT: "/events/:id",
 };
 
 const authRoutes = {

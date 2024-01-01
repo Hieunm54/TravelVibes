@@ -15,6 +15,8 @@ import AttractionInfo from "../components/AttractionInfo";
 import Review from "../components/Review";
 import FormInput from "../components/FormInput";
 
+const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
+
 const Attraction = () => {
   const [details, setDetails] = useState(null);
   const [reviews, setReviews] = useState([]);
@@ -143,6 +145,7 @@ const Attraction = () => {
           {reviews.map((review) => (
             <Review
               key={review._id}
+              avatar={`${IMAGE_URL}/${review.user.avatar}`}
               authorName={`${review.user.firstName} ${review.user.lastName}`}
               rating={review.rating}
               content={review.content}
