@@ -39,6 +39,10 @@ const Home = () => {
     }
   };
 
+  const toggleSaveEvent = (eventId) => {
+    // TODO: Call Save Event API and change the param passed to this function to the id from mapping
+  };
+
   useEffect(() => {
     getPostList();
   }, []);
@@ -114,7 +118,10 @@ const Home = () => {
                   />
                   <span>Hanoi Train Street</span>
                 </address>
-                <button className="mt-3 bg-gray-200 rounded-md px-2 py-1 flex items-center space-x-2">
+                <button
+                  className="mt-3 bg-gray-200 rounded-md px-2 py-1 flex items-center space-x-2"
+                  onClick={() => toggleSaveEvent(1)}
+                >
                   <FontAwesomeIcon icon="fa-regular fa-bookmark" />
                   <span>Save</span>
                 </button>
@@ -143,7 +150,7 @@ const Home = () => {
                   <span>Hanoi Train Street</span>
                 </address>
                 <div className="mt-3">
-                  <Button>
+                  <Button onClick={() => toggleSaveEvent(1)}>
                     <FontAwesomeIcon icon="fa-solid fa-bookmark" />
                     <span>Saved</span>
                   </Button>

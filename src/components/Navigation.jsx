@@ -16,6 +16,7 @@ import UserReviewsPage from "../pages/UserReviews";
 import UserEventsPage from "../pages/UserEvents";
 import NewEventPage from "../pages/NewEvent";
 import EventPage from "../pages/Event";
+import EditEventPage from "../pages/EditEvent";
 import NotificationPage from "../pages/Notification";
 
 const routes = createBrowserRouter([
@@ -67,6 +68,11 @@ const routes = createBrowserRouter([
   {
     path: appRoutes.EVENT,
     element: <EventPage />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: appRoutes.EDIT_EVENT,
+    element: <EditEventPage />,
     errorElement: <NotFoundPage />,
   },
   {

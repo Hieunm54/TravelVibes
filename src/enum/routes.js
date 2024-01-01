@@ -10,6 +10,7 @@ const appRoutes = {
   POST: "/posts/:id",
   NEW_EVENT: "/new-event",
   EVENT: "/events/:id",
+  EDIT_EVENT: "/events/:id/edit",
 };
 
 const authRoutes = {

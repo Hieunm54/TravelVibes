@@ -50,6 +50,7 @@ const NewEvent = () => {
   };
 
   const handleCreateEvent = (evt) => {
+    // TODO: Call Create Event API
     evt.preventDefault();
   };
 
