@@ -11,6 +11,7 @@ const appRoutes = {
   NEW_EVENT: "/new-event",
   EVENT: "/events/:id",
   EDIT_EVENT: "/events/:id/edit",
+  ADMIN: "/admin",
 };
 
 const authRoutes = {

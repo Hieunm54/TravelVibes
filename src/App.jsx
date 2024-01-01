@@ -24,6 +24,8 @@ import {
   faRightFromBracket,
   faLocationDot,
   faBookmark,
+  faCalendarDays,
+  faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -57,7 +59,9 @@ library.add(
   faSquarePlus,
   faRightFromBracket,
   faLocationDot,
-  faBookmark
+  faBookmark,
+  faCalendarDays,
+  faCircleXmark
 );
 
 const reducers = combineReducers({ attractions, auth });
