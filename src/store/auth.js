@@ -7,10 +7,12 @@ const auth = (state = { token: null, adminToken: null }, action) => {
   switch (action.type) {
     case actionTypes.logIn:
       return {
+        ...state,
         token: action.token,
       };
     case actionTypes.adminLogIn:
       return {
+        ...state,
         adminToken: action.adminToken,
       };
     default:
