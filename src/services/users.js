@@ -35,3 +35,12 @@ export const getUserReviews = async (token) => {
     },
   });
 };
+
+export const searchUsers = async (token, searchValue) => {
+  return axios.get(`${API_URL}/api/users`, {
+    params: searchValue,
+    headers: {
+      Authorization: authorizationHeader(token),
+    },
+  });
+};

@@ -8,6 +8,7 @@ import AttractionPage from "../pages/Attraction";
 import NewPostPage from "../pages/NewPost";
 import SignInPage from "../pages/SignIn";
 import SignUpPage from "../pages/SignUp";
+import MessagesPage from "../pages/Messages";
 import { useDispatch } from "react-redux";
 import { saveLogInInfo } from "../store/auth";
 import PostPage from "../pages/Post";
@@ -35,6 +36,12 @@ const routes = createBrowserRouter([
         element: <AttractionPage />,
       },
     ],
+  },
+  {
+    path: appRoutes.MESSAGES,
+    element: <MessagesPage />,
+    errorElement: <NotFoundPage />,
+    children: [{ path: appRoutes.SINGLE_CHAT, element: <MessagesPage /> }],
   },
   {
     path: appRoutes.POST,
