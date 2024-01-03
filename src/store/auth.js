@@ -2,7 +2,9 @@ const actionTypes = {
   logIn: "SAVE_LOG_IN_INFO",
 };
 
-const auth = (state = { token: null, user: null }, action) => {
+export const authDefaultState = { token: null, user: null };
+// REDUCER
+const auth = (state = authDefaultState, action) => {
   switch (action.type) {
     case actionTypes.logIn:
       return {
