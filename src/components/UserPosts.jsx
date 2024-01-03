@@ -17,6 +17,7 @@ import CardAuthorName from "../components/CardAuthorName";
 import CardInteractionInfo from "../components/CardInteractionInfo";
 import CardUpvoteButton from "../components/CardUpvoteButton";
 import CardCommentCount from "../components/CardCommentCount";
+import { CONST } from "../constaints";
 
 const UserPosts = () => {
   const [posts, setPosts] = useState([]);
@@ -35,12 +36,16 @@ const UserPosts = () => {
     getUserPostList();
   }, []);
 
+  console.log("heiu user post ", CONST.IMAGE_URL);
   return (
     <div className="flex flex-col space-y-5 bg-gray-50 items-center px-56 py-5">
       {posts.map((post) => (
         <Card key={post._id} id={post._id}>
           <CardAuthor>
-            <CardAuthorAva size={12} />
+            <CardAuthorAva
+              size={14}
+              src={`${CONST.IMAGE_URL}/${post.author.avatar}`}
+            />
             <CardAuthorName
               name={`${post.author.firstName} ${post.author.lastName}`}
             />

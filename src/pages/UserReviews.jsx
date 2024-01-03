@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { getUserReviews } from "../services/users";
 import { useSelector } from "react-redux";
 import Review from "../components/Review";
+import { CONST } from "../constaints";
 
 const UserReviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -11,7 +12,6 @@ const UserReviews = () => {
   const getUserReviewList = async () => {
     try {
       const response = await getUserReviews(auth.token);
-      console.log(response);
       setReviews(response.data);
     } catch (e) {
       toast.error("Unable to retrieve posts.");
@@ -27,6 +27,7 @@ const UserReviews = () => {
       {reviews.map((review) => (
         <Review
           key={review._id}
+          avatar={`${CONST.IMAGE_URL}/${review.user.avatar}`}
           authorName={`${review.user.firstName} ${review.user.lastName}`}
           rating={review.rating}
           content={review.content}

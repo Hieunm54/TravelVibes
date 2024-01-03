@@ -13,8 +13,6 @@ import SecondaryButton from "../components/SecondaryButton";
 import FormInput from "../components/FormInput";
 import { CONST } from "../constaints";
 
-const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
-
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [isEditingBio, setIsEditingBio] = useState(false);

@@ -10,11 +10,16 @@ import SignInPage from "../pages/SignIn";
 import SignUpPage from "../pages/SignUp";
 import MessagesPage from "../pages/Messages";
 import { useDispatch } from "react-redux";
-import { saveLogInInfo } from "../store/auth";
+import { saveAdminLogInInfo, saveLogInInfo } from "../store/auth";
 import PostPage from "../pages/Post";
 import ProfilePage from "../pages/Profile";
-import UserReviewsPage from "../pages/UserReviewsPage";
-import UserEventsPage from "../pages/UserEventsPage";
+import UserReviewsPage from "../pages/UserReviews";
+import UserEventsPage from "../pages/UserEvents";
+import NewEventPage from "../pages/NewEvent";
+import EventPage from "../pages/Event";
+import EditEventPage from "../pages/EditEvent";
+import NotificationPage from "../pages/Notification";
+import AdminPage from "../pages/Admin";
 
 const routes = createBrowserRouter([
   {
@@ -64,6 +69,31 @@ const routes = createBrowserRouter([
     ],
   },
   {
+    path: appRoutes.NEW_EVENT,
+    element: <NewEventPage />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: appRoutes.EVENT,
+    element: <EventPage />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: appRoutes.EDIT_EVENT,
+    element: <EditEventPage />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: appRoutes.NOTIFICATION,
+    element: <NotificationPage />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: appRoutes.ADMIN,
+    element: <AdminPage />,
+    errorElement: <NotFoundPage />,
+  },
+  {
     path: authRoutes.SIGN_IN,
     element: <SignInPage />,
     errorElement: <NotFoundPage />,
@@ -80,9 +110,14 @@ const Navigation = () => {
 
   const token = localStorage.getItem("token");
   const user = JSON.parse(localStorage.getItem("user"));
+  const adminToken = localStorage.getItem("adminToken");
 
-  if (token && user) {
+  if (token) {
     dispatch(saveLogInInfo(token, user));
+  }
+
+  if (adminToken) {
+    dispatch(saveAdminLogInInfo(adminToken));
   }
 
   return <RouterProvider router={routes} />;

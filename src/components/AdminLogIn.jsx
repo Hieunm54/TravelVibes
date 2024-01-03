@@ -3,12 +3,12 @@ import { useDispatch } from "react-redux";
 import Button from "../components/Button";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { saveLogInInfo } from "../store/auth";
+import { saveAdminLogInInfo } from "../store/auth";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../components/FormInput";
 import { CONST } from "../constaints";
 
-const SignIn = () => {
+const AdminLogIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
@@ -17,18 +17,16 @@ const SignIn = () => {
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     try {
-      const response = await axios.post(`${CONST.API_URL}/api/auth/login`, {
+      const response = await axios.post(`${CONST.API_URL}/api/admin/login`, {
         email,
         password,
       });
 
-      const { token, user } = response.data;
-      dispatch(saveLogInInfo(token, user));
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
+      const { token } = response.data;
+      dispatch(saveAdminLogInInfo(token));
+      localStorage.setItem("adminToken", token);
 
-      navigate("/");
-      // window.location = "/";
+      window.location = "/admin";
     } catch (e) {
       toast.error("Your email or password is incorrect.");
     }
@@ -58,4 +56,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default AdminLogIn;

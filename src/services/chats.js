@@ -1,10 +1,9 @@
 import axios from "axios";
 import { authorizationHeader } from "./jwt";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { CONST } from "../constaints";
 
 export const getAllChats = async (token) => {
-  return axios.get(`${API_URL}/api/chats`, {
+  return axios.get(`${CONST.API_URL}/api/chats`, {
     headers: {
       Authorization: authorizationHeader(token),
     },
@@ -12,7 +11,7 @@ export const getAllChats = async (token) => {
 };
 
 export const getChatDetail = async (chatId, token) => {
-  return axios.get(`${API_URL}/api/chats/${chatId}`, {
+  return axios.get(`${CONST.API_URL}/api/chats/${chatId}`, {
     headers: {
       Authorization: authorizationHeader(token),
     },
@@ -20,7 +19,7 @@ export const getChatDetail = async (chatId, token) => {
 };
 
 export const getAllMessages = async (chatId, token) => {
-  return axios.get(`${API_URL}/api/chats/messages/${chatId}`, {
+  return axios.get(`${CONST.API_URL}/api/chats/messages/${chatId}`, {
     headers: {
       Authorization: authorizationHeader(token),
     },
@@ -29,7 +28,7 @@ export const getAllMessages = async (chatId, token) => {
 
 export const addNewMessage = async (content, receiverID, chatID, token) => {
   return axios.post(
-    `${API_URL}/api/chats/messages/${chatID}`,
+    `${CONST.API_URL}/api/chats/messages/${chatID}`,
     {
       content,
       receiverID,
@@ -44,7 +43,7 @@ export const addNewMessage = async (content, receiverID, chatID, token) => {
 
 export const createNewChat = async (participantID, message, token) => {
   return axios.post(
-    `${API_URL}/api/chats`,
+    `${CONST.API_URL}/api/chats`,
     {
       participantID,
       message,

@@ -19,6 +19,13 @@ import {
   faCheck,
   faX,
   faCirclePlus,
+  faCalendarPlus,
+  faSquarePlus,
+  faRightFromBracket,
+  faLocationDot,
+  faBookmark,
+  faCalendarDays,
+  faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
@@ -48,7 +55,14 @@ library.add(
   faCheck,
   faX,
   faCirclePlus,
-  fab
+  fab,
+  faCalendarPlus,
+  faSquarePlus,
+  faRightFromBracket,
+  faLocationDot,
+  faBookmark,
+  faCalendarDays,
+  faCircleXmark
 );
 
 const store = configStore();

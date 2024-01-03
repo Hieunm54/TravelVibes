@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -38,6 +38,7 @@ import AttractionSuggestion from "../components/AttractionSuggestion";
 import VisitingLocationCTA from "../components/VisitingLocationCTA";
 import VisitingLocationActionBtn from "../components/VisitingLocationActionBtn";
 import { buttonStyle } from "../styles/button";
+import { CONST } from "../constaints";
 
 const Post = () => {
   const [post, setPost] = useState(null);
@@ -61,7 +62,6 @@ const Post = () => {
     setEditCommentInput(evt.target.value);
   const handleCaptionInputChange = (evt) => setCaptionInput(evt.target.value);
   const handleAttractionInput = (evt) => {
-    console.log("Fuck");
     setAttractionInput(evt.target.value);
     getAttractionSuggestions();
   };
@@ -182,6 +182,7 @@ const Post = () => {
   const getCommentList = async () => {
     try {
       const response = await getComments(auth.token, id);
+      console.log(response.data);
       setComments(response.data);
     } catch (e) {
       toast.error("Unable to retrieve comments.");
@@ -250,7 +251,10 @@ const Post = () => {
           <section className="col-span-4 border-r-2 border-gray-300 px-5 py-10 h-screen overflow-y-scroll">
             <div>
               <CardAuthor>
-                <CardAuthorAva size={12} />
+                <CardAuthorAva
+                  size={14}
+                  src={`${CONST.IMAGE_URL}/${post.author.avatar}`}
+                />
                 <div>
                   <CardAuthorName
                     name={`${post.author.firstName} ${post.author.lastName}`}
@@ -361,6 +365,7 @@ const Post = () => {
                               <button
                                 className="block text-left"
                                 onClick={() => handleAddAttraction(suggestion)}
+                                key={suggestion._id}
                               >
                                 <AttractionSuggestion
                                   name={suggestion.name}
@@ -386,7 +391,10 @@ const Post = () => {
             </div>
             <div className="border-t border-gray-300 mt-2 py-2">
               <Form onSubmit={handleSendComment}>
-                <CardAuthorAva size={12} />
+                <CardAuthorAva
+                  size={14}
+                  src={`${CONST.IMAGE_URL}/${post.author.avatar}`}
+                />
                 <FormInput
                   label={false}
                   name="comment"
@@ -408,7 +416,10 @@ const Post = () => {
                   .reverse()
                   .map((comment) => (
                     <div className="flex space-x-2" key={comment._id}>
-                      <CardAuthorAva size={12} />
+                      <CardAuthorAva
+                        size={14}
+                        src={`${CONST.IMAGE_URL}/${comment.user.avatar}`}
+                      />
                       <div className="bg-gray-50 border border-gray-100 w-full px-3 py-2 rounded-md">
                         {commentToBeEdited &&
                         commentToBeEdited._id === comment._id ? (
@@ -431,7 +442,7 @@ const Post = () => {
                         ) : (
                           <p>{comment.content}</p>
                         )}
-                        {userId === comment.user && (
+                        {userId === comment.user._id && (
                           <SecondaryButtonGroup className="mt-4">
                             {commentToBeEdited &&
                             commentToBeEdited._id === comment._id ? (

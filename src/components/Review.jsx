@@ -2,6 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Slider from "react-slick";
 import { CONST } from "../constaints";
+import CardAuthorAva from "./CardAuthorAva";
 
 const slideSettings = {
   dots: true,
@@ -11,13 +12,16 @@ const slideSettings = {
   slidesToScroll: 1,
 };
 
-const Review = ({ authorName, images, rating, content, className }) => {
+const Review = ({ authorName, images, rating, content, avatar, className }) => {
   return (
     <div
       className={`first:border-0 border-t border-gray-200 py-2 ${className}`}
     >
-      <h4 className="text-xl font-bold">{authorName}</h4>
-      <div className="flex items-center mt-1 text-lg text-yellow-400">
+      <div className="flex items-center space-x-2">
+        <CardAuthorAva size={14} src={avatar} />
+        <h4 className="text-xl font-bold">{authorName}</h4>
+      </div>
+      <div className="flex items-center mt-3 text-lg text-yellow-400">
         {Array.from(Array(rating), (_, i) => (
           <FontAwesomeIcon key={i} icon="fa-solid fa-star" />
         ))}

@@ -14,6 +14,7 @@ import { createReview, getReviews } from "../services/reviews";
 import AttractionInfo from "../components/AttractionInfo";
 import Review from "../components/Review";
 import FormInput from "../components/FormInput";
+import { CONST } from "../constaints";
 
 const Attraction = () => {
   const [details, setDetails] = useState(null);
@@ -143,6 +144,7 @@ const Attraction = () => {
           {reviews.map((review) => (
             <Review
               key={review._id}
+              avatar={`${CONST.IMAGE_URL}/${review.user.avatar}`}
               authorName={`${review.user.firstName} ${review.user.lastName}`}
               rating={review.rating}
               content={review.content}
