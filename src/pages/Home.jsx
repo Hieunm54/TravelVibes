@@ -23,8 +23,7 @@ import CardCommentCount from "../components/CardCommentCount";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../components/Button";
 import { Link } from "react-router-dom";
-
-const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
+import { CONST } from "../constaints";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -57,7 +56,7 @@ const Home = () => {
               <CardAuthor>
                 <CardAuthorAva
                   size={14}
-                  src={`${IMAGE_URL}/${post.author.avatar}`}
+                  src={`${CONST.IMAGE_URL}/${post.author.avatar}`}
                 />
                 <CardAuthorName
                   name={`${post.author.firstName} ${post.author.lastName}`}

@@ -6,8 +6,7 @@ import axios from "axios";
 import { saveLogInInfo } from "../store/auth";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../components/FormInput";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { CONST } from "../constaints";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -18,16 +17,18 @@ const SignIn = () => {
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     try {
-      const response = await axios.post(`${API_URL}/api/auth/login`, {
+      const response = await axios.post(`${CONST.API_URL}/api/auth/login`, {
         email,
         password,
       });
 
-      const { token } = response.data;
-      dispatch(saveLogInInfo(token));
+      const { token, user } = response.data;
+      dispatch(saveLogInInfo(token, user));
       localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
 
-      window.location = "/";
+      navigate("/");
+      // window.location = "/";
     } catch (e) {
       toast.error("Your email or password is incorrect.");
     }

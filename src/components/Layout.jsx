@@ -1,6 +1,5 @@
-import React from "react";
 import { useSelector } from "react-redux";
-import { Link, Navigate } from "react-router-dom";
+import { NavLink, Navigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { appRoutes, authRoutes } from "../enum/routes";
@@ -27,7 +26,7 @@ const Layout = ({ children }) => {
                     location.pathname === appRoutes.HOME ? "text-blue-500" : ""
                   }`}
                 >
-                  <Link to={appRoutes.HOME}>
+                  <NavLink to={appRoutes.HOME}>
                     <div className="flex items-center space-x-3">
                       <FontAwesomeIcon
                         icon="fa-solid fa-house"
@@ -35,7 +34,7 @@ const Layout = ({ children }) => {
                       />
                       <span className="text-lg">Home</span>
                     </div>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li
                   className={`hover:text-blue-500 ${
@@ -53,7 +52,7 @@ const Layout = ({ children }) => {
                       : ""
                   }`}
                 >
-                  <Link to={appRoutes.NEW_POST}>
+                  <NavLink to={appRoutes.NEW_POST}>
                     <div className="flex items-center space-x-3">
                       <FontAwesomeIcon
                         icon="fa-solid fa-location-arrow"
@@ -61,7 +60,21 @@ const Layout = ({ children }) => {
                       />
                       <span className="text-lg">Share your trip</span>
                     </div>
-                  </Link>
+                  </NavLink>
+                </li>
+                <li
+                  className={`hover:text-blue-500 ${
+                    location.pathname === appRoutes.MESSAGES
+                      ? "text-blue-500"
+                      : ""
+                  }`}
+                >
+                  <NavLink to={appRoutes.MESSAGES}>
+                    <div className="flex items-center space-x-3">
+                      <FontAwesomeIcon icon="fa-brands fa-facebook-messenger" />
+                      <span className="text-lg">Messages</span>
+                    </div>
+                  </NavLink>
                 </li>
                 <li
                   className={`hover:text-blue-500 ${
@@ -70,7 +83,7 @@ const Layout = ({ children }) => {
                       : ""
                   }`}
                 >
-                  <Link to={appRoutes.NEW_EVENT}>
+                  <NavLink to={appRoutes.NEW_EVENT}>
                     <div className="flex items-center space-x-3">
                       <FontAwesomeIcon
                         icon="fa-solid fa-calendar-plus"
@@ -78,7 +91,7 @@ const Layout = ({ children }) => {
                       />
                       <span className="text-lg">Create an event</span>
                     </div>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li
                   className={`hover:text-blue-500 ${
@@ -87,7 +100,7 @@ const Layout = ({ children }) => {
                       : ""
                   }`}
                 >
-                  <Link to={appRoutes.NOTIFICATION}>
+                  <NavLink to={appRoutes.NOTIFICATION}>
                     <div className="flex items-center space-x-3">
                       <FontAwesomeIcon
                         icon="fa-solid fa-bell"
@@ -95,7 +108,7 @@ const Layout = ({ children }) => {
                       />
                       <span className="text-lg">Notification</span>
                     </div>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li
                   className={`text-4xl hover:text-blue-500 ${
@@ -106,7 +119,7 @@ const Layout = ({ children }) => {
                       : ""
                   }`}
                 >
-                  <Link to={appRoutes.PROFILE}>
+                  <NavLink to={appRoutes.PROFILE}>
                     <div className="flex items-center space-x-3">
                       <FontAwesomeIcon
                         icon="fa-solid fa-circle-user"
@@ -114,7 +127,7 @@ const Layout = ({ children }) => {
                       />
                       <span className="text-lg">Profile</span>
                     </div>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="hover:text-blue-500">
                   <button

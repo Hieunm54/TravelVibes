@@ -7,14 +7,14 @@ import { getAttractions } from "../services/attractions";
 import { Link } from "react-router-dom";
 
 const Attractions = () => {
-  const [attrractionInput, setAttractionInput] = useState("");
+  const [attractionInput, setAttractionInput] = useState("");
   const [attractionSuggestions, setAttractionSuggestions] = useState([]);
   const auth = useSelector((state) => state.auth);
 
   const getAttractionSuggestions = async () => {
     try {
       const response = await getAttractions(auth.token, {
-        q: attrractionInput,
+        q: attractionInput,
       });
       setAttractionSuggestions(response.data);
     } catch (e) {
@@ -27,7 +27,7 @@ const Attractions = () => {
       <div className="px-5 pt-10 pb-2 flex items-center space-x-6 border-b border-gray-300">
         <BackButton to={appRoutes.NEW_POST} />
         <input
-          value={attrractionInput}
+          value={attractionInput}
           onFocus={() => {
             getAttractionSuggestions();
           }}

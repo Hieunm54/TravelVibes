@@ -11,8 +11,7 @@ import { getUserProfile, updateUserProfile } from "../services/users";
 import SecondaryButtonGroup from "../components/SecondaryButtonGroup";
 import SecondaryButton from "../components/SecondaryButton";
 import FormInput from "../components/FormInput";
-
-const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
+import { CONST } from "../constaints";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -93,7 +92,7 @@ const Profile = () => {
                   <button onClick={handleChangeAvatar}>
                     <CardAuthorAva
                       size={56}
-                      src={`${IMAGE_URL}/${user.avatar}`}
+                      src={`${CONST.IMAGE_URL}/${user.avatar}`}
                     />
                   </button>
                 </div>

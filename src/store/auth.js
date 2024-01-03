@@ -3,12 +3,15 @@ const actionTypes = {
   adminLogIn: "SAVE_ADMIN_LOG_IN_INFO",
 };
 
-const auth = (state = { token: null, adminToken: null }, action) => {
+export const authDefaultState = { token: null, user: null };
+// REDUCER
+const auth = (state = authDefaultState, action) => {
   switch (action.type) {
     case actionTypes.logIn:
       return {
         ...state,
-        token: action.token,
+        token: action.payload.token,
+        user: action.payload.user,
       };
     case actionTypes.adminLogIn:
       return {
@@ -20,9 +23,9 @@ const auth = (state = { token: null, adminToken: null }, action) => {
   }
 };
 
-export const saveLogInInfo = (token) => ({
+export const saveLogInInfo = (token, user) => ({
   type: actionTypes.logIn,
-  token: token,
+  payload: { token, user },
 });
 
 export const saveAdminLogInInfo = (token) => ({

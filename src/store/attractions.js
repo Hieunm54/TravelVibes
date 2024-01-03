@@ -6,7 +6,9 @@ const actionTypes = {
   cleanUpAttractions: "CLEAN_UP_ATTRACTION",
 };
 
-const attractions = (state = [], action) => {
+export const attractionsDefaultState = [];
+
+const attractions = (state = attractionsDefaultState, action) => {
   switch (action.type) {
     case actionTypes.addAttraction: {
       return state.findIndex((attraction) => attraction._id === action._id) ===

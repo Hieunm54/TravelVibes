@@ -27,13 +27,13 @@ import {
   faCalendarDays,
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import { fab } from "@fortawesome/free-brands-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 
-import attractions from "./store/attractions";
-import auth from "./store/auth";
 import Navigation from "./components/Navigation";
 import { ToastContainer } from "react-toastify";
+import configStore from "./store";
 
 library.add(
   fas,
@@ -55,6 +55,7 @@ library.add(
   faCheck,
   faX,
   faCirclePlus,
+  fab,
   faCalendarPlus,
   faSquarePlus,
   faRightFromBracket,
@@ -64,13 +65,13 @@ library.add(
   faCircleXmark
 );
 
-const reducers = combineReducers({ attractions, auth });
+const store = configStore();
 
 function App() {
   return (
     <>
       <ToastContainer />
-      <Provider store={createStore(reducers)}>
+      <Provider store={store}>
         <Navigation />
       </Provider>
     </>

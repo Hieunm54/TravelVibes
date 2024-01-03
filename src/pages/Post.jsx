@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -38,8 +38,7 @@ import AttractionSuggestion from "../components/AttractionSuggestion";
 import VisitingLocationCTA from "../components/VisitingLocationCTA";
 import VisitingLocationActionBtn from "../components/VisitingLocationActionBtn";
 import { buttonStyle } from "../styles/button";
-
-const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
+import { CONST } from "../constaints";
 
 const Post = () => {
   const [post, setPost] = useState(null);
@@ -254,7 +253,7 @@ const Post = () => {
               <CardAuthor>
                 <CardAuthorAva
                   size={14}
-                  src={`${IMAGE_URL}/${post.author.avatar}`}
+                  src={`${CONST.IMAGE_URL}/${post.author.avatar}`}
                 />
                 <div>
                   <CardAuthorName
@@ -394,7 +393,7 @@ const Post = () => {
               <Form onSubmit={handleSendComment}>
                 <CardAuthorAva
                   size={14}
-                  src={`${IMAGE_URL}/${post.author.avatar}`}
+                  src={`${CONST.IMAGE_URL}/${post.author.avatar}`}
                 />
                 <FormInput
                   label={false}
@@ -419,7 +418,7 @@ const Post = () => {
                     <div className="flex space-x-2" key={comment._id}>
                       <CardAuthorAva
                         size={14}
-                        src={`${IMAGE_URL}/${comment.user.avatar}`}
+                        src={`${CONST.IMAGE_URL}/${comment.user.avatar}`}
                       />
                       <div className="bg-gray-50 border border-gray-100 w-full px-3 py-2 rounded-md">
                         {commentToBeEdited &&
