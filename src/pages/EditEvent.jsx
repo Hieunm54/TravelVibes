@@ -98,9 +98,9 @@ const NewEvent = () => {
     coverPhotoRef.current.click();
   };
 
-  const handlePhotoSelected = async (evt) => {
-    if (evt.target.files && evt.target.files[0]) {
-      setCoverPhoto(evt.target.files[0]);
+  const handlePhotoSelected = async (event) => {
+    if (event.target.files && event.target.files[0]) {
+      setCoverPhoto(event.target.files[0]);
     }
   };
 
@@ -121,17 +121,17 @@ const NewEvent = () => {
     setLocationInput(location.name);
   };
 
-  const handleUpdateEvent = (evt) => {
+  const handleUpdateEvent = (event) => {
     // TODO: Call Edit Event API
-    evt.preventDefault();
+    event.preventDefault();
   };
 
-  const handleTitleInputChange = (evt) => setTitleInput(evt.target.value);
-  const handleDatetimeInput = (evt) => setDatetimeInput(evt.target.value);
-  const handleDescriptionChange = (evt) =>
-    setDescriptionInput(evt.target.value);
-  const handleLocationInputChange = (evt) => {
-    setLocationInput(evt.target.value);
+  const handleTitleInputChange = (event) => setTitleInput(event.target.value);
+  const handleDatetimeInput = (event) => setDatetimeInput(event.target.value);
+  const handleDescriptionChange = (event) =>
+    setDescriptionInput(event.target.value);
+  const handleLocationInputChange = (event) => {
+    setLocationInput(event.target.value);
     setIsSearchingLocation(true);
     getLocationSuggestions();
   };

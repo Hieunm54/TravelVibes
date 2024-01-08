@@ -1,5 +1,4 @@
 export const checkIfChattedUser = (receiverId, chatList) => {
-  console.log("hieu check ", receiverId, chatList);
   if (!chatList || chatList.length < 0) {
     return {};
   }

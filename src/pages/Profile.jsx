@@ -12,6 +12,7 @@ import SecondaryButtonGroup from "../components/SecondaryButtonGroup";
 import SecondaryButton from "../components/SecondaryButton";
 import FormInput from "../components/FormInput";
 import { CONST } from "../constaints";
+import { appRoutes } from "../enum/routes";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -35,9 +36,9 @@ const Profile = () => {
     avatarSelectRef.current.click();
   };
 
-  const handlePhotoSelected = async (evt) => {
+  const handlePhotoSelected = async (event) => {
     const formData = new FormData();
-    formData.append("avatar", evt.target.files[0]);
+    formData.append("avatar", event.target.files[0]);
     try {
       await updateUserProfile(auth.token, formData);
       getProfile();
@@ -51,8 +52,8 @@ const Profile = () => {
     setBioInput(user.description ? user.description : "");
   };
 
-  const handleUpdateBio = async (evt) => {
-    evt.preventDefault();
+  const handleUpdateBio = async (event) => {
+    event.preventDefault();
     const formData = new FormData();
     formData.append("description", bioInput);
     try {
@@ -65,7 +66,7 @@ const Profile = () => {
     }
   };
 
-  const handleBioInput = (evt) => setBioInput(evt.target.value);
+  const handleBioInput = (event) => setBioInput(event.target.value);
   const handleCancelEditingBio = () => setIsEditingBio(false);
 
   useEffect(() => {
@@ -152,7 +153,7 @@ const Profile = () => {
                 location.pathname === "/profile/events" ? "text-blue-500" : ""
               }
             >
-              <Link to="/profile/events">Events</Link>
+              <Link to={appRoutes.USER_EVENTS}>Events</Link>
             </li>
           </ul>
           {location.pathname === "/profile" ? <UserPosts /> : <Outlet />}

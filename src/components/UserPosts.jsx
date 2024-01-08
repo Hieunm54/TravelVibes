@@ -38,7 +38,7 @@ const UserPosts = () => {
 
   console.log("heiu user post ", CONST.IMAGE_URL);
   return (
-    <div className="flex flex-col space-y-5 bg-gray-50 items-center px-56 py-5">
+    <div className="flex flex-col space-y-5 bg-gray-100 items-center px-56 py-5">
       {posts.map((post) => (
         <Card key={post._id} id={post._id}>
           <CardAuthor>

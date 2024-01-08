@@ -1,5 +1,5 @@
-import { asyncTaskStartAction, asyncTaskStopAction } from "../asyncTask";
 import * as chatService from "../../services/chats";
+import { asyncTaskStartAction, asyncTaskStopAction } from "./asyncTask";
 
 export const actionTypes = {
   GET_CHAT_LIST: "GET_CHAT_LIST",
@@ -150,7 +150,6 @@ export const createChatAsync = (participantID, message) => {
         token
       );
       if (response.status === 201) {
-        console.log("hieu check ", response);
         await dispatch(getChatListAsync());
         dispatch(addNewMessage(response.data.message));
       }

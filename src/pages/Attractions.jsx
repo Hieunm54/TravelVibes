@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { appRoutes } from "../enum/routes";
 import { useSelector } from "react-redux";
 import BackButton from "../components/BackButton";
@@ -31,8 +31,8 @@ const Attractions = () => {
           onFocus={() => {
             getAttractionSuggestions();
           }}
-          onChange={(evt) => {
-            setAttractionInput(evt.target.value);
+          onChange={(event) => {
+            setAttractionInput(event.target.value);
             getAttractionSuggestions();
           }}
           placeholder="Where do you want to visit?"

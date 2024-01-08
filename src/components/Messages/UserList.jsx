@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import User from "./User";
 import { useDispatch, useSelector } from "react-redux";
 import { actionTypes, getChatListAsync } from "../../store/actions/messages.js";
-import { sGetAllChats } from "../../store/selectors";
-import { sTaskStatus } from "../../store/asyncTask";
+import { sGetAllChats, sTaskStatus } from "../../store/selectors";
 import UserChatSkeleton from "../../components/Skeleton/UserChatSkeleton";
 
 // UserList component

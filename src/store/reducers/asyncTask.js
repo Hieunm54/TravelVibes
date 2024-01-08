@@ -1,35 +1,10 @@
-export const AsyncTaskType = {
-  ASYNC_TASK_START: "ASYNC_TASK_START",
-  ASYNC_TASK_STOP: "ASYNC_TASK_STOP",
-  ASYNC_TASK_RESET: "ASYNC_TASK_RESET",
-};
+import { AsyncTaskType } from "../actions/asyncTask";
 
 export const initialAsyncTaskState = {
   status: {},
 };
 
-// ACTION
-export const asyncTaskStartAction = (key) => ({
-  type: AsyncTaskType.ASYNC_TASK_START,
-  payload: key,
-});
-
-export const asyncTaskStopAction = (key, error = null) => ({
-  type: AsyncTaskType.ASYNC_TASK_STOP,
-  payload: { key, error },
-});
-
-export const asyncTaskResetAction = (key) => ({
-  type: AsyncTaskType.ASYNC_TASK_RESET,
-  payload: key,
-});
-
-// SELECTOR
-export const sTaskStatus = (key) => (store) =>
-  store.asyncTaskReducer.status[key];
-
-// REDUCER
-export const asyncTaskReducer = (state = initialAsyncTaskState, action) => {
+const asyncTaskReducer = (state = initialAsyncTaskState, action) => {
   switch (action.type) {
     case AsyncTaskType.ASYNC_TASK_START: {
       return {
@@ -69,3 +44,5 @@ export const asyncTaskReducer = (state = initialAsyncTaskState, action) => {
       return state;
   }
 };
+
+export default asyncTaskReducer;

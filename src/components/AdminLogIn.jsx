@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import Button from "../components/Button";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { saveAdminLogInInfo } from "../store/auth";
+import { saveAdminLogInInfo } from "../store/actions/auth";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../components/FormInput";
 import { CONST } from "../constaints";
@@ -14,19 +14,21 @@ const AdminLogIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = async (evt) => {
-    evt.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
       const response = await axios.post(`${CONST.API_URL}/api/admin/login`, {
         email,
         password,
       });
 
-      const { token } = response.data;
-      dispatch(saveAdminLogInInfo(token));
+      const { token, admin } = response.data;
+      dispatch(saveAdminLogInInfo(token, admin));
       localStorage.setItem("adminToken", token);
+      localStorage.setItem("admin", JSON.stringify(admin));
 
-      window.location = "/admin";
+      navigate("/admin");
+      // window.location = "/admin";
     } catch (e) {
       toast.error("Your email or password is incorrect.");
     }
@@ -42,13 +44,13 @@ const AdminLogIn = () => {
           name="Email"
           type="text"
           value={email}
-          onChange={(evt) => setEmail(evt.target.value)}
+          onChange={(event) => setEmail(event.target.value)}
         />
         <FormInput
           name="Password"
           type="password"
           value={password}
-          onChange={(evt) => setPassword(evt.target.value)}
+          onChange={(event) => setPassword(event.target.value)}
         />
         <Button>Sign In</Button>
       </form>

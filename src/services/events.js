@@ -9,3 +9,28 @@ export const getEvent = async (token, id) => {
     },
   });
 };
+
+export const getApprovedEvents = async (token) => {
+  return axios.get(`${CONST.API_URL}/api/events`, {
+    headers: {
+      Authorization: authorizationHeader(token),
+    },
+  });
+};
+
+export const createNewEvent = async (formData, token) => {
+  return axios.post(`${CONST.API_URL}/api/events`, formData, {
+    headers: {
+      Authorization: authorizationHeader(token),
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+export const getAllMyEvents = async (token) => {
+  return axios.get(`${CONST.API_URL}/api/events/me`, {
+    headers: {
+      Authorization: authorizationHeader(token),
+    },
+  });
+};

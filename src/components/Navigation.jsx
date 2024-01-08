@@ -1,4 +1,3 @@
-import React from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { appRoutes, authRoutes } from "../enum/routes";
 import HomePage from "../pages/Home";
@@ -10,7 +9,7 @@ import SignInPage from "../pages/SignIn";
 import SignUpPage from "../pages/SignUp";
 import MessagesPage from "../pages/Messages";
 import { useDispatch } from "react-redux";
-import { saveAdminLogInInfo, saveLogInInfo } from "../store/auth";
+import { saveAdminLogInInfo, saveLogInInfo } from "../store/actions/auth";
 import PostPage from "../pages/Post";
 import ProfilePage from "../pages/Profile";
 import UserReviewsPage from "../pages/UserReviews";
@@ -117,7 +116,8 @@ const Navigation = () => {
   }
 
   if (adminToken) {
-    dispatch(saveAdminLogInInfo(adminToken));
+    const admin = JSON.parse(localStorage.getItem("admin"));
+    dispatch(saveAdminLogInInfo(adminToken, admin));
   }
 
   return <RouterProvider router={routes} />;

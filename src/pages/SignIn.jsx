@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import Button from "../components/Button";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { saveLogInInfo } from "../store/auth";
+import { saveLogInInfo } from "../store/actions/auth";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../components/FormInput";
 import { CONST } from "../constaints";
@@ -14,8 +14,8 @@ const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = async (evt) => {
-    evt.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
       const response = await axios.post(`${CONST.API_URL}/api/auth/login`, {
         email,
@@ -44,13 +44,13 @@ const SignIn = () => {
           name="Email"
           type="text"
           value={email}
-          onChange={(evt) => setEmail(evt.target.value)}
+          onChange={(event) => setEmail(event.target.value)}
         />
         <FormInput
           name="Password"
           type="password"
           value={password}
-          onChange={(evt) => setPassword(evt.target.value)}
+          onChange={(event) => setPassword(event.target.value)}
         />
         <Button>Sign In</Button>
       </form>

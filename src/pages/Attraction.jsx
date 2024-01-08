@@ -28,12 +28,12 @@ const Attraction = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
 
-  const handleImagesUpload = (evt) => {
-    setUploadedImages(evt.target.files);
+  const handleImagesUpload = (event) => {
+    setUploadedImages(event.target.files);
   };
 
-  const handleSubmit = async (evt) => {
-    evt.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
     const formData = new FormData();
     formData.append("content", reviewInput);
@@ -122,13 +122,13 @@ const Attraction = () => {
               name="Content"
               placeholder="Write your thoughts"
               value={reviewInput}
-              onChange={(evt) => setReviewInput(evt.target.value)}
+              onChange={(event) => setReviewInput(event.target.value)}
             />
             <FormInput
               type="number"
               value={reviewRating}
               name="Rating"
-              onChange={(evt) => setReviewRating(evt.target.value)}
+              onChange={(event) => setReviewRating(event.target.value)}
               min={1}
               max={5}
             />

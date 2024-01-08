@@ -66,7 +66,6 @@ const NewMessageModal = ({ onClose }) => {
       return;
     }
 
-    console.log("hieu 2 ");
     // dispatch(createChatOptimistic({ receiver: user, sender: currentUser }));
     const optimisticChat = {
       _id: CONST.OPTIMISTIC_CHAT_ID,

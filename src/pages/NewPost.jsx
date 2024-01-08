@@ -51,8 +51,8 @@ const NewPost = () => {
     dispatch(removeAttraction(index));
   };
 
-  const handleCaptionInputChange = (evt) => {
-    setCaptionInput(evt.target.value);
+  const handleCaptionInputChange = (event) => {
+    setCaptionInput(event.target.value);
   };
 
   const handleCreatePost = async () => {

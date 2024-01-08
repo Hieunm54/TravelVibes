@@ -10,6 +10,7 @@ export default {
       backgroundColor: {
         "rgb-blue": "rgb(55, 151, 240)",
         "rgb-black": "rgba(0, 0, 0, 0.65)",
+        "rgb-cover-gray": "#fff",
       },
       textColor: {
         "rgb-white": "rgb(255, 255, 255)",

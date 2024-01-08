@@ -18,7 +18,7 @@ const Layout = ({ children }) => {
         <Navigate to="/sign-in" />
       ) : (
         <main className="grid grid-cols-5 h-screen">
-          <aside className="px-5 pt-10 border-r border-gray-200">
+          <aside className="px-5 pt-10 border-r border-gray-200 bg-gray-100">
             <nav>
               <ul className="flex flex-col space-y-4">
                 <li

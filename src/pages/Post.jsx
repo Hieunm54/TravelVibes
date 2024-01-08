@@ -57,12 +57,14 @@ const Post = () => {
   const navigate = useNavigate();
   const { id: userId } = jwtDecode(auth.token);
 
-  const handleCommentInputChange = (evt) => setCommentInput(evt.target.value);
-  const handleEditCommentInputChange = (evt) =>
-    setEditCommentInput(evt.target.value);
-  const handleCaptionInputChange = (evt) => setCaptionInput(evt.target.value);
-  const handleAttractionInput = (evt) => {
-    setAttractionInput(evt.target.value);
+  const handleCommentInputChange = (event) =>
+    setCommentInput(event.target.value);
+  const handleEditCommentInputChange = (event) =>
+    setEditCommentInput(event.target.value);
+  const handleCaptionInputChange = (event) =>
+    setCaptionInput(event.target.value);
+  const handleAttractionInput = (event) => {
+    setAttractionInput(event.target.value);
     getAttractionSuggestions();
   };
 
@@ -189,8 +191,8 @@ const Post = () => {
     }
   };
 
-  const handleSendComment = async (evt) => {
-    evt.preventDefault();
+  const handleSendComment = async (event) => {
+    event.preventDefault();
     try {
       await sendComment(auth.token, id, {
         content: commentInput,
@@ -207,8 +209,8 @@ const Post = () => {
     setEditCommentInput(comment.content);
   };
 
-  const handleUpdateComment = async (evt) => {
-    evt.preventDefault();
+  const handleUpdateComment = async (event) => {
+    event.preventDefault();
     try {
       await updateComment(auth.token, id, commentToBeEdited._id, {
         content: editCommentInput,
@@ -420,7 +422,7 @@ const Post = () => {
                         size={14}
                         src={`${CONST.IMAGE_URL}/${comment.user.avatar}`}
                       />
-                      <div className="bg-gray-50 border border-gray-100 w-full px-3 py-2 rounded-md">
+                      <div className="bg-gray-100 border border-gray-100 w-full px-3 py-2 rounded-md">
                         {commentToBeEdited &&
                         commentToBeEdited._id === comment._id ? (
                           <Form onSubmit={handleUpdateComment}>

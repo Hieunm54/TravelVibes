@@ -5,8 +5,9 @@ import { composeWithDevTools } from "@redux-devtools/extension";
 import attractions, { attractionsDefaultState } from "../store/attractions";
 import auth from "../store/auth";
 import messages, { messagesDefaultState } from "../store/reducers/messages";
-import { asyncTaskReducer, initialAsyncTaskState } from "../store/asyncTask";
+import asyncTaskReducer, { initialAsyncTaskState } from "./reducers/asyncTask";
 import users, { usersDefaultState } from "./reducers/users";
+import events, { eventDefaultState } from "./reducers/events";
 
 const AppInitialState = {
   attractions: attractionsDefaultState,
@@ -14,6 +15,7 @@ const AppInitialState = {
   auth: authDefaultState,
   asyncTaskReducer: initialAsyncTaskState,
   users: usersDefaultState,
+  events: eventDefaultState,
 };
 
 const DevEnv = import.meta.env.VITE_DEV_ENV;
@@ -35,6 +37,7 @@ const configStore = (preloadedState = AppInitialState) => {
     messages,
     asyncTaskReducer,
     users,
+    events,
   });
 
   const store = createStore(appReducer, preloadedState, composedEnhancers);

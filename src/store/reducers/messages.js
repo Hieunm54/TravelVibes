@@ -9,7 +9,7 @@ export const messagesDefaultState = {
 };
 
 // REDUCER
-export const messages = (state = messagesDefaultState, action) => {
+const messages = (state = messagesDefaultState, action) => {
   switch (action.type) {
     case actionTypes.GET_CHAT_LIST:
       return { ...state, chatList: action.payload };

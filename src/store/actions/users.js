@@ -1,5 +1,5 @@
-import { asyncTaskStartAction, asyncTaskStopAction } from "../asyncTask";
 import * as UserService from "../../services/users";
+import { asyncTaskStartAction, asyncTaskStopAction } from "./asyncTask";
 
 export const actionTypes = {
   SEARCH_USERS: "SEARCH_USERS",

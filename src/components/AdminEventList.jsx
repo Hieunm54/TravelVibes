@@ -164,7 +164,7 @@ const AdminEventList = () => {
           </ul>
         </nav>
       </aside>
-      <section className="col-span-3 py-10 px-5 bg-gray-50 flex flex-col space-y-5">
+      <section className="col-span-3 py-10 px-5 bg-gray-100 flex flex-col space-y-5">
         {events.map((event) => (
           <div
             key={event.id}

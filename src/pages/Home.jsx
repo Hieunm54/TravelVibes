@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 import { getPosts } from "../services/posts";
@@ -20,15 +20,19 @@ import CardAuthorName from "../components/CardAuthorName";
 import CardInteractionInfo from "../components/CardInteractionInfo";
 import CardUpvoteButton from "../components/CardUpvoteButton";
 import CardCommentCount from "../components/CardCommentCount";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Button from "../components/Button";
-import { Link } from "react-router-dom";
 import { CONST } from "../constaints";
+import {
+  getAllMyEventsAsync,
+  getApprovedEventsAsync,
+} from "../store/actions/events";
+import { sGetApprovedEvents } from "../store/selectors";
+import EventItem from "../components/Events/EventItem";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const auth = useSelector((state) => state.auth);
-
+  const events = useSelector(sGetApprovedEvents);
+  const dispatch = useDispatch();
   const getPostList = async () => {
     try {
       const response = await getPosts(auth.token);
@@ -38,13 +42,20 @@ const Home = () => {
     }
   };
 
-  const toggleSaveEvent = (eventId) => {
-    // TODO: Call Save Event API and change the param passed to this function to the id from mapping
+  const toggleSaveEvent = (e, eventId) => {
+    e.stopPropagation();
+    console.log("heu save event ", eventId);
+  };
+  const addToJourney = (e, eventId) => {
+    e.stopPropagation();
+    console.log("heu add ", eventId);
   };
 
   useEffect(() => {
     getPostList();
-  }, []);
+    dispatch(getApprovedEventsAsync());
+    dispatch(getAllMyEventsAsync());
+  }, [dispatch]);
 
   return (
     <Layout>
@@ -90,72 +101,21 @@ const Home = () => {
             </Card>
           ))}
         </Feeds>
-        <div className="col-span-4 border-l border-gray-200 h-screen overflow-y-scroll py-10 px-5">
+        <div className="col-span-4 border-l border-gray-200 h-screen overflow-y-scroll py-10 px-5 bg-gray-100">
           <div className="flex flex-col items-center space-y-7">
             <h2 className="font-bold text-4xl text-left w-full mt-3">
               Upcoming events
             </h2>
-            <Link
-              to="/events/1"
-              className="block border-b border-b-gray-200 last:border-0"
-            >
-              <img
-                src="https://picsum.photos/300/200"
-                className="block w-full rounded-md"
-              />
-              <div className="pb-4">
-                <time className="block text-red-500 font-bold mt-2">
-                  FRIDAY, 12 JANUARY 2024 AT 17:00
-                </time>
-                <h3 className="font-bold text-2xl leading-tight">
-                  de Finibus Bonorum et Malorum
-                </h3>
-                <address className="flex space-x-2 mt-2">
-                  <FontAwesomeIcon
-                    icon="fa-solid fa-location-dot"
-                    className="pt-1 text-red-500"
-                  />
-                  <span>Hanoi Train Street</span>
-                </address>
-                <button
-                  className="mt-3 bg-gray-200 rounded-md px-2 py-1 flex items-center space-x-2"
-                  onClick={() => toggleSaveEvent(1)}
-                >
-                  <FontAwesomeIcon icon="fa-regular fa-bookmark" />
-                  <span>Save</span>
-                </button>
-              </div>
-            </Link>
-            <Link
-              to="/events/1"
-              className="block border-b border-b-gray-200 last:border-0"
-            >
-              <img
-                src="https://picsum.photos/300/200"
-                className="block w-full rounded-md"
-              />
-              <div className="pb-4">
-                <time className="block text-red-500 font-bold mt-2">
-                  FRIDAY, 12 JANUARY 2024 AT 17:00
-                </time>
-                <h3 className="font-bold text-2xl leading-tight">
-                  de Finibus Bonorum et Malorum
-                </h3>
-                <address className="flex space-x-2 mt-2">
-                  <FontAwesomeIcon
-                    icon="fa-solid fa-location-dot"
-                    className="pt-1 text-red-500"
-                  />
-                  <span>Hanoi Train Street</span>
-                </address>
-                <div className="mt-3">
-                  <Button onClick={() => toggleSaveEvent(1)}>
-                    <FontAwesomeIcon icon="fa-solid fa-bookmark" />
-                    <span>Saved</span>
-                  </Button>
-                </div>
-              </div>
-            </Link>
+            {events.map((event) => {
+              return (
+                <EventItem
+                  key={event._id}
+                  event={event}
+                  onToggleSaveEvent={toggleSaveEvent}
+                  onAddToJourney={addToJourney}
+                />
+              );
+            })}
           </div>
         </div>
       </div>

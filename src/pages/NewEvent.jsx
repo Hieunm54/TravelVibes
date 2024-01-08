@@ -1,14 +1,19 @@
-import React, { useRef, useState } from "react";
+import moment from "moment";
+import { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 import Layout from "../components/Layout";
 import PostMap from "../components/PostMap";
 import FormInput from "../components/FormInput";
 import AttractionSuggestion from "../components/AttractionSuggestion";
-import ButtonGroup from "../components/ButtonGroup";
 import Button from "../components/Button";
 import { getAttractions } from "../services/attractions";
+import { CONST } from "../constaints";
+import { createNewEventAsync } from "../store/actions/events";
+import { useNavigate } from "react-router-dom";
+import { appRoutes } from "../enum/routes";
 
 const NewEvent = () => {
   const auth = useSelector((state) => state.auth);
@@ -22,13 +27,16 @@ const NewEvent = () => {
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [isSearchLocation, setIsSearchingLocation] = useState(false);
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const handleChangeCoverPhoto = () => {
     coverPhotoRef.current.click();
   };
 
-  const handlePhotoSelected = async (evt) => {
-    if (evt.target.files && evt.target.files[0]) {
-      setCoverPhoto(evt.target.files[0]);
+  const handlePhotoSelected = async (event) => {
+    if (event.target.files && event.target.files[0]) {
+      setCoverPhoto(event.target.files[0]);
     }
   };
 
@@ -49,17 +57,38 @@ const NewEvent = () => {
     setLocationInput(location.name);
   };
 
-  const handleCreateEvent = (evt) => {
-    // TODO: Call Create Event API
-    evt.preventDefault();
+  const handleCreateEvent = async (event) => {
+    event.preventDefault();
+    // Check datetime
+    if (moment(datetimeInput) < Date.now()) {
+      toast.error("Date and time of the event must be in the future");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("name", titleInput);
+    formData.append("description", descriptionInput);
+    formData.append("images", coverPhoto);
+    formData.append("attractionId", location[0]._id);
+    formData.append("date", datetimeInput);
+
+    // Using this check temporally
+    if (Array.from(formData.keys()).length !== CONST.FORM_DATA_LENGTH) {
+      toast.error("Some fields are missing to create a new event");
+      return;
+    }
+    dispatch(createNewEventAsync(formData));
+    navigate(appRoutes.USER_EVENTS);
   };
 
-  const handleTitleInputChange = (evt) => setTitleInput(evt.target.value);
-  const handleDatetimeInput = (evt) => setDatetimeInput(evt.target.value);
-  const handleDescriptionChange = (evt) =>
-    setDescriptionInput(evt.target.value);
-  const handleLocationInputChange = (evt) => {
-    setLocationInput(evt.target.value);
+  const handleTitleInputChange = (event) => setTitleInput(event.target.value);
+
+  const handleDatetimeInput = (event) => setDatetimeInput(event.target.value);
+
+  const handleDescriptionChange = (event) =>
+    setDescriptionInput(event.target.value);
+
+  const handleLocationInputChange = (event) => {
+    setLocationInput(event.target.value);
     setIsSearchingLocation(true);
     getLocationSuggestions();
   };
@@ -86,6 +115,7 @@ const NewEvent = () => {
               <button
                 onClick={handleChangeCoverPhoto}
                 className="block hover:text-blue-500"
+                type="button"
               >
                 {coverPhoto ? (
                   <img
@@ -151,7 +181,7 @@ const NewEvent = () => {
               </div>
             </div>
             <div>
-              <Button>Save</Button>
+              <Button type="submit">Save</Button>
             </div>
           </form>
         </section>

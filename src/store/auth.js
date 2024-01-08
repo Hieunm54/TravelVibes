@@ -1,7 +1,4 @@
-const actionTypes = {
-  logIn: "SAVE_LOG_IN_INFO",
-  adminLogIn: "SAVE_ADMIN_LOG_IN_INFO",
-};
+import { actionTypes } from "./actions/auth";
 
 export const authDefaultState = { token: null, user: null };
 // REDUCER
@@ -16,21 +13,12 @@ const auth = (state = authDefaultState, action) => {
     case actionTypes.adminLogIn:
       return {
         ...state,
-        adminToken: action.adminToken,
+        adminToken: action.payload.adminToken,
+        admin: action.payload.admin,
       };
     default:
       return state;
   }
 };
-
-export const saveLogInInfo = (token, user) => ({
-  type: actionTypes.logIn,
-  payload: { token, user },
-});
-
-export const saveAdminLogInInfo = (token) => ({
-  type: actionTypes.adminLogIn,
-  adminToken: token,
-});
 
 export default auth;
