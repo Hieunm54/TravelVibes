@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import Layout from "../components/Layout";
 import PostMap from "../components/PostMap";
@@ -8,71 +8,16 @@ import FormInput from "../components/FormInput";
 import AttractionSuggestion from "../components/AttractionSuggestion";
 import Button from "../components/Button";
 import { getAttractions } from "../services/attractions";
-import { useParams } from "react-router-dom";
+import { sGetEventDetails } from "../store/selectors";
+import { CONST } from "../constaints";
+import moment from "moment";
+import { toast } from "react-toastify";
+import { useNavigate, useParams } from "react-router-dom";
+import { getEventDetailAsync, updateEventAsync } from "../store/actions/events";
+import { appRoutes } from "../enum/routes";
+import { displayImage } from "../utils/displayImage";
 
-const eventDetails = {
-  id: 1,
-  cover: "https://picsum.photos/300/200",
-  datetime: "FRIDAY, 12 JANUARY 2024 AT 17:00",
-  title: "Exhibition Name",
-  description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum. Lorem ipsum dolor sit amet,
-                  consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                  ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                  quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                  ea commodo consequat. Duis aute irure dolor in reprehenderit
-                  in voluptate velit esse cillum dolore eu fugiat nulla
-                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-                  in culpa qui officia deserunt mollit anim id est laborum.Lorem
-                  ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                  enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum.Lorem ipsum dolor sit amet,
-                  consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                  ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                  quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                  ea commodo consequat. Duis aute irure dolor in reprehenderit
-                  in voluptate velit esse cillum dolore eu fugiat nulla
-                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-                  in culpa qui officia deserunt mollit anim id est laborum.Lorem
-                  ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                  enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum.Lorem ipsum dolor sit amet,
-                  consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                  ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                  quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                  ea commodo consequat. Duis aute irure dolor in reprehenderit
-                  in voluptate velit esse cillum dolore eu fugiat nulla
-                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-                  in culpa qui officia deserunt mollit anim id est laborum.Lorem
-                  ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                  enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum.`,
-  location: null,
-};
-
-const NewEvent = () => {
-  const auth = useSelector((state) => state.auth);
+const EditEvent = () => {
   const coverPhotoRef = useRef();
   const [coverPhoto, setCoverPhoto] = useState(null);
   const [titleInput, setTitleInput] = useState("");
@@ -83,16 +28,33 @@ const NewEvent = () => {
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [isSearchLocation, setIsSearchingLocation] = useState(false);
   const { id } = useParams();
+  const auth = useSelector((state) => state.auth);
+  const eventDetails = useSelector(sGetEventDetails);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const getEventDetails = async () => {
-    // TODO: Call Event Detail API
-    // const response = await getEvent(auth.token, id);
-    setCoverPhoto(eventDetails.cover);
-    setTitleInput(eventDetails.title);
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+
+    dispatch(getEventDetailAsync(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    setCoverPhoto(`${CONST.IMAGE_URL}/${displayImage(eventDetails.images)}`);
+    setTitleInput(eventDetails.name);
     setDescriptionInput(eventDetails.description);
-    setDatetimeInput(eventDetails.datetime);
-    setLocationInput(eventDetails.location);
-  };
+    setDatetimeInput(moment(eventDetails.date).format(CONST.TIME_FORMAT));
+    setLocationInput(eventDetails.attraction.name ?? "");
+    setLocation([eventDetails.attraction]);
+  }, [
+    eventDetails.attraction,
+    eventDetails.date,
+    eventDetails.description,
+    eventDetails.images,
+    eventDetails.name,
+  ]);
 
   const handleChangeCoverPhoto = () => {
     coverPhotoRef.current.click();
@@ -122,8 +84,26 @@ const NewEvent = () => {
   };
 
   const handleUpdateEvent = (event) => {
-    // TODO: Call Edit Event API
     event.preventDefault();
+    // Check datetime
+    if (moment(datetimeInput) < Date.now()) {
+      toast.error("Date and time of the event must be in the future");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("name", titleInput);
+    formData.append("description", descriptionInput);
+    formData.append("images", coverPhoto);
+    formData.append("attraction", location[0]._id);
+    formData.append("date", datetimeInput);
+
+    // Using this check temporally
+    if (Array.from(formData.keys()).length !== CONST.FORM_DATA_LENGTH) {
+      toast.error("Some fields are missing to create a new event");
+      return;
+    }
+    dispatch(updateEventAsync(id, formData));
+    navigate(appRoutes.EVENT);
   };
 
   const handleTitleInputChange = (event) => setTitleInput(event.target.value);
@@ -135,10 +115,6 @@ const NewEvent = () => {
     setIsSearchingLocation(true);
     getLocationSuggestions();
   };
-
-  useEffect(() => {
-    getEventDetails();
-  }, []);
 
   return (
     <Layout>
@@ -162,6 +138,7 @@ const NewEvent = () => {
               <button
                 onClick={handleChangeCoverPhoto}
                 className="block hover:text-blue-500"
+                type="button"
               >
                 {coverPhoto ? (
                   <img
@@ -231,7 +208,7 @@ const NewEvent = () => {
               </div>
             </div>
             <div>
-              <Button>Save</Button>
+              <Button type="submit">Update</Button>
             </div>
           </form>
         </section>
@@ -243,4 +220,4 @@ const NewEvent = () => {
   );
 };
 
-export default NewEvent;
+export default EditEvent;

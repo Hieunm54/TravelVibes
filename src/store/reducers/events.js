@@ -4,6 +4,7 @@ export const eventDefaultState = {
   approvedEvents: [],
   myEventList: [],
   userEventList: [],
+  eventDetails: {},
 };
 
 const events = (state = eventDefaultState, action) => {
@@ -24,6 +25,11 @@ const events = (state = eventDefaultState, action) => {
         myEventList: [action.payload, ...state.myEventList],
       };
     }
+    case actionTypes.GET_EVENT_DETAIL:
+      return {
+        ...state,
+        eventDetails: action.payload,
+      };
     default:
       return state;
   }

@@ -7,6 +7,9 @@ export const CONST = {
   DEFAULT_AVATAR: "uploads/default-avatar.webp",
   DEFAULT_EVENT_COVER: "uploads/default_event.jpeg",
 
+  TIME_FORMAT: "YYYY-MM-DDTHH:mm",
+  READABLE_TIME: "MMMM Do YYYY, h:mm a",
+
   // Optimistic chat ID
   OPTIMISTIC_CHAT_ID: "NEW_CHAT_ID",
   FORM_DATA_LENGTH: 5,

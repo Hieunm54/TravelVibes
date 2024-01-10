@@ -250,7 +250,7 @@ const Post = () => {
     <Layout>
       {post && (
         <div className="grid grid-cols-12 h-screen overflow-hidden">
-          <section className="col-span-4 border-r-2 border-gray-300 px-5 py-10 h-screen overflow-y-scroll">
+          <section className="col-span-6 border-r-2 border-gray-300 px-5 py-10 h-screen overflow-y-scroll">
             <div>
               <CardAuthor>
                 <CardAuthorAva
@@ -477,7 +477,7 @@ const Post = () => {
               </div>
             </div>
           </section>
-          <section className="col-span-8">
+          <section className="col-span-6">
             <PostMap attractions={post.attractions} />
           </section>
         </div>
