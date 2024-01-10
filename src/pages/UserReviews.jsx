@@ -23,7 +23,7 @@ const UserReviews = () => {
   }, []);
 
   return (
-    <div className="w-full py-5">
+    <div className="w-full">
       {reviews.map((review) => (
         <Review
           key={review._id}
@@ -32,7 +32,8 @@ const UserReviews = () => {
           rating={review.rating}
           content={review.content}
           images={review.images}
-          className="w-1/2 mx-auto"
+          attraction={review.attraction}
+          createdAt={review.createdAt}
         />
       ))}
     </div>
