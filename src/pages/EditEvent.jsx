@@ -8,7 +8,7 @@ import FormInput from "../components/FormInput";
 import AttractionSuggestion from "../components/AttractionSuggestion";
 import Button from "../components/Button";
 import { getAttractions } from "../services/attractions";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const eventDetails = {
   id: 1,
@@ -82,7 +82,13 @@ const NewEvent = () => {
   const [location, setLocation] = useState([]);
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [isSearchLocation, setIsSearchingLocation] = useState(false);
+  const navigate = useNavigate();
   const { id } = useParams();
+
+  if (!auth) {
+    navigate("/sign-in");
+    return;
+  }
 
   const getEventDetails = async () => {
     // TODO: Call Event Detail API
@@ -136,110 +142,118 @@ const NewEvent = () => {
     getLocationSuggestions();
   };
 
+  const handleGoBack = () => navigate(-1);
+
   useEffect(() => {
     getEventDetails();
   }, []);
 
   return (
-    <Layout>
-      <div className="grid grid-cols-12 h-screen overflow-hidden">
-        <section className="col-span-6 border-r-2 border-gray-300 px-5 py-10 h-screen overflow-y-scroll">
-          <form
-            className="flex flex-col space-y-5"
-            onSubmit={handleUpdateEvent}
-          >
-            <div>
-              <label>Cover</label>
-              <input
-                ref={coverPhotoRef}
-                type="file"
-                name="Photos"
-                multiple
-                accept=".png, .jpg, .jpeg"
-                className="hidden"
-                onChange={handlePhotoSelected}
-              />
-              <button
-                onClick={handleChangeCoverPhoto}
-                className="block hover:text-blue-500"
-              >
-                {coverPhoto ? (
-                  <img
-                    src={
-                      typeof coverPhoto === "string"
-                        ? coverPhoto
-                        : URL.createObjectURL(coverPhoto)
-                    }
-                    className="w-full"
-                  />
-                ) : (
-                  <FontAwesomeIcon
-                    icon="fa-solid fa-square-plus"
-                    className="w-14 h-14"
-                  />
-                )}
-              </button>
-            </div>
-            <FormInput
-              name="Title"
-              placeholder="What's your event's title?"
-              value={titleInput}
-              onChange={handleTitleInputChange}
+    <div className="grid grid-cols-12 h-screen overflow-hidden">
+      <section className="col-span-6 border-r-2 border-gray-300 py-5 h-screen overflow-y-scroll">
+        <div className="py-3 border-b border-gray-100 px-5">
+          <button onClick={handleGoBack}>
+            <FontAwesomeIcon
+              icon="fa-solid fa-arrow-left"
+              className="text-2xl"
             />
-            <FormInput
-              type="datetime-local"
-              name="Date and Time"
-              placeholder="When is your event?"
-              value={datetimeInput}
-              onChange={handleDatetimeInput}
+          </button>
+        </div>
+        <form
+          className="flex flex-col space-y-5 px-5 pt-5"
+          onSubmit={handleUpdateEvent}
+        >
+          <div>
+            <label>Cover</label>
+            <input
+              ref={coverPhotoRef}
+              type="file"
+              name="Photos"
+              multiple
+              accept=".png, .jpg, .jpeg"
+              className="hidden"
+              onChange={handlePhotoSelected}
             />
+            <button
+              onClick={handleChangeCoverPhoto}
+              className="block hover:text-blue-500"
+            >
+              {coverPhoto ? (
+                <img
+                  src={
+                    typeof coverPhoto === "string"
+                      ? coverPhoto
+                      : URL.createObjectURL(coverPhoto)
+                  }
+                  className="w-full"
+                />
+              ) : (
+                <FontAwesomeIcon
+                  icon="fa-solid fa-square-plus"
+                  className="w-14 h-14"
+                />
+              )}
+            </button>
+          </div>
+          <FormInput
+            name="Title"
+            placeholder="What's your event's title?"
+            value={titleInput}
+            onChange={handleTitleInputChange}
+          />
+          <FormInput
+            type="datetime-local"
+            name="Date and Time"
+            placeholder="When is your event?"
+            value={datetimeInput}
+            onChange={handleDatetimeInput}
+          />
+          <FormInput
+            name="Description"
+            multiline
+            placeholder="What will you bring to the audience?"
+            value={descriptionInput}
+            onChange={handleDescriptionChange}
+          />
+          <div>
             <FormInput
-              name="Description"
-              multiline
-              placeholder="What will you bring to the audience?"
-              value={descriptionInput}
-              onChange={handleDescriptionChange}
+              name="Location"
+              placeholder="Where do you want to organize your event?"
+              value={locationInput}
+              onChange={handleLocationInputChange}
             />
-            <div>
-              <FormInput
-                name="Location"
-                placeholder="Where do you want to organize your event?"
-                value={locationInput}
-                onChange={handleLocationInputChange}
-              />
-              <div
-                className={
-                  locationSuggestions.length > 0
-                    ? `border-l border-r border-b border-gray-200`
-                    : ""
-                }
-              >
-                {isSearchLocation &&
-                  locationSuggestions.length > 0 &&
-                  locationSuggestions.map((suggestion) => (
-                    <button
-                      className="block text-left"
-                      onClick={() => handleChangeLocation(suggestion)}
-                      key={suggestion._id}
-                    >
-                      <AttractionSuggestion
-                        name={suggestion.name}
-                        address={suggestion.address}
-                      />
-                    </button>
-                  ))}
-              </div>
+            <div
+              className={
+                locationSuggestions.length > 0
+                  ? `border-l border-r border-b border-gray-200`
+                  : ""
+              }
+            >
+              {isSearchLocation &&
+                locationSuggestions.length > 0 &&
+                locationSuggestions.map((suggestion) => (
+                  <button
+                    className="block text-left"
+                    onClick={() => handleChangeLocation(suggestion)}
+                    key={suggestion._id}
+                  >
+                    <AttractionSuggestion
+                      name={suggestion.name}
+                      address={suggestion.address}
+                    />
+                  </button>
+                ))}
             </div>
-            <div>
-              <Button>Save</Button>
-            </div>
-          </form>
-        </section>
-        <section className="col-span-6">
-          <PostMap attractions={location} />
-        </section>
-      </div>
-    </Layout>
+          </div>
+          <div>
+            <Button>Save</Button>
+          </div>
+        </form>
+      </section>
+      <section className="col-span-6">
+        <PostMap attractions={location} />
+      </section>
+    </div>
   );
 };
 

@@ -78,8 +78,8 @@ const NewPost = () => {
       <NewPostPageLayout>
         {location.pathname === appRoutes.NEW_POST ? (
           <div className="h-screen flex flex-col">
-            <div className="px-5 pt-10 mb-2">
-              <h2 className="font-bold text-5xl">Share your trip</h2>
+            <div className="px-5 pt-3 mb-2">
+              <h2 className="font-bold text-3xl">Share your trip</h2>
               <div className="mt-7">
                 <FormInput
                   label={false}

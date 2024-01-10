@@ -18,12 +18,13 @@ const Layout = ({ children }) => {
         <Navigate to="/sign-in" />
       ) : (
         <main className="grid grid-cols-5 h-screen">
-          <aside className="px-5 pt-10 border-r border-gray-200 bg-gray-100">
-            <nav>
-              <ul className="flex flex-col space-y-4">
+          <aside className="border-r border-gray-100 px-5">
+            <h1 className="w-full py-4 px-4 font-bold text-2xl">TravelVibes</h1>
+            <nav className="mt-3">
+              <ul className="flex flex-col space-y-2">
                 <li
-                  className={`hover:text-blue-500 ${
-                    location.pathname === appRoutes.HOME ? "text-blue-500" : ""
+                  className={`hover:bg-gray-200 px-3 py-1 rounded-full ${
+                    location.pathname === appRoutes.HOME ? "font-bold" : ""
                   }`}
                 >
                   <NavLink to={appRoutes.HOME}>
@@ -37,7 +38,7 @@ const Layout = ({ children }) => {
                   </NavLink>
                 </li>
                 <li
-                  className={`hover:text-blue-500 ${
+                  className={`hover:bg-gray-200 px-3 py-1 rounded-full ${
                     location.pathname === appRoutes.NEW_POST ||
                     location.pathname === appRoutes.NEW_POST_FIND_ATTRACTIONS ||
                     location.pathname.match(
@@ -48,7 +49,7 @@ const Layout = ({ children }) => {
                         )
                       )
                     )
-                      ? "text-blue-500"
+                      ? "font-bold"
                       : ""
                   }`}
                 >
@@ -63,24 +64,23 @@ const Layout = ({ children }) => {
                   </NavLink>
                 </li>
                 <li
-                  className={`hover:text-blue-500 ${
-                    location.pathname === appRoutes.MESSAGES
-                      ? "text-blue-500"
-                      : ""
+                  className={`hover:bg-gray-200 px-3 py-1 rounded-full ${
+                    location.pathname === appRoutes.MESSAGES ? "font-bold" : ""
                   }`}
                 >
                   <NavLink to={appRoutes.MESSAGES}>
                     <div className="flex items-center space-x-3">
-                      <FontAwesomeIcon icon="fa-brands fa-facebook-messenger" />
+                      <FontAwesomeIcon
+                        icon="fa-brands fa-facebook-messenger"
+                        className="text-xl w-5"
+                      />
                       <span className="text-lg">Messages</span>
                     </div>
                   </NavLink>
                 </li>
                 <li
-                  className={`hover:text-blue-500 ${
-                    location.pathname === appRoutes.NEW_EVENT
-                      ? "text-blue-500"
-                      : ""
+                  className={`hover:bg-gray-200 px-3 py-1 rounded-full ${
+                    location.pathname === appRoutes.NEW_EVENT ? "font-bold" : ""
                   }`}
                 >
                   <NavLink to={appRoutes.NEW_EVENT}>
@@ -94,9 +94,9 @@ const Layout = ({ children }) => {
                   </NavLink>
                 </li>
                 <li
-                  className={`hover:text-blue-500 ${
+                  className={`hover:bg-gray-200 px-3 py-1 rounded-full ${
                     location.pathname === appRoutes.NOTIFICATION
-                      ? "text-blue-500"
+                      ? "font-bold"
                       : ""
                   }`}
                 >
@@ -111,11 +111,11 @@ const Layout = ({ children }) => {
                   </NavLink>
                 </li>
                 <li
-                  className={`text-4xl hover:text-blue-500 ${
+                  className={`text-4xl hover:bg-gray-200 px-3 py-1 rounded-full ${
                     location.pathname === appRoutes.PROFILE ||
                     location.pathname === appRoutes.USER_REVIEWS ||
                     location.pathname === appRoutes.USER_EVENTS
-                      ? "text-blue-500"
+                      ? "font-bold"
                       : ""
                   }`}
                 >
@@ -129,10 +129,10 @@ const Layout = ({ children }) => {
                     </div>
                   </NavLink>
                 </li>
-                <li className="hover:text-blue-500">
+                <li className="hover:bg-gray-200 px-3 py-1 rounded-full cursor-pointer">
                   <button
                     onClick={handleLogOut}
-                    className="hover:text-blue-500"
+                    className="hover:bg-gray-200 rounded-full"
                   >
                     <div className="flex items-center space-x-3">
                       <FontAwesomeIcon
