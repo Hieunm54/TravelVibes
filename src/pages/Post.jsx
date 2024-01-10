@@ -57,6 +57,11 @@ const Post = () => {
   const navigate = useNavigate();
   const { id: userId } = jwtDecode(auth.token);
 
+  if (!auth) {
+    navigate("/sign-in");
+    return;
+  }
+
   const handleCommentInputChange = (event) =>
     setCommentInput(event.target.value);
   const handleEditCommentInputChange = (event) =>
@@ -241,17 +246,27 @@ const Post = () => {
     }
   };
 
+  const handleGoBack = () => navigate(-1);
+
   useEffect(() => {
     getPostDetails();
     getCommentList();
   }, []);
 
   return (
-    <Layout>
+    <>
       {post && (
         <div className="grid grid-cols-12 h-screen overflow-hidden">
-          <section className="col-span-4 border-r-2 border-gray-300 px-5 py-10 h-screen overflow-y-scroll">
-            <div>
+          <section className="col-span-6 border-r-2 border-gray-300 h-screen overflow-y-scroll">
+            <div className="py-3 border-b border-gray-200 px-5">
+              <button onClick={handleGoBack}>
+                <FontAwesomeIcon
+                  icon="fa-solid fa-circle-xmark"
+                  className="text-2xl"
+                />
+              </button>
+            </div>
+            <div className="px-5 pt-3">
               <CardAuthor>
                 <CardAuthorAva
                   size={14}
@@ -273,12 +288,16 @@ const Post = () => {
                       </>
                     ) : (
                       <>
-                        <SecondaryButton onClick={handleEditPost}>
-                          Edit
-                        </SecondaryButton>
-                        <SecondaryButton onClick={handleDeletePost}>
-                          Delete
-                        </SecondaryButton>
+                        {userId === post.author._id && (
+                          <>
+                            <SecondaryButton onClick={handleEditPost}>
+                              Edit
+                            </SecondaryButton>
+                            <SecondaryButton onClick={handleDeletePost}>
+                              Delete
+                            </SecondaryButton>
+                          </>
+                        )}
                       </>
                     )}
                   </SecondaryButtonGroup>
@@ -391,7 +410,7 @@ const Post = () => {
                 <CardCommentCount count={comments.length} />
               </CardInteractionInfo>
             </div>
-            <div className="border-t border-gray-300 mt-2 py-2">
+            <div className="border-t border-gray-300 mt-2 py-5 px-5">
               <Form onSubmit={handleSendComment}>
                 <CardAuthorAva
                   size={14}
@@ -412,7 +431,7 @@ const Post = () => {
                   />
                 </Button>
               </Form>
-              <div className="flex flex-col space-y-3 mt-3">
+              <div className="flex flex-col space-y-4 mt-3">
                 {comments
                   .slice(0)
                   .reverse()
@@ -477,12 +496,12 @@ const Post = () => {
               </div>
             </div>
           </section>
-          <section className="col-span-8">
+          <section className="col-span-6">
             <PostMap attractions={post.attractions} />
           </section>
         </div>
       )}
-    </Layout>
+    </>
   );
 };
 

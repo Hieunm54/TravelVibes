@@ -3,10 +3,11 @@ import Layout from "../components/Layout";
 import SecondaryButtonGroup from "../components/SecondaryButtonGroup";
 import SecondaryButton from "../components/SecondaryButton";
 import PostMap from "../components/PostMap";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getEvent } from "../services/events";
 import { useSelector } from "react-redux";
 import { appRoutes } from "../enum/routes";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const eventDetails = {
   id: 1,
@@ -71,7 +72,13 @@ const eventDetails = {
 
 const Event = () => {
   const auth = useSelector((state) => state.auth);
+  const navigate = useNavigate();
   const { id } = useParams();
+
+  if (!auth) {
+    navigate("/sign-in");
+    return;
+  }
 
   const getEventDetails = async () => {
     // TODO: Call Event Detail API
@@ -82,53 +89,58 @@ const Event = () => {
     // TODO: Call Delete Event API
   };
 
+  const handleGoBack = () => navigate(-1);
+
   useEffect(() => {
     getEventDetails();
   }, []);
 
   return (
-    <Layout>
-      <div className="h-screen overflow-hidden">
-        <div className="h-screen overflow-y-scroll py-10 px-5">
-          <img src={eventDetails.cover} className="block w-full rounded-md" />
-          <div className="mt-3">
-            <div className="flex flex-col space-y-1 mt-3 col-span-2">
-              <time className="font-bold text-xl text-red-500">
-                {eventDetails.datetime}
-              </time>
-              <h3 className="font-bold text-4xl pb-2">{eventDetails.title}</h3>
-              <div className="border-t border-gray-200 grid grid-cols-3 gap-10 pt-5">
-                <p className="col-span-2 border-r border-gray-200 pr-10">
-                  {eventDetails.description}
-                </p>
-                <div className="relative">
-                  <div className="sticky top-0 left-0 w-full flex flex-col space-y-3">
-                    <address className="block w-full h-72">
-                      <PostMap
-                        style={{ borderRadius: "6px" }}
-                        attractions={[]}
-                      />
-                    </address>
-                    <div>
-                      Hosted by <span className="font-bold">Huy Vu</span>
-                    </div>
-                    <div className="mt-2 border-t border-gray-200">
-                      <SecondaryButtonGroup>
-                        <SecondaryButton>
-                          <Link
-                            to={appRoutes.EDIT_EVENT.replace(
-                              ":id",
-                              eventDetails.id
-                            )}
-                          >
-                            Edit
-                          </Link>
-                        </SecondaryButton>
-                        <SecondaryButton onClick={handleDeleteEvent}>
-                          Delete
-                        </SecondaryButton>
-                      </SecondaryButtonGroup>
-                    </div>
+    <div className="h-screen overflow-hidden">
+      <div className="h-screen overflow-y-scroll py-3 px-5">
+        <div className="py-3">
+          <button onClick={handleGoBack}>
+            <FontAwesomeIcon
+              icon="fa-solid fa-circle-xmark"
+              className="text-2xl"
+            />
+          </button>
+        </div>
+        <img src={eventDetails.cover} className="block w-full rounded-md" />
+        <div className="mt-3">
+          <div className="flex flex-col space-y-1 mt-3 col-span-2">
+            <time className="font-bold text-xl text-red-500">
+              {eventDetails.datetime}
+            </time>
+            <h3 className="font-bold text-4xl pb-2">{eventDetails.title}</h3>
+            <div className="border-t border-gray-200 grid grid-cols-3 gap-10 pt-5">
+              <p className="col-span-2 border-r border-gray-200 pr-10">
+                {eventDetails.description}
+              </p>
+              <div className="relative">
+                <div className="sticky top-0 left-0 w-full flex flex-col space-y-3">
+                  <address className="block w-full h-72">
+                    <PostMap style={{ borderRadius: "6px" }} attractions={[]} />
+                  </address>
+                  <div>
+                    Hosted by <span className="font-bold">Huy Vu</span>
+                  </div>
+                  <div className="mt-2 border-t border-gray-200">
+                    <SecondaryButtonGroup>
+                      <SecondaryButton>
+                        <Link
+                          to={appRoutes.EDIT_EVENT.replace(
+                            ":id",
+                            eventDetails.id
+                          )}
+                        >
+                          Edit
+                        </Link>
+                      </SecondaryButton>
+                      <SecondaryButton onClick={handleDeleteEvent}>
+                        Delete
+                      </SecondaryButton>
+                    </SecondaryButtonGroup>
                   </div>
                 </div>
               </div>
@@ -136,7 +148,7 @@ const Event = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 };
 
