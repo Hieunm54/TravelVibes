@@ -36,7 +36,6 @@ const UserPosts = () => {
     getUserPostList();
   }, []);
 
-  console.log("heiu user post ", CONST.IMAGE_URL);
   return (
     <div className="flex flex-col space-y-5 bg-gray-100 items-center px-56 py-5">
       {posts.map((post) => (
