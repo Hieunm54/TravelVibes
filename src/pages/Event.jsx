@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import SecondaryButtonGroup from "../components/SecondaryButtonGroup";
 import SecondaryButton from "../components/SecondaryButton";
 import PostMap from "../components/PostMap";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { appRoutes } from "../enum/routes";
 import { getEventDetailAsync } from "../store/actions/events";
@@ -19,7 +19,6 @@ const Event = ({ id, onClose }) => {
   const eventDetails = useSelector(sGetEventDetails);
   const user = useSelector(sGetUserInfo);
   const navigate = useNavigate();
-  // const { id } = useParams();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -33,7 +32,7 @@ const Event = ({ id, onClose }) => {
   const handleDeleteEvent = async () => {
     // TODO: Call Delete Event API
   };
-  const handleGoBack = () => navigate(-1);
+  // const handleGoBack = () => navigate(-1);
 
   if (!user) {
     navigate("/sign-in");

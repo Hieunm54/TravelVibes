@@ -3,6 +3,7 @@ import { actionTypes } from "../actions/users";
 export const usersDefaultState = {
   usersToChat: [],
 };
+
 const users = (state = usersDefaultState, action) => {
   switch (action.type) {
     case actionTypes.SEARCH_USERS:
