@@ -5,6 +5,10 @@ export const sGetUserInfo = (state) => state.auth.user;
 export const sTaskStatus = (key) => (store) =>
   store.asyncTaskReducer.status[key];
 
+// Posts
+export const sGetPostList = (store) => store.posts.postList;
+export const sGetPostDetail = (store) => store.posts.post;
+
 // Messages
 export const sGetAllChats = (store) => store.messages.chatList;
 export const sGetMessages = (store) => store.messages.currentMessages;

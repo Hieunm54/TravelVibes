@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import _ from "lodash";
 
-// import Layout from "../components/Layout";
 import PostMap from "../components/PostMap";
 import CardRoute from "../components/CardRoute";
 import CardCaption from "../components/CardCaption";
@@ -40,7 +40,13 @@ import VisitingLocationCTA from "../components/VisitingLocationCTA";
 import VisitingLocationActionBtn from "../components/VisitingLocationActionBtn";
 import { buttonStyle } from "../styles/button";
 import { CONST } from "../constaints";
-import { sGetUserInfo } from "../store/selectors";
+import { sGetPostDetail, sGetUserInfo } from "../store/selectors";
+import {
+  getPostDetailsAsync,
+  updatePostAction,
+  updatePostAsync,
+} from "../store/actions/posts";
+import DangerButton from "../components/Button/DangerButton";
 
 const Post = ({ id, onClose }) => {
   const [post, setPost] = useState(null);
@@ -57,6 +63,7 @@ const Post = ({ id, onClose }) => {
   const auth = useSelector((state) => state.auth);
   const currentUser = useSelector(sGetUserInfo);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { id: userId } = jwtDecode(auth.token);
 
   const handleCommentInputChange = (event) =>
@@ -78,6 +85,7 @@ const Post = ({ id, onClose }) => {
       };
       await updatePost(auth.token, id, editedPost);
       setPost(editedPost);
+      dispatch(updatePostAction(editedPost, editedPost._id));
       setIsEditing(false);
     } catch (e) {
       toast.error("Unable to update post.");
@@ -183,7 +191,6 @@ const Post = ({ id, onClose }) => {
       const getCommentList = async () => {
         try {
           const response = await getComments(auth.token, id);
-          console.log(response.data);
           setComments(response.data);
         } catch (e) {
           toast.error("Unable to retrieve comments.");
@@ -242,23 +249,24 @@ const Post = ({ id, onClose }) => {
         toast.error("Unable to retrieve post details.");
       }
     };
+    getPostDetails();
 
     const getCommentList = async () => {
       try {
         const response = await getComments(auth.token, id);
-        console.log(response.data);
         setComments(response.data);
       } catch (e) {
         toast.error("Unable to retrieve comments.");
       }
     };
-    getPostDetails();
     getCommentList();
-  }, [auth.token, id]);
+  }, [auth.token, dispatch, id]);
 
   return (
     <>
-      {post && (
+      {_.isEmpty(post) ? (
+        <div className="text-center">No post found</div>
+      ) : (
         <div className="grid grid-cols-12 h-screen overflow-hidden">
           <section className="col-span-6 border-r-2 border-gray-300 px-3 h-screen overflow-y-scroll">
             <div className="pb-3 border-b border-gray-200">
@@ -296,9 +304,9 @@ const Post = ({ id, onClose }) => {
                             <SecondaryButton onClick={handleEditPost}>
                               Edit
                             </SecondaryButton>
-                            <SecondaryButton onClick={handleDeletePost}>
+                            <DangerButton onClick={handleDeletePost}>
                               Delete
-                            </SecondaryButton>
+                            </DangerButton>
                           </>
                         )}
                       </>
@@ -482,13 +490,13 @@ const Post = ({ id, onClose }) => {
                                 >
                                   Edit
                                 </SecondaryButton>
-                                <SecondaryButton
+                                <DangerButton
                                   onClick={() =>
                                     handleDeleteComment(comment._id)
                                   }
                                 >
                                   Delete
-                                </SecondaryButton>
+                                </DangerButton>
                               </>
                             )}
                           </SecondaryButtonGroup>
