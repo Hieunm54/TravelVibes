@@ -1,154 +1,117 @@
-import React, { useEffect } from "react";
-import Layout from "../components/Layout";
+/* eslint-disable react/prop-types */
+import { useEffect } from "react";
 import SecondaryButtonGroup from "../components/SecondaryButtonGroup";
 import SecondaryButton from "../components/SecondaryButton";
 import PostMap from "../components/PostMap";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { getEvent } from "../services/events";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { appRoutes } from "../enum/routes";
+import { getEventDetailAsync } from "../store/actions/events";
+import { sGetEventDetails, sGetUserInfo } from "../store/selectors";
+import { CONST } from "../constaints";
+import { formatDisplayName } from "../utils/formatDisplayName";
+import _ from "lodash";
+import moment from "moment";
+import DangerButton from "../components/Button/DangerButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const eventDetails = {
-  id: 1,
-  cover: "https://picsum.photos/300/100",
-  datetime: "FRIDAY, 12 JANUARY 2024 AT 17:00",
-  title: "Exhibition Name",
-  description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum. Lorem ipsum dolor sit amet,
-                  consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                  ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                  quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                  ea commodo consequat. Duis aute irure dolor in reprehenderit
-                  in voluptate velit esse cillum dolore eu fugiat nulla
-                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-                  in culpa qui officia deserunt mollit anim id est laborum.Lorem
-                  ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                  enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum.Lorem ipsum dolor sit amet,
-                  consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                  ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                  quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                  ea commodo consequat. Duis aute irure dolor in reprehenderit
-                  in voluptate velit esse cillum dolore eu fugiat nulla
-                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-                  in culpa qui officia deserunt mollit anim id est laborum.Lorem
-                  ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                  enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum.Lorem ipsum dolor sit amet,
-                  consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                  ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                  quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                  ea commodo consequat. Duis aute irure dolor in reprehenderit
-                  in voluptate velit esse cillum dolore eu fugiat nulla
-                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-                  in culpa qui officia deserunt mollit anim id est laborum.Lorem
-                  ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                  enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum.`,
-  location: null,
-};
-
-const Event = () => {
-  const auth = useSelector((state) => state.auth);
+const Event = ({ id, onClose }) => {
+  const eventDetails = useSelector(sGetEventDetails);
+  const user = useSelector(sGetUserInfo);
   const navigate = useNavigate();
-  const { id } = useParams();
+  // const { id } = useParams();
+  const dispatch = useDispatch();
 
-  if (!auth) {
-    navigate("/sign-in");
-    return;
-  }
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
 
-  const getEventDetails = async () => {
-    // TODO: Call Event Detail API
-    // const response = await getEvent(auth.token, id);
-  };
+    dispatch(getEventDetailAsync(id));
+  }, [dispatch, id]);
 
   const handleDeleteEvent = async () => {
     // TODO: Call Delete Event API
   };
-
   const handleGoBack = () => navigate(-1);
 
-  useEffect(() => {
-    getEventDetails();
-  }, []);
+  if (!user) {
+    navigate("/sign-in");
+    return;
+  }
 
   return (
-    <div className="h-screen overflow-hidden">
-      <div className="h-screen overflow-y-scroll py-3 px-5">
-        <div className="py-3">
-          <button onClick={handleGoBack}>
-            <FontAwesomeIcon
-              icon="fa-solid fa-circle-xmark"
-              className="text-2xl"
+    <>
+      {_.isEmpty(eventDetails) ? (
+        <div className="text-center">No event found</div>
+      ) : (
+        <div className="h-screen overflow-auto">
+          <div className="h-screen overflow-y-scroll px-5">
+            <div className="pb-3">
+              <button onClick={onClose}>
+                <FontAwesomeIcon
+                  icon="fa-solid fa-circle-xmark"
+                  className="text-2xl"
+                />
+              </button>
+            </div>
+            <img
+              src={`${CONST.IMAGE_URL}/${eventDetails.images[0].fileName}`}
+              className="block w-full rounded-md"
             />
-          </button>
-        </div>
-        <img src={eventDetails.cover} className="block w-full rounded-md" />
-        <div className="mt-3">
-          <div className="flex flex-col space-y-1 mt-3 col-span-2">
-            <time className="font-bold text-xl text-red-500">
-              {eventDetails.datetime}
-            </time>
-            <h3 className="font-bold text-4xl pb-2">{eventDetails.title}</h3>
-            <div className="border-t border-gray-200 grid grid-cols-3 gap-10 pt-5">
-              <p className="col-span-2 border-r border-gray-200 pr-10">
-                {eventDetails.description}
-              </p>
-              <div className="relative">
-                <div className="sticky top-0 left-0 w-full flex flex-col space-y-3">
-                  <address className="block w-full h-72">
-                    <PostMap style={{ borderRadius: "6px" }} attractions={[]} />
-                  </address>
-                  <div>
-                    Hosted by <span className="font-bold">Huy Vu</span>
-                  </div>
-                  <div className="mt-2 border-t border-gray-200">
-                    <SecondaryButtonGroup>
-                      <SecondaryButton>
-                        <Link
-                          to={appRoutes.EDIT_EVENT.replace(
-                            ":id",
-                            eventDetails.id
-                          )}
-                        >
-                          Edit
-                        </Link>
-                      </SecondaryButton>
-                      <SecondaryButton onClick={handleDeleteEvent}>
-                        Delete
-                      </SecondaryButton>
-                    </SecondaryButtonGroup>
+            <div className="mt-3">
+              <div className="flex flex-col space-y-1 mt-3 col-span-2">
+                <time className="font-bold text-xl text-red-500">
+                  {moment(eventDetails.date).format(CONST.READABLE_TIME)}
+                </time>
+                <h3 className="font-bold text-4xl pb-2">{eventDetails.name}</h3>
+                <div className="border-t border-gray-200 grid grid-cols-3 gap-10 pt-5">
+                  <p className="col-span-2 border-r border-gray-200 pr-10">
+                    {eventDetails.description}
+                  </p>
+                  <div className="relative">
+                    <div className="sticky top-0 left-0 w-full flex flex-col space-y-3">
+                      <div>{eventDetails.attraction.name}</div>
+                      <address className="block w-full h-72">
+                        <PostMap
+                          style={{ borderRadius: "6px" }}
+                          attractions={[eventDetails.attraction]}
+                        />
+                      </address>
+                      <div>
+                        Poster:{" "}
+                        <span className="font-bold">
+                          {formatDisplayName(eventDetails.poster)}
+                        </span>
+                      </div>
+                      {eventDetails.isOwner && (
+                        <div className="mt-2 border-t border-gray-200">
+                          <SecondaryButtonGroup>
+                            <SecondaryButton>
+                              <Link
+                                to={appRoutes.EDIT_EVENT.replace(
+                                  ":id",
+                                  eventDetails._id
+                                )}
+                              >
+                                Edit
+                              </Link>
+                            </SecondaryButton>
+                            <DangerButton onClick={handleDeleteEvent}>
+                              Delete
+                            </DangerButton>
+                          </SecondaryButtonGroup>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

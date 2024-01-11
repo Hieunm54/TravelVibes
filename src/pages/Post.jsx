@@ -1,11 +1,12 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Layout from "../components/Layout";
+// import Layout from "../components/Layout";
 import PostMap from "../components/PostMap";
 import CardRoute from "../components/CardRoute";
 import CardCaption from "../components/CardCaption";
@@ -39,8 +40,9 @@ import VisitingLocationCTA from "../components/VisitingLocationCTA";
 import VisitingLocationActionBtn from "../components/VisitingLocationActionBtn";
 import { buttonStyle } from "../styles/button";
 import { CONST } from "../constaints";
+import { sGetUserInfo } from "../store/selectors";
 
-const Post = () => {
+const Post = ({ id, onClose }) => {
   const [post, setPost] = useState(null);
   const [backupPost, setBackupPost] = useState(null);
   const [comments, setComments] = useState([]);
@@ -50,17 +52,12 @@ const Post = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [captionInput, setCaptionInput] = useState("");
   const [isFindingAttraction, setIsFindingAttraction] = useState(false);
-  const [attrractionInput, setAttractionInput] = useState("");
+  const [attractionInput, setAttractionInput] = useState("");
   const [attractionSuggestions, setAttractionSuggestions] = useState([]);
   const auth = useSelector((state) => state.auth);
-  const { id } = useParams();
+  const currentUser = useSelector(sGetUserInfo);
   const navigate = useNavigate();
   const { id: userId } = jwtDecode(auth.token);
-
-  if (!auth) {
-    navigate("/sign-in");
-    return;
-  }
 
   const handleCommentInputChange = (event) =>
     setCommentInput(event.target.value);
@@ -71,15 +68,6 @@ const Post = () => {
   const handleAttractionInput = (event) => {
     setAttractionInput(event.target.value);
     getAttractionSuggestions();
-  };
-
-  const getPostDetails = async () => {
-    try {
-      const response = await getPost(auth.token, id);
-      setPost(response.data);
-    } catch (e) {
-      toast.error("Unable to retrieve post details.");
-    }
   };
 
   const handleUpdatePost = async () => {
@@ -139,7 +127,7 @@ const Post = () => {
   const getAttractionSuggestions = async () => {
     try {
       const response = await getAttractions(auth.token, {
-        q: attrractionInput,
+        q: attractionInput,
       });
       setAttractionSuggestions(response.data);
     } catch (e) {
@@ -186,22 +174,21 @@ const Post = () => {
     }
   };
 
-  const getCommentList = async () => {
-    try {
-      const response = await getComments(auth.token, id);
-      console.log(response.data);
-      setComments(response.data);
-    } catch (e) {
-      toast.error("Unable to retrieve comments.");
-    }
-  };
-
   const handleSendComment = async (event) => {
     event.preventDefault();
     try {
       await sendComment(auth.token, id, {
         content: commentInput,
       });
+      const getCommentList = async () => {
+        try {
+          const response = await getComments(auth.token, id);
+          console.log(response.data);
+          setComments(response.data);
+        } catch (e) {
+          toast.error("Unable to retrieve comments.");
+        }
+      };
       getCommentList();
       setCommentInput("");
     } catch (e) {
@@ -246,27 +233,42 @@ const Post = () => {
     }
   };
 
-  const handleGoBack = () => navigate(-1);
-
   useEffect(() => {
+    const getPostDetails = async () => {
+      try {
+        const response = await getPost(auth.token, id);
+        setPost(response.data);
+      } catch (e) {
+        toast.error("Unable to retrieve post details.");
+      }
+    };
+
+    const getCommentList = async () => {
+      try {
+        const response = await getComments(auth.token, id);
+        console.log(response.data);
+        setComments(response.data);
+      } catch (e) {
+        toast.error("Unable to retrieve comments.");
+      }
+    };
     getPostDetails();
     getCommentList();
-  }, []);
-
+  }, [auth.token, id]);
   return (
     <>
       {post && (
         <div className="grid grid-cols-12 h-screen overflow-hidden">
-          <section className="col-span-6 border-r-2 border-gray-300 h-screen overflow-y-scroll">
-            <div className="py-3 border-b border-gray-200 px-5">
-              <button onClick={handleGoBack}>
+          <section className="col-span-6 border-r-2 border-gray-300 px-3 h-screen overflow-y-scroll">
+            <div className="pb-3 border-b border-gray-200">
+              <button onClick={onClose}>
                 <FontAwesomeIcon
                   icon="fa-solid fa-circle-xmark"
                   className="text-2xl"
                 />
               </button>
             </div>
-            <div className="px-5 pt-3">
+            <div>
               <CardAuthor>
                 <CardAuthorAva
                   size={14}
@@ -363,7 +365,7 @@ const Post = () => {
                             label={false}
                             name="attraction"
                             placeholder="Where do you want to visit?"
-                            value={attrractionInput}
+                            value={attractionInput}
                             onChange={handleAttractionInput}
                             className="grow"
                           />
@@ -410,11 +412,11 @@ const Post = () => {
                 <CardCommentCount count={comments.length} />
               </CardInteractionInfo>
             </div>
-            <div className="border-t border-gray-300 mt-2 py-5 px-5">
+            <div className="border-t border-gray-300 mt-2 py-5 px-5 h-screen">
               <Form onSubmit={handleSendComment}>
                 <CardAuthorAva
                   size={14}
-                  src={`${CONST.IMAGE_URL}/${post.author.avatar}`}
+                  src={`${CONST.IMAGE_URL}/${currentUser.avatar}`}
                 />
                 <FormInput
                   label={false}
@@ -431,7 +433,7 @@ const Post = () => {
                   />
                 </Button>
               </Form>
-              <div className="flex flex-col space-y-4 mt-3">
+              <div className="flex flex-col space-y-4 mt-3 h-screen overflow-auto">
                 {comments
                   .slice(0)
                   .reverse()

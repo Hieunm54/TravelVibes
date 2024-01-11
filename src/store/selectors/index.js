@@ -18,3 +18,4 @@ export const sGetUsersToChat = (store) => store.users.usersToChat;
 export const sGetApprovedEvents = (store) => store.events.approvedEvents;
 export const sGetMyEventList = (store) => store.events.myEventList;
 export const sGetUserEventList = (store) => store.events.userEventList;
+export const sGetEventDetails = (store) => store.events.eventDetails;

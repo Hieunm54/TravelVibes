@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+/* eslint-disable react/prop-types */
+import { useEffect } from "react";
 import Mapbox from "./Mapbox";
 import { NavigationControl } from "react-map-gl";
 
 import MapMarker from "./MapMarker";
 import Direction from "./Map/Direction";
 import { useMap } from "../hooks/map";
+import { toast } from "react-toastify";
 
 const CardMap = ({ attractions }) => {
   const { coordinates, mapRef, updateBounds } = useMap(attractions, (e) =>

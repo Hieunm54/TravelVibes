@@ -14,7 +14,7 @@ import Card from "../components/Card";
 import CardMap from "../components/CardMap";
 import CardRoute from "../components/CardRoute";
 import CardCaption from "../components/CardCaption";
-import CardAuthor from "../components/CardAuthor";
+// import CardAuthor from "../components/CardAuthor";
 import CardAuthorAva from "../components/CardAuthorAva";
 import CardAuthorName from "../components/CardAuthorName";
 import CardInteractionInfo from "../components/CardInteractionInfo";
@@ -27,23 +27,19 @@ import {
 } from "../store/actions/events";
 import { sGetApprovedEvents } from "../store/selectors";
 import EventItem from "../components/Events/EventItem";
-import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import Post from "./Post";
+import CommonModal from "../components/Modal";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
+  const [selectedPostId, setSelectedPostId] = useState(0);
+  const [openModal, setOpenModal] = useState(false);
+
   const auth = useSelector((state) => state.auth);
   const events = useSelector(sGetApprovedEvents);
   const dispatch = useDispatch();
   const { id } = jwtDecode(auth.token);
-  const getPostList = async () => {
-    try {
-      const response = await getPosts(auth.token);
-      setPosts(response.data);
-    } catch (e) {
-      toast.error("Unable to retrieve posts.");
-    }
-  };
 
   const toggleSaveEvent = (e, eventId) => {
     e.stopPropagation();
@@ -54,24 +50,46 @@ const Home = () => {
     console.log("heu add ", eventId);
   };
 
+  const handleChoosePost = (event, id) => {
+    event.preventDefault();
+    setSelectedPostId(id);
+    setOpenModal(true);
+  };
+
   useEffect(() => {
+    const getPostList = async () => {
+      try {
+        const response = await getPosts(auth.token);
+        setPosts(response.data);
+      } catch (e) {
+        toast.error("Unable to retrieve posts.");
+      }
+    };
     getPostList();
     dispatch(getApprovedEventsAsync());
     dispatch(getAllMyEventsAsync());
-  }, [dispatch]);
+  }, [auth.token, dispatch]);
 
   return (
     <Layout>
       <div className="grid grid-cols-12 h-screen overflow-hidden">
-        <Feeds className="col-span-8 relative">
-          <h1 className="w-full p-4 font-bold text-xl border-b border-gray-100 sticky top-0 left-0 bg-white z-50">
+        <Feeds className="col-span-8">
+          <h1 className="w-full p-4 font-bold text-xl border-b border-gray-100 sticky top-0 left-0 bg-white z-10">
             Feeds
           </h1>
+          <CommonModal
+            isOpen={openModal}
+            onClose={() => setOpenModal(false)}
+            className="p-5 h-[90%] w-[90%] overflow-auto z-50"
+          >
+            <Post id={selectedPostId} onClose={() => setOpenModal(false)} />
+          </CommonModal>
           {posts.map((post) => (
             <Card key={post._id}>
-              <Link
-                to={`/posts/${post._id}`}
+              <div
+                // to={`/posts/${post._id}`}
                 className="grid grid-cols-12 gap-3"
+                onClick={(event) => handleChoosePost(event, post._id)}
               >
                 <CardAuthorAva
                   size={10}
@@ -105,7 +123,7 @@ const Home = () => {
                   </CardRoute>
                   <CardMap attractions={post.attractions} />
                 </div>
-              </Link>
+              </div>
               <CardInteractionInfo>
                 <div className="col-start-2 flex items-center space-x-5">
                   <CardUpvoteButton
@@ -121,9 +139,10 @@ const Home = () => {
             </Card>
           ))}
         </Feeds>
+
         <div className="col-span-4 border-l border-gray-100 h-screen overflow-y-scroll">
           <div className="flex flex-col items-center">
-            <h1 className="w-full p-4 font-bold text-xl border-b border-gray-100 sticky top-0 left-0 bg-white z-50">
+            <h1 className="w-full p-4 font-bold text-xl border-b border-gray-100 sticky top-0 left-0 bg-white z-10">
               Upcoming Events
             </h1>
             {events.map((event) => {

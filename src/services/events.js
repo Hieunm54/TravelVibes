@@ -34,3 +34,19 @@ export const getAllMyEvents = async (token) => {
     },
   });
 };
+
+export const getEventDetail = async (id, token) => {
+  return axios.get(`${CONST.API_URL}/api/events/${id}`, {
+    headers: {
+      Authorization: authorizationHeader(token),
+    },
+  });
+};
+
+export const updateEvent = async (id, formData, token) => {
+  return axios.put(`${CONST.API_URL}/api/events/${id}`, formData, {
+    headers: {
+      Authorization: authorizationHeader(token),
+    },
+  });
+};
