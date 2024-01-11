@@ -39,6 +39,9 @@ const Home = () => {
   const auth = useSelector((state) => state.auth);
   const events = useSelector(sGetApprovedEvents);
   const dispatch = useDispatch();
+
+  if (!auth.token) window.location = "/sign-in";
+
   const { id } = jwtDecode(auth.token);
 
   const toggleSaveEvent = (e, eventId) => {

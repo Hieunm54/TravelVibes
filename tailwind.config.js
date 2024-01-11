@@ -16,6 +16,9 @@ export default {
         "rgb-white": "rgb(255, 255, 255)",
         "sm-white": "rgb(115, 115, 115)",
       },
+      backgroundImage: {
+        hanoi: "url('src/assets/hanoi.jpeg')",
+      },
     },
   },
   plugins: [],
