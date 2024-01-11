@@ -90,7 +90,11 @@ const Profile = () => {
                   onChange={handlePhotoSelected}
                 />
                 <button onClick={handleChangeAvatar}>
-                  <CardAuthorAva src={`${CONST.IMAGE_URL}/${user.avatar}`} />
+                  <CardAuthorAva
+                    src={`${CONST.IMAGE_URL}/${
+                      user.avatar ?? CONST.DEFAULT_AVATAR
+                    }`}
+                  />
                 </button>
               </div>
               <div className="col-span-2">

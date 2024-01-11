@@ -3,10 +3,10 @@ import { useDispatch } from "react-redux";
 import Button from "../components/Button";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { saveLogInInfo } from "../store/actions/auth";
 import { Link, useNavigate } from "react-router-dom";
 import FormInput from "../components/FormInput";
 import { CONST } from "../constaints";
+import { authRoutes } from "../enum/routes";
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
@@ -14,7 +14,6 @@ const SignUp = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -27,18 +26,10 @@ const SignUp = () => {
         email,
         password,
       });
-
-      console.log(response.data);
-
-      // const { token, user } = response.data;
-      // dispatch(saveLogInInfo(token, user));
-      // localStorage.setItem("token", token);
-      // localStorage.setItem("user", JSON.stringify(user));
-
-      // navigate("/");
-      // window.location = "/";
+      navigate(authRoutes.SIGN_IN);
+      toast.success("Account created");
     } catch (e) {
-      toast.error("Your email or password is incorrect.");
+      toast.error(e.response.data.message);
     }
   };
 
