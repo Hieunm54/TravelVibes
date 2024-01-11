@@ -5,6 +5,7 @@ import "./index.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-multi-carousel/lib/styles.css";
+import "@smastrom/react-rating/style.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

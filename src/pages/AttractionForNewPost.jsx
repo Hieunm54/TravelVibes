@@ -5,56 +5,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { appRoutes } from "../enum/routes";
 import { useDispatch, useSelector } from "react-redux";
-import ButtonGroup from "../components/ButtonGroup";
 import Button from "../components/Button";
 import { addAttraction } from "../store/attractions";
 import BackButton from "../components/BackButton";
 import { getAttraction } from "../services/attractions";
-import { createReview, getReviews } from "../services/reviews";
+import { getReviews } from "../services/reviews";
 import AttractionInfo from "../components/AttractionInfo";
-import Review from "../components/Review";
-import FormInput from "../components/FormInput";
 import { CONST } from "../constaints";
 import AttractionReview from "../components/AttractionReview";
 
 const Attraction = () => {
   const [details, setDetails] = useState(null);
   const [reviews, setReviews] = useState([]);
-  const [reviewInput, setReviewInput] = useState("");
-  const [reviewRating, setReviewRating] = useState(0);
-  const [uploadedImages, setUploadedImages] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams();
 
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
-
-  const handleImagesUpload = (event) => {
-    setUploadedImages(event.target.files);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const formData = new FormData();
-    formData.append("content", reviewInput);
-    formData.append("rating", reviewRating);
-    if (uploadedImages) {
-      for (let i = 0; i < uploadedImages.length; i++) {
-        formData.append("images", uploadedImages[i]);
-      }
-    }
-
-    try {
-      await createReview(auth.token, id, formData);
-      await getReviewList();
-      setReviewInput("");
-      setReviewRating(0);
-      setUploadedImages(null);
-    } catch (e) {
-      toast.error("Unable to create review");
-    }
-  };
 
   const getAttractionDetails = async () => {
     try {
@@ -68,6 +35,7 @@ const Attraction = () => {
   const getReviewList = async () => {
     try {
       const response = await getReviews(auth.token, id);
+      console.log(response.data);
       setReviews(response.data);
     } catch (e) {
       toast.error("Unable to retrieve reviews!");
@@ -82,6 +50,11 @@ const Attraction = () => {
   useEffect(() => {
     getAttractionDetails();
     getReviewList();
+    const interval = setInterval(() => {
+      getAttractionDetails();
+      getReviewList();
+    }, 2000);
+    return () => clearInterval(interval);
   }, []);
 
   return (

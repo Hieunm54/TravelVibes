@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { appRoutes } from "../enum/routes";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import BackButton from "../components/BackButton";
 import AttractionSuggestion from "../components/AttractionSuggestion";
 import { getAttractions } from "../services/attractions";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { addAttraction } from "../store/attractions";
 
 const Attractions = () => {
+  const dispatch = useDispatch();
   const [attractionInput, setAttractionInput] = useState("");
   const [attractionSuggestions, setAttractionSuggestions] = useState([]);
   const auth = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
   const getAttractionSuggestions = async () => {
     try {
@@ -20,6 +23,11 @@ const Attractions = () => {
     } catch (e) {
       setAttractionSuggestions([]);
     }
+  };
+
+  const handleSelectAttraction = (suggestion) => {
+    dispatch(addAttraction(suggestion));
+    navigate(appRoutes.NEW_POST_VIEW_ATTRACTION.replace(":id", suggestion._id));
   };
 
   return (
@@ -42,19 +50,16 @@ const Attractions = () => {
       <div>
         {attractionSuggestions.length > 0 &&
           attractionSuggestions.map((suggestion) => (
-            <Link
+            <button
               key={suggestion._id}
-              to={appRoutes.NEW_POST_VIEW_ATTRACTION.replace(
-                ":id",
-                suggestion._id
-              )}
-              className="block"
+              onClick={() => handleSelectAttraction(suggestion)}
+              className="block w-full text-left"
             >
               <AttractionSuggestion
                 name={suggestion.name}
                 address={suggestion.address}
               />
-            </Link>
+            </button>
           ))}
       </div>
     </div>
