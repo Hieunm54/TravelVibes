@@ -17,7 +17,6 @@ import CardInteractionInfo from "../components/CardInteractionInfo";
 import CardUpvoteButton from "../components/CardUpvoteButton";
 import CardCommentCount from "../components/CardCommentCount";
 import { CONST } from "../constaints";
-import { Link } from "react-router-dom";
 import CommonModal from "./Modal";
 import Post from "../pages/Post";
 
@@ -58,8 +57,7 @@ const UserPosts = () => {
       {posts.map((post) => (
         <Card key={post._id}>
           <div
-            // to={`/posts/${post._id}`}
-            className="grid grid-cols-12 gap-3 px-56"
+            className="grid grid-cols-12 gap-3 px-56 hover:cursor-pointer"
             onClick={(event) => handleChoosePost(event, post._id)}
           >
             <CardAuthorAva
