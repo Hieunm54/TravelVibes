@@ -116,7 +116,6 @@ export const updateEventAsync = (id, formData) => {
       dispatch(asyncTaskStartAction(taskID));
       const token = getState().auth.token;
       const response = await EventService.updateEvent(id, formData, token);
-      console.log("heiu update ", response);
       if (response.status === 200) {
         dispatch(getEventDetail(response.data));
         toast.success("Event updated");
