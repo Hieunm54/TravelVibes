@@ -5,6 +5,7 @@ import { CONST } from "../../constaints";
 import CommonModal from "../Modal";
 import { useState } from "react";
 import Event from "../../pages/Event";
+import moment from "moment";
 
 const EventItem = ({
   event,
@@ -37,7 +38,7 @@ const EventItem = ({
               className="block w-full rounded-md"
             />
             <time className="block text-red-500 text-sm font-bold mt-2">
-              {event.date}
+              {moment(event.date).format(CONST.READABLE_TIME)}
             </time>
             <h3 className="font-bold text-xl leading-tight">{event.name}</h3>
             <address className="flex space-x-2 mt-2">

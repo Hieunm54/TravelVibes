@@ -18,10 +18,14 @@ import CardUpvoteButton from "../components/CardUpvoteButton";
 import CardCommentCount from "../components/CardCommentCount";
 import { CONST } from "../constaints";
 import { Link } from "react-router-dom";
+import CommonModal from "./Modal";
+import Post from "../pages/Post";
 
 const UserPosts = () => {
   const [posts, setPosts] = useState([]);
   const auth = useSelector((state) => state.auth);
+  const [selectedPostId, setSelectedPostId] = useState(0);
+  const [openModal, setOpenModal] = useState(false);
 
   const getUserPostList = async () => {
     try {
@@ -32,17 +36,31 @@ const UserPosts = () => {
     }
   };
 
+  const handleChoosePost = (event, id) => {
+    event.preventDefault();
+    setSelectedPostId(id);
+    setOpenModal(true);
+  };
+
   useEffect(() => {
     getUserPostList();
   }, []);
 
   return (
     <div className="flex flex-col space-y-5 items-center">
+      <CommonModal
+        isOpen={openModal}
+        onClose={() => setOpenModal(false)}
+        className="p-5 h-[90%] w-[90%] overflow-auto z-50"
+      >
+        <Post id={selectedPostId} onClose={() => setOpenModal(false)} />
+      </CommonModal>
       {posts.map((post) => (
         <Card key={post._id}>
-          <Link
-            to={`/posts/${post._id}`}
+          <div
+            // to={`/posts/${post._id}`}
             className="grid grid-cols-12 gap-3 px-56"
+            onClick={(event) => handleChoosePost(event, post._id)}
           >
             <CardAuthorAva
               size={10}
@@ -76,7 +94,7 @@ const UserPosts = () => {
               </CardRoute>
               <CardMap attractions={post.attractions} />
             </div>
-          </Link>
+          </div>
           <CardInteractionInfo className="px-56">
             <div className="col-start-2 flex items-center space-x-5">
               <CardUpvoteButton

@@ -103,7 +103,7 @@ const EditEvent = () => {
       return;
     }
     dispatch(updateEventAsync(id, formData));
-    navigate(appRoutes.EVENT);
+    navigate(appRoutes.USER_EVENTS);
   };
 
   const handleTitleInputChange = (event) => setTitleInput(event.target.value);

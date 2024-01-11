@@ -255,6 +255,7 @@ const Post = ({ id, onClose }) => {
     getPostDetails();
     getCommentList();
   }, [auth.token, id]);
+
   return (
     <>
       {post && (
