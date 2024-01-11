@@ -39,6 +39,9 @@ const Home = () => {
   const posts = useSelector(sGetPostList);
 
   const dispatch = useDispatch();
+
+  if (!auth.token) window.location = "/sign-in";
+
   const { id } = jwtDecode(auth.token);
 
   const toggleSaveEvent = (e, eventId) => {
