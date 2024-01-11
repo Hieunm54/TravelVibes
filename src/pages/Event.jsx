@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import Layout from "../components/Layout";
+/* eslint-disable react/prop-types */
+import { useEffect } from "react";
 import SecondaryButtonGroup from "../components/SecondaryButtonGroup";
 import SecondaryButton from "../components/SecondaryButton";
 import PostMap from "../components/PostMap";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { appRoutes } from "../enum/routes";
 import { getEventDetailAsync } from "../store/actions/events";
@@ -13,11 +13,15 @@ import { formatDisplayName } from "../utils/formatDisplayName";
 import _ from "lodash";
 import moment from "moment";
 import DangerButton from "../components/Button/DangerButton";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Event = () => {
-  const { id } = useParams();
-  const dispatch = useDispatch();
+const Event = ({ id, onClose }) => {
   const eventDetails = useSelector(sGetEventDetails);
+  const user = useSelector(sGetUserInfo);
+  const navigate = useNavigate();
+  // const { id } = useParams();
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (!id) {
       return;
@@ -29,14 +33,28 @@ const Event = () => {
   const handleDeleteEvent = async () => {
     // TODO: Call Delete Event API
   };
+  const handleGoBack = () => navigate(-1);
+
+  if (!user) {
+    navigate("/sign-in");
+    return;
+  }
 
   return (
-    <Layout>
+    <>
       {_.isEmpty(eventDetails) ? (
         <div className="text-center">No event found</div>
       ) : (
-        <div className="h-screen overflow-hidden">
-          <div className="h-screen overflow-y-scroll py-10 px-5">
+        <div className="h-screen overflow-auto">
+          <div className="h-screen overflow-y-scroll px-5">
+            <div className="pb-3">
+              <button onClick={onClose}>
+                <FontAwesomeIcon
+                  icon="fa-solid fa-circle-xmark"
+                  className="text-2xl"
+                />
+              </button>
+            </div>
             <img
               src={`${CONST.IMAGE_URL}/${eventDetails.images[0].fileName}`}
               className="block w-full rounded-md"
@@ -93,7 +111,7 @@ const Event = () => {
           </div>
         </div>
       )}
-    </Layout>
+    </>
   );
 };
 

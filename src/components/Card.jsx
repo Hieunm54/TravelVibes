@@ -1,14 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Card = ({ id, children }) => {
+const Card = ({ children, className }) => {
   return (
-    <Link
-      to={`/posts/${id}`}
-      className="block border border-gray-200 w-5/6 bg-white p-3 rounded-lg shadow-xl"
+    <div
+      className={`pt-3 pb-4 px-4 border-b last:border-0 border-gray-100 hover:bg-gray-100 ${className}`}
     >
       {children}
-    </Link>
+    </div>
   );
 };
 

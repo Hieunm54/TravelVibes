@@ -10,11 +10,11 @@ const responsive = {
   superLargeDesktop: {
     // the naming can be any, depends on you.
     breakpoint: { max: 4000, min: 3000 },
-    items: 2,
+    items: 5,
   },
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 2,
+    items: 3,
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
@@ -26,7 +26,7 @@ const responsive = {
   },
 };
 
-const Review = ({
+const AttractionReview = ({
   authorName,
   images,
   rating,
@@ -36,12 +36,9 @@ const Review = ({
   createdAt,
 }) => {
   return (
-    <Link
-      to={appRoutes.VIEW_ATTRACTION.replace(":id", attraction._id)}
-      className="border-b last:border-0 border-gray-100 hover:bg-gray-100 grid grid-cols-12 gap-3 px-60 pt-5 pb-4"
-    >
+    <div className="grid grid-cols-7 pb-2 pt-3 border-b last:border-0 border-gray-100">
       <CardAuthorAva size={10} src={avatar} />
-      <div className="col-span-11">
+      <div className="col-span-6">
         <div className="flex">
           <h4 className="font-bold">{authorName}</h4>
           <span className="px-1 text-gray-500">•</span>
@@ -70,8 +67,8 @@ const Review = ({
           ))}
         </Carousel>
       </div>
-    </Link>
+    </div>
   );
 };
 
-export default Review;
+export default AttractionReview;

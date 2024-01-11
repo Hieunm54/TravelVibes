@@ -27,11 +27,11 @@ const EditEvent = () => {
   const [location, setLocation] = useState([]);
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [isSearchLocation, setIsSearchingLocation] = useState(false);
+  const navigate = useNavigate();
   const { id } = useParams();
   const auth = useSelector((state) => state.auth);
   const eventDetails = useSelector(sGetEventDetails);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!id) {
@@ -103,7 +103,7 @@ const EditEvent = () => {
       return;
     }
     dispatch(updateEventAsync(id, formData));
-    navigate(appRoutes.EVENT);
+    navigate(appRoutes.USER_EVENTS);
   };
 
   const handleTitleInputChange = (event) => setTitleInput(event.target.value);

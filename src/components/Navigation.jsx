@@ -3,6 +3,7 @@ import { appRoutes, authRoutes } from "../enum/routes";
 import HomePage from "../pages/Home";
 import NotFoundPage from "../pages/NotFound";
 import AttractionsPage from "../pages/Attractions";
+import AttractionForNewPostPage from "../pages/AttractionForNewPost";
 import AttractionPage from "../pages/Attraction";
 import NewPostPage from "../pages/NewPost";
 import SignInPage from "../pages/SignIn";
@@ -37,7 +38,7 @@ const routes = createBrowserRouter([
       },
       {
         path: appRoutes.NEW_POST_VIEW_ATTRACTION,
-        element: <AttractionPage />,
+        element: <AttractionForNewPostPage />,
       },
     ],
   },
@@ -46,6 +47,11 @@ const routes = createBrowserRouter([
     element: <MessagesPage />,
     errorElement: <NotFoundPage />,
     children: [{ path: appRoutes.SINGLE_CHAT, element: <MessagesPage /> }],
+  },
+  {
+    path: appRoutes.VIEW_ATTRACTION,
+    element: <AttractionPage />,
+    errorElement: <NotFoundPage />,
   },
   {
     path: appRoutes.POST,

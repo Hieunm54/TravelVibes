@@ -1,7 +1,11 @@
 import React from "react";
 
-const CardInteractionInfo = ({ children }) => {
-  return <div className="flex items-center space-x-5 mt-5">{children}</div>;
+const CardInteractionInfo = ({ children, className }) => {
+  return (
+    <div className={`grid grid-cols-12 gap-3 mt-5 ${className}`}>
+      {children}
+    </div>
+  );
 };
 
 export default CardInteractionInfo;

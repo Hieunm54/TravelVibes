@@ -36,6 +36,7 @@ const Messages = () => {
         <CommonModal
           isOpen={isOpenNewChatPopUp}
           onClose={() => setIsOpenNewChatPopUp(false)}
+          className="py-5 h-2/3 w-1/3 z-50"
         >
           <NewMessageModal onClose={() => setIsOpenNewChatPopUp(false)} />
         </CommonModal>

@@ -205,7 +205,6 @@ const Chat = ({ openNewChatModal }) => {
   const handleMentionClick = (id, type) => {
     if (type === "event") {
       // Fetch data about the event using the id
-      // You can use this data to display in the modal or perform other actions
       console.log("Fetching data for event:", id);
     }
   };
@@ -250,7 +249,7 @@ const Chat = ({ openNewChatModal }) => {
             />
           </svg>
         </button> */}
-        <MentionsInput
+        {/* <MentionsInput
           value={message}
           onChange={handleChange}
           onKeyPress={handleKeyPress}
@@ -285,15 +284,15 @@ const Chat = ({ openNewChatModal }) => {
             data={MockAttractionSuggestion}
             // renderSuggestion={this.renderTagSuggestion}
           />
-        </MentionsInput>
-        {/* <input
+        </MentionsInput> */}
+        <input
           className="flex-1 border rounded-xl p-2 resize-none focus:outline-none"
           placeholder="Type a message..."
           value={message}
           onChange={handleChange}
           onKeyPress={handleKeyPress}
           ref={textareaRef}
-        /> */}
+        />
         <button
           className={`ml-2 bg-blue-500 text-white px-4 py-2 rounded ${
             isSendButtonDisable

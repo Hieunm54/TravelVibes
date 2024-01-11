@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
@@ -78,79 +78,85 @@ const Profile = () => {
       <div className="overflow-hidden h-screen">
         <div className="overflow-y-scroll h-screen flex flex-col items-center relative">
           {user && (
-            <div className="pt-10 mb-7 flex flex-col items-center">
-              <div className="relative">
-                <div>
-                  <input
-                    ref={avatarSelectRef}
-                    type="file"
-                    name="Photos"
-                    multiple
-                    accept=".png, .jpg, .jpeg"
-                    className="hidden"
-                    onChange={handlePhotoSelected}
-                  />
-                  <button onClick={handleChangeAvatar}>
-                    <CardAuthorAva
-                      size={56}
-                      src={`${CONST.IMAGE_URL}/${user.avatar}`}
-                    />
-                  </button>
-                </div>
+            <div className="grid grid-cols-3 gap-14 px-52 py-10">
+              <div>
+                <input
+                  ref={avatarSelectRef}
+                  type="file"
+                  name="Photos"
+                  multiple
+                  accept=".png, .jpg, .jpeg"
+                  className="hidden"
+                  onChange={handlePhotoSelected}
+                />
+                <button onClick={handleChangeAvatar}>
+                  <CardAuthorAva src={`${CONST.IMAGE_URL}/${user.avatar}`} />
+                </button>
               </div>
-              <h2 className="font-bold text-3xl mt-5">
-                {user.firstName} {user.lastName}
-              </h2>
-              <div className="mt-5">
-                {!user.description && !isEditingBio ? (
-                  <SecondaryButtonGroup>
-                    <SecondaryButton onClick={handleEditBio}>
-                      Let others know a bit about you
-                    </SecondaryButton>
-                  </SecondaryButtonGroup>
-                ) : !isEditingBio ? (
-                  <button className="mt-3 cursor-text" onClick={handleEditBio}>
-                    {user.description}
-                  </button>
-                ) : (
-                  <form onSubmit={handleUpdateBio}>
-                    <FormInput
-                      label={false}
-                      multiline={true}
-                      value={bioInput}
-                      onChange={handleBioInput}
-                      placeholder="Let others know a bit about you"
-                      className="grow"
-                    />
-                    <SecondaryButtonGroup className="justify-center mt-1">
-                      <SecondaryButton>Save</SecondaryButton>
-                      <SecondaryButton onClick={handleCancelEditingBio}>
-                        Cancel
+              <div className="col-span-2">
+                <h2 className="font-bold text-3xl mt-5">
+                  {user.firstName} {user.lastName}
+                </h2>
+                <div className="mt-5">
+                  {!user.description && !isEditingBio ? (
+                    <SecondaryButtonGroup>
+                      <SecondaryButton onClick={handleEditBio}>
+                        Let others know a bit about you
                       </SecondaryButton>
                     </SecondaryButtonGroup>
-                  </form>
-                )}
+                  ) : !isEditingBio ? (
+                    <button
+                      className="mt-3 cursor-text text-left"
+                      onClick={handleEditBio}
+                    >
+                      {user.description}
+                    </button>
+                  ) : (
+                    <form onSubmit={handleUpdateBio}>
+                      <FormInput
+                        label={false}
+                        multiline={true}
+                        value={bioInput}
+                        onChange={handleBioInput}
+                        placeholder="Let others know a bit about you"
+                        className="grow"
+                      />
+                      <SecondaryButtonGroup className="justify-center mt-1">
+                        <SecondaryButton>Save</SecondaryButton>
+                        <SecondaryButton onClick={handleCancelEditingBio}>
+                          Cancel
+                        </SecondaryButton>
+                      </SecondaryButtonGroup>
+                    </form>
+                  )}
+                </div>
               </div>
             </div>
           )}
-          <ul className="sticky top-0 left-0 z-10 bg-white flex justify-center space-x-5 border-t border-b border-gray-200 w-full p-2 text-lg">
+          <ul className="sticky top-0 left-0 z-10 bg-white flex justify-center items-center space-x-5 border-t border-b border-gray-200 w-full p-2 text-lg">
             <li
               className={
-                location.pathname === "/profile" ? "text-blue-500" : ""
+                location.pathname === "/profile"
+                  ? "font-bold border-t-4 border-black"
+                  : ""
               }
             >
               <Link to="/profile">Posts</Link>
             </li>
             <li
               className={
-                location.pathname === "/profile/reviews" ? "text-blue-500" : ""
+                location.pathname === "/profile/reviews"
+                  ? "font-bold border-t-4 border-black"
+                  : ""
               }
             >
               <Link to="/profile/reviews">Reviews</Link>
             </li>
             <li
               className={
-                location.pathname === "/profile/events" ? "text-blue-500" : ""
+                location.pathname === "/profile/events"
+                  ? "font-bold border-t-4 border-black"
+                  : ""
               }
             >
               <Link to={appRoutes.USER_EVENTS}>Events</Link>

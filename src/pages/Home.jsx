@@ -14,7 +14,7 @@ import Card from "../components/Card";
 import CardMap from "../components/CardMap";
 import CardRoute from "../components/CardRoute";
 import CardCaption from "../components/CardCaption";
-import CardAuthor from "../components/CardAuthor";
+// import CardAuthor from "../components/CardAuthor";
 import CardAuthorAva from "../components/CardAuthorAva";
 import CardAuthorName from "../components/CardAuthorName";
 import CardInteractionInfo from "../components/CardInteractionInfo";
@@ -27,20 +27,19 @@ import {
 } from "../store/actions/events";
 import { sGetApprovedEvents } from "../store/selectors";
 import EventItem from "../components/Events/EventItem";
+import { jwtDecode } from "jwt-decode";
+import Post from "./Post";
+import CommonModal from "../components/Modal";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
+  const [selectedPostId, setSelectedPostId] = useState(0);
+  const [openModal, setOpenModal] = useState(false);
+
   const auth = useSelector((state) => state.auth);
   const events = useSelector(sGetApprovedEvents);
   const dispatch = useDispatch();
-  const getPostList = async () => {
-    try {
-      const response = await getPosts(auth.token);
-      setPosts(response.data);
-    } catch (e) {
-      toast.error("Unable to retrieve posts.");
-    }
-  };
+  const { id } = jwtDecode(auth.token);
 
   const toggleSaveEvent = (e, eventId) => {
     e.stopPropagation();
@@ -51,61 +50,101 @@ const Home = () => {
     console.log("heu add ", eventId);
   };
 
+  const handleChoosePost = (event, id) => {
+    event.preventDefault();
+    setSelectedPostId(id);
+    setOpenModal(true);
+  };
+
   useEffect(() => {
+    const getPostList = async () => {
+      try {
+        const response = await getPosts(auth.token);
+        setPosts(response.data);
+      } catch (e) {
+        toast.error("Unable to retrieve posts.");
+      }
+    };
     getPostList();
     dispatch(getApprovedEventsAsync());
     dispatch(getAllMyEventsAsync());
-  }, [dispatch]);
+  }, [auth.token, dispatch]);
 
   return (
     <Layout>
       <div className="grid grid-cols-12 h-screen overflow-hidden">
-        <Feeds className="col-span-8 py-10">
-          <h2 className="text-left w-4/5 font-bold text-4xl">Recent posts</h2>
+        <Feeds className="col-span-8">
+          <h1 className="w-full p-4 font-bold text-xl border-b border-gray-100 sticky top-0 left-0 bg-white z-10">
+            Feeds
+          </h1>
+          <CommonModal
+            isOpen={openModal}
+            onClose={() => setOpenModal(false)}
+            className="p-5 h-[90%] w-[90%] overflow-auto z-50"
+          >
+            <Post id={selectedPostId} onClose={() => setOpenModal(false)} />
+          </CommonModal>
           {posts.map((post) => (
-            <Card key={post._id} id={post._id}>
-              <CardAuthor>
+            <Card key={post._id}>
+              <div
+                // to={`/posts/${post._id}`}
+                className="grid grid-cols-12 gap-3"
+                onClick={(event) => handleChoosePost(event, post._id)}
+              >
                 <CardAuthorAva
-                  size={14}
+                  size={10}
                   src={`${CONST.IMAGE_URL}/${post.author.avatar}`}
                 />
-                <CardAuthorName
-                  name={`${post.author.firstName} ${post.author.lastName}`}
-                />
-              </CardAuthor>
-              <CardCaption className="mt-3">{post.caption}</CardCaption>
-              <CardRoute>
-                <RouteContainer>
-                  {post.attractions.map((attraction) => (
-                    <VisitingLocationContainer key={attraction._id}>
-                      <VisitingLocationMarker />
-                      <VisitingLocationInfoContainer>
-                        <VisitingLocationInfo
-                          name={attraction.name}
-                          address={attraction.address}
-                        />
-                      </VisitingLocationInfoContainer>
-                    </VisitingLocationContainer>
-                  ))}
-                </RouteContainer>
-              </CardRoute>
-              <CardMap attractions={post.attractions} />
+                <div className="col-span-11">
+                  <div className="flex">
+                    <CardAuthorName
+                      name={`${post.author.firstName} ${post.author.lastName}`}
+                    />
+                    <span className="px-1 text-gray-500">•</span>
+                    <time className="text-gray-500">
+                      {new Date(post.createdAt).toDateString()}
+                    </time>
+                  </div>
+                  <CardCaption className="mt-1">{post.caption}</CardCaption>
+                  <CardRoute>
+                    <RouteContainer>
+                      {post.attractions.map((attraction) => (
+                        <VisitingLocationContainer key={attraction._id}>
+                          <VisitingLocationMarker />
+                          <VisitingLocationInfoContainer>
+                            <VisitingLocationInfo
+                              name={attraction.name}
+                              address={attraction.address}
+                            />
+                          </VisitingLocationInfoContainer>
+                        </VisitingLocationContainer>
+                      ))}
+                    </RouteContainer>
+                  </CardRoute>
+                  <CardMap attractions={post.attractions} />
+                </div>
+              </div>
               <CardInteractionInfo>
-                <CardUpvoteButton
-                  postId={post._id}
-                  isUpvote={post.isUpvote}
-                  upvoteCount={post.upvote.length}
-                />
-                <CardCommentCount count={post.countComments} />
+                <div className="col-start-2 flex items-center space-x-5">
+                  <CardUpvoteButton
+                    postId={post._id}
+                    isUpvote={
+                      post.upvote.filter((userId) => userId === id).length !== 0
+                    }
+                    upvoteCount={post.upvote.length}
+                  />
+                  <CardCommentCount count={post.countComments} />
+                </div>
               </CardInteractionInfo>
             </Card>
           ))}
         </Feeds>
-        <div className="col-span-4 border-l border-gray-200 h-screen overflow-y-scroll py-10 px-5 bg-gray-100">
-          <div className="flex flex-col items-center space-y-7">
-            <h2 className="font-bold text-4xl text-left w-full mt-3">
-              Upcoming events
-            </h2>
+
+        <div className="col-span-4 border-l border-gray-100 h-screen overflow-y-scroll">
+          <div className="flex flex-col items-center">
+            <h1 className="w-full p-4 font-bold text-xl border-b border-gray-100 sticky top-0 left-0 bg-white z-10">
+              Upcoming Events
+            </h1>
             {events.map((event) => {
               return (
                 <EventItem
