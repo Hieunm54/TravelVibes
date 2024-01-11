@@ -46,7 +46,7 @@ const AttractionReview = ({
             {new Date(createdAt).toDateString()}
           </time>
         </div>
-        <address>{attraction.name}</address>
+        {attraction && <address>{attraction.name}</address>}
         <div className="flex items-center mt-3 text-lg text-yellow-400">
           {Array.from(Array(rating), (_, i) => (
             <FontAwesomeIcon key={i} icon="fa-solid fa-star" />

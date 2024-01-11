@@ -3,24 +3,17 @@ import { NavigationControl, Popup } from "react-map-gl";
 import VisitingLocationPopUpInfo from "../components/VisitingLocationPopUpInfo";
 import MapMarker from "../components/MapMarker";
 import Direction from "./Map/Direction";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Mapbox from "./Mapbox";
 import { useMap } from "../hooks/map";
-import { removeAttraction } from "../store/attractions";
 import { toast } from "react-toastify";
 
 const PostPageLayout = ({ children }) => {
-  const dispatch = useDispatch();
   const attractions = useSelector((state) => state.attractions);
   const [hoveredMarker, setHoveredMarker] = useState(null);
   const { coordinates, mapRef, updateBounds } = useMap(attractions, (e) =>
     toast.error("Unable to retrieve attractions!")
   );
-
-  const handlePopUpDelete = (index) => {
-    dispatch(removeAttraction(index));
-    setHoveredMarker(null);
-  };
 
   const handlePopUpClose = () => {
     console.log(hoveredMarker);
@@ -33,6 +26,7 @@ const PostPageLayout = ({ children }) => {
 
   useEffect(() => {
     if (!mapRef) return;
+    setHoveredMarker(null);
     updateBounds();
   }, [attractions, mapRef]);
 
@@ -59,7 +53,6 @@ const PostPageLayout = ({ children }) => {
               <VisitingLocationPopUpInfo
                 name={hoveredMarker.attraction.name}
                 address={hoveredMarker.attraction.address}
-                onDelete={() => handlePopUpDelete(hoveredMarker.index)}
               />
             </Popup>
           )}
