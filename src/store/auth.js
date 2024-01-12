@@ -16,6 +16,11 @@ const auth = (state = authDefaultState, action) => {
         adminToken: action.payload.adminToken,
         admin: action.payload.admin,
       };
+    case actionTypes.UPDATE_USER_PROFILE:
+      return {
+        ...state,
+        user: action.payload,
+      };
     default:
       return state;
   }

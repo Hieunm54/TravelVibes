@@ -20,6 +20,7 @@ import EventPage from "../pages/Event";
 import EditEventPage from "../pages/EditEvent";
 import NotificationPage from "../pages/Notification";
 import AdminPage from "../pages/Admin";
+import AdminEventsPage from "../pages/AdminEventList";
 
 const routes = createBrowserRouter([
   {
@@ -96,6 +97,11 @@ const routes = createBrowserRouter([
   {
     path: appRoutes.ADMIN,
     element: <AdminPage />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: appRoutes.ADMIN_EVENTS,
+    element: <AdminEventsPage />,
     errorElement: <NotFoundPage />,
   },
   {

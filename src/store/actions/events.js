@@ -8,6 +8,8 @@ export const actionTypes = {
   CREATE_NEW_EVENT: "CREATE_NEW_EVENT",
   GET_EVENT_DETAIL: "GET_EVENT_DETAIL",
   UPDATE_EVENT: "UPDATE_EVENT",
+  GET_ALL_EVENTS: "GET_ALL_EVENTS",
+  UPDATE_EVENT_STATUS: "UPDATE_EVENT_STATUS",
 };
 
 export const getApprovedEvents = (payload) => {
@@ -123,6 +125,69 @@ export const updateEventAsync = (id, formData) => {
         toast.error("Cannot update event");
       }
 
+      dispatch(asyncTaskStopAction(taskID));
+    } catch (error) {
+      dispatch(asyncTaskStopAction(taskID, error));
+    }
+  };
+};
+
+export const getAllEventsAction = (payload) => {
+  return {
+    type: actionTypes.GET_ALL_EVENTS,
+    payload,
+  };
+};
+
+export const getAllEventsAsync = () => {
+  const taskID = actionTypes.GET_ALL_EVENTS;
+  // eslint-disable-next-line no-unused-vars
+  return async (dispatch, getState) => {
+    try {
+      dispatch(asyncTaskStartAction(taskID));
+      // const token = getState().auth.token;
+      const adminToken = localStorage.getItem("adminToken");
+
+      const response = await EventService.getAllEvents(adminToken);
+      if (response.status === 200) {
+        dispatch(getAllEventsAction(response.data));
+      } else {
+        toast.error("Cannot fetch all events");
+      }
+      dispatch(asyncTaskStopAction(taskID));
+    } catch (error) {
+      dispatch(asyncTaskStopAction(taskID, error));
+    }
+  };
+};
+
+export const updateEventStatusAction = (id, data) => {
+  return {
+    type: actionTypes.UPDATE_EVENT_STATUS,
+    payload: { id, data },
+  };
+};
+
+export const updateEventStatusAsync = (id, status) => {
+  const taskID = actionTypes.UPDATE_EVENT_STATUS;
+  // eslint-disable-next-line no-unused-vars
+  return async (dispatch, getState) => {
+    try {
+      dispatch(asyncTaskStartAction(taskID));
+      const adminToken = localStorage.getItem("adminToken");
+      const response = await EventService.updateEventStatus(
+        adminToken,
+        id,
+        status
+      );
+      if (response.status === 200) {
+        dispatch(updateEventStatusAction(id, response.data));
+        toast.success("Status updated");
+        // dispatch(getAllMyEventsAsync());
+        // dispatch(getApprovedEventsAsync());
+      } else {
+        toast.error("Cannot update status for this event");
+      }
       dispatch(asyncTaskStopAction(taskID));
     } catch (error) {
       dispatch(asyncTaskStopAction(taskID, error));

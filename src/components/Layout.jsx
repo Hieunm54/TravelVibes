@@ -6,7 +6,6 @@ import { appRoutes, authRoutes } from "../enum/routes";
 
 const Layout = ({ children }) => {
   const auth = useSelector((state) => state.auth);
-
   const handleLogOut = () => {
     localStorage.clear();
     window.location = authRoutes.SIGN_IN;
@@ -19,7 +18,10 @@ const Layout = ({ children }) => {
       ) : (
         <main className="grid grid-cols-5 h-screen">
           <aside className="border-r border-gray-100 px-5">
-            <h1 className="w-full py-4 px-4 font-bold text-2xl">TravelVibes</h1>
+            <h1 className="w-full py-4 px-4 font-bold text-2xl font-['Lemon']">
+              <span className="text-blue-800">Travel</span>
+              <span className="text-blue-500">Vibes</span>
+            </h1>
             <nav className="mt-3">
               <ul className="flex flex-col space-y-2">
                 <li

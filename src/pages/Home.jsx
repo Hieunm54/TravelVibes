@@ -22,27 +22,38 @@ import {
   getAllMyEventsAsync,
   getApprovedEventsAsync,
 } from "../store/actions/events";
-import { sGetApprovedEvents, sGetPostList } from "../store/selectors";
+import {
+  sGetApprovedEvents,
+  sGetPostList,
+  sGetUserInfo,
+} from "../store/selectors";
 import EventItem from "../components/Events/EventItem";
 import { jwtDecode } from "jwt-decode";
 import Post from "./Post";
 import CommonModal from "../components/Modal";
 import { getPostListAsync } from "../store/actions/posts";
 import _ from "lodash";
+import { useNavigate } from "react-router-dom";
+import { authRoutes } from "../enum/routes";
 
 const Home = () => {
   const [selectedPostId, setSelectedPostId] = useState(0);
   const [openModal, setOpenModal] = useState(false);
+  const navigate = useNavigate();
 
   const auth = useSelector((state) => state.auth);
   const events = useSelector(sGetApprovedEvents);
   const posts = useSelector(sGetPostList);
+  const currentUser = useSelector(sGetUserInfo);
 
   const dispatch = useDispatch();
 
-  if (!auth.token) window.location = "/sign-in";
-
-  const { id } = jwtDecode(auth.token);
+  useEffect(() => {
+    if (auth.token) {
+      return;
+    }
+    navigate(authRoutes.SIGN_IN);
+  }, [auth.token, navigate]);
 
   const toggleSaveEvent = (e, eventId) => {
     e.stopPropagation();
@@ -126,8 +137,9 @@ const Home = () => {
                     <CardUpvoteButton
                       postId={post._id}
                       isUpvote={
-                        post.upvote.filter((userId) => userId === id).length !==
-                        0
+                        post.upvote.filter(
+                          (userId) => userId === currentUser._id
+                        ).length !== 0
                       }
                       upvoteCount={post.upvote.length}
                     />

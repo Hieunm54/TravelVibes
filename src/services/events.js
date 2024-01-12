@@ -50,3 +50,24 @@ export const updateEvent = async (id, formData, token) => {
     },
   });
 };
+
+// For admin
+export const getAllEvents = async (adminToken) => {
+  return axios.get(`${CONST.API_URL}/api/admin/events`, {
+    headers: {
+      Authorization: authorizationHeader(adminToken),
+    },
+  });
+};
+
+export const updateEventStatus = async (adminToken, id, status) => {
+  return axios.put(
+    `${CONST.API_URL}/api/admin/events/${id}/verify`,
+    { status },
+    {
+      headers: {
+        Authorization: authorizationHeader(adminToken),
+      },
+    }
+  );
+};
