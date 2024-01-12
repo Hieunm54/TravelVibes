@@ -14,3 +14,18 @@ export const CONST = {
   OPTIMISTIC_CHAT_ID: "NEW_CHAT_ID",
   FORM_DATA_LENGTH: 5,
 };
+
+export const eventStates = [
+  {
+    name: "PENDING",
+    color: "bg-gray-500",
+  },
+  {
+    name: "APPROVED",
+    color: "bg-lime-500",
+  },
+  {
+    name: "REJECTED",
+    color: "bg-red-500",
+  },
+];

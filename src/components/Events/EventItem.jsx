@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
-import { CONST } from "../../constaints";
+import { CONST, eventStates } from "../../constaints";
 import CommonModal from "../Modal";
 import { useState } from "react";
 import Event from "../../pages/Event";
@@ -49,21 +49,22 @@ const EventItem = ({
               <span>{event.attraction.name}</span>
             </address>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center justify-between mt-3">
             <button
-              className="mt-3 bg-rgb-blue rounded-md px-2 py-1 flex items-center space-x-2 text-rgb-white hover:bg-blue-300"
+              className="bg-rgb-blue rounded-md px-2 py-1 flex items-center space-x-2 text-rgb-white hover:bg-blue-300"
               onClick={(e) => onAddToJourney(e, event._id)}
             >
               <FontAwesomeIcon icon="fa-solid fa-circle-plus" />
               <span>Add</span>
             </button>
-            <button
-              className="mt-3 bg-gray-200 rounded-md px-2 py-1 flex items-center space-x-2 hover:bg-gray-300"
-              onClick={(e) => onToggleSaveEvent(e, event._id)}
+            <p
+              className={`px-2 py-1 rounded-md ${
+                eventStates.filter((state) => state.name === event.status)[0]
+                  .color
+              }`}
             >
-              <FontAwesomeIcon icon="fa-regular fa-bookmark" />
-              <span>Save</span>
-            </button>
+              {event.status}
+            </p>
           </div>
         </div>
         <CommonModal
