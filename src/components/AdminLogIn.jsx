@@ -27,8 +27,7 @@ const AdminLogIn = () => {
       localStorage.setItem("adminToken", token);
       localStorage.setItem("admin", JSON.stringify(admin));
 
-      navigate("/admin");
-      // window.location = "/admin";
+      navigate("/admin/events");
     } catch (e) {
       toast.error("Your email or password is incorrect.");
     }

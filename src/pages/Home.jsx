@@ -29,10 +29,13 @@ import Post from "./Post";
 import CommonModal from "../components/Modal";
 import { getPostListAsync } from "../store/actions/posts";
 import _ from "lodash";
+import { useNavigate } from "react-router-dom";
+import { authRoutes } from "../enum/routes";
 
 const Home = () => {
   const [selectedPostId, setSelectedPostId] = useState(0);
   const [openModal, setOpenModal] = useState(false);
+  const navigate = useNavigate();
 
   const auth = useSelector((state) => state.auth);
   const events = useSelector(sGetApprovedEvents);
@@ -40,7 +43,7 @@ const Home = () => {
 
   const dispatch = useDispatch();
 
-  if (!auth.token) window.location = "/sign-in";
+  if (!auth.token) navigate(authRoutes.SIGN_IN);
 
   const { id } = jwtDecode(auth.token);
 
