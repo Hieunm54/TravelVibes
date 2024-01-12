@@ -212,7 +212,7 @@ const Chat = ({ openNewChatModal }) => {
   return (
     <div className="w-7/10 bg-white flex flex-col h-screen">
       {/* header of chat */}
-      <div className="flex border-b p-8 items-center">
+      <div className="flex border-b p-8  items-center">
         <img
           className="rounded-full"
           src={`${CONST.IMAGE_URL}/${
@@ -220,7 +220,7 @@ const Chat = ({ openNewChatModal }) => {
           }`}
           alt="Avatar"
           width={45}
-          height={45}
+          // height={45}
         />
         <h3 className="ml-3 font-bold">{displayName}</h3>
       </div>

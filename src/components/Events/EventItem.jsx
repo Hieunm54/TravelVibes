@@ -27,12 +27,9 @@ const EventItem = ({
 
   return (
     <>
-      <div className="block border-b pt-3 pb-4 px-4 border-b-gray-100 last:border-0 hover:bg-gray-100">
-        <div>
-          <div
-            to={`/events/${event._id}`}
-            onClick={(e) => handleChooseEvent(e, event._id)}
-          >
+      <div className="block border-b pt-3 pb-4 px-4 border-b-gray-100 last:border-0 hover:bg-gray-100 w-full">
+        <div className="flex flex-col justify-between h-full">
+          <div onClick={(e) => handleChooseEvent(e, event._id)}>
             <img
               src={`${CONST.IMAGE_URL}/${displayCover}`}
               className="block w-full rounded-md"
@@ -58,7 +55,7 @@ const EventItem = ({
               <span>Add</span>
             </button>
             <p
-              className={`px-2 py-1 rounded-md ${
+              className={`px-2 py-1 rounded-md text-rgb-white ${
                 eventStates.filter((state) => state.name === event.status)[0]
                   .color
               }`}
