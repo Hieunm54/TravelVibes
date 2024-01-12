@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
@@ -13,24 +13,20 @@ import SecondaryButton from "../components/SecondaryButton";
 import FormInput from "../components/FormInput";
 import { CONST } from "../constaints";
 import { appRoutes } from "../enum/routes";
+import {
+  getUserProfileAsync,
+  updateUserProfileAsync,
+} from "../store/actions/users";
+import { sGetUserInfo } from "../store/selectors";
 
 const Profile = () => {
-  const [user, setUser] = useState(null);
+  const user = useSelector(sGetUserInfo);
   const [isEditingBio, setIsEditingBio] = useState(false);
   const [bioInput, setBioInput] = useState("");
   const avatarSelectRef = useRef();
   const auth = useSelector((state) => state.auth);
   const location = useLocation();
-
-  const getProfile = async () => {
-    try {
-      const decoded = jwtDecode(auth.token);
-      const response = await getUserProfile(auth.token, decoded.id);
-      setUser(response.data);
-    } catch (e) {
-      toast.error("Unable to retrieve profile.");
-    }
-  };
+  const dispatch = useDispatch();
 
   const handleChangeAvatar = () => {
     avatarSelectRef.current.click();
@@ -40,8 +36,8 @@ const Profile = () => {
     const formData = new FormData();
     formData.append("avatar", event.target.files[0]);
     try {
-      await updateUserProfile(auth.token, formData);
-      getProfile();
+      dispatch(updateUserProfileAsync(formData));
+      toast.success("Update profile image success");
     } catch (e) {
       toast.error("Unable to update user's avatar.");
     }
@@ -57,8 +53,8 @@ const Profile = () => {
     const formData = new FormData();
     formData.append("description", bioInput);
     try {
-      await updateUserProfile(auth.token, formData);
-      await getProfile();
+      dispatch(updateUserProfileAsync(formData));
+      toast.success("Update bio success");
       setIsEditingBio(false);
       setBioInput("");
     } catch (e) {
@@ -70,8 +66,9 @@ const Profile = () => {
   const handleCancelEditingBio = () => setIsEditingBio(false);
 
   useEffect(() => {
-    getProfile();
-  }, []);
+    const decoded = jwtDecode(auth.token);
+    dispatch(getUserProfileAsync(decoded.id));
+  }, [auth.token, dispatch]);
 
   return (
     <Layout>
@@ -94,6 +91,7 @@ const Profile = () => {
                     src={`${CONST.IMAGE_URL}/${
                       user.avatar ?? CONST.DEFAULT_AVATAR
                     }`}
+                    size={32}
                   />
                 </button>
               </div>

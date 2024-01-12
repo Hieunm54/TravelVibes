@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import Button from "../components/Button";
+import Button from "../Button";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { saveAdminLogInInfo } from "../store/actions/auth";
+import { saveAdminLogInInfo } from "../../store/actions/auth";
 import { useNavigate } from "react-router-dom";
-import FormInput from "../components/FormInput";
-import { CONST } from "../constaints";
+import FormInput from "../FormInput";
+import { CONST } from "../../constaints";
 
 const AdminLogIn = () => {
   const [email, setEmail] = useState("");

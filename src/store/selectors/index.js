@@ -17,9 +17,11 @@ export const sCachedMessage = (store) => store.messages.cachedMessage;
 
 // Users
 export const sGetUsersToChat = (store) => store.users.usersToChat;
+// export const sGetUserProfile = (store) => store.users.myProfile;
 
 // Events
 export const sGetApprovedEvents = (store) => store.events.approvedEvents;
 export const sGetMyEventList = (store) => store.events.myEventList;
-export const sGetUserEventList = (store) => store.events.userEventList;
+// export const sGetUserEventList = (store) => store.events.userEventList;
 export const sGetEventDetails = (store) => store.events.eventDetails;
+export const sGetAllEventsForAdmin = (store) => store.events.allEvents;

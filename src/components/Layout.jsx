@@ -6,7 +6,6 @@ import { appRoutes, authRoutes } from "../enum/routes";
 
 const Layout = ({ children }) => {
   const auth = useSelector((state) => state.auth);
-
   const handleLogOut = () => {
     localStorage.clear();
     window.location = authRoutes.SIGN_IN;
