@@ -9,6 +9,7 @@ import asyncTaskReducer, { initialAsyncTaskState } from "./reducers/asyncTask";
 import users, { usersDefaultState } from "./reducers/users";
 import events, { eventDefaultState } from "./reducers/events";
 import posts, { postsDefaultState } from "./reducers/posts";
+import reviews, { reviewsDefaultState } from "./reducers/reviews";
 
 const AppInitialState = {
   attractions: attractionsDefaultState,
@@ -18,6 +19,7 @@ const AppInitialState = {
   users: usersDefaultState,
   events: eventDefaultState,
   posts: postsDefaultState,
+  reviews: reviewsDefaultState,
 };
 
 const DevEnv = import.meta.env.VITE_DEV_ENV;
@@ -41,6 +43,7 @@ const configStore = (preloadedState = AppInitialState) => {
     users,
     events,
     posts,
+    reviews,
   });
 
   const store = createStore(appReducer, preloadedState, composedEnhancers);

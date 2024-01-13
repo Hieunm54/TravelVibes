@@ -1,11 +1,13 @@
 import { asyncTaskStartAction, asyncTaskStopAction } from "./asyncTask";
 import * as PostServices from "../../services/posts";
+import * as UserServices from "../../services/users";
 import { toast } from "react-toastify";
 
 export const actionTypes = {
   GET_POST_LIST: "GET_POST_LIST",
   GET_POST_DETAILS: "GET_POST_DETAILS",
   UPDATE_POST: "UPDATE_POST",
+  GET_USER_POST_LIST: "GET_USER_POST_LIST",
 };
 
 export const getPostList = (payload) => {
@@ -25,6 +27,34 @@ export const getPostListAsync = () => {
       const response = await PostServices.getPosts(token);
       if (response.status === 200) {
         dispatch(getPostList(response.data));
+      } else {
+        toast.error("Fail to get post list");
+      }
+
+      dispatch(asyncTaskStopAction(taskId));
+    } catch (error) {
+      dispatch(asyncTaskStopAction(taskId, error));
+    }
+  };
+};
+
+export const getUserPostList = (payload) => {
+  return {
+    type: actionTypes.GET_USER_POST_LIST,
+    payload,
+  };
+};
+
+export const getUserPostListAsync = () => {
+  const taskId = actionTypes.GET_USER_POST_LIST;
+  return async (dispatch, getState) => {
+    try {
+      dispatch(asyncTaskStartAction(taskId));
+      const token = getState().auth.token;
+
+      const response = await UserServices.getUserPosts(token);
+      if (response.status === 200) {
+        dispatch(getUserPostList(response.data));
       } else {
         toast.error("Fail to get post list");
       }

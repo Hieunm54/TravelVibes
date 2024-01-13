@@ -8,6 +8,7 @@ export const sTaskStatus = (key) => (store) =>
 // Posts
 export const sGetPostList = (store) => store.posts.postList;
 export const sGetPostDetail = (store) => store.posts.post;
+export const sGetUserPostList = (store) => store.posts.userPostList;
 
 // Messages
 export const sGetAllChats = (store) => store.messages.chatList;
@@ -25,3 +26,6 @@ export const sGetMyEventList = (store) => store.events.myEventList;
 // export const sGetUserEventList = (store) => store.events.userEventList;
 export const sGetEventDetails = (store) => store.events.eventDetails;
 export const sGetAllEventsForAdmin = (store) => store.events.allEvents;
+
+// Reviews
+export const sGetUserReviewList = (store) => store.reviews.userReviewList;

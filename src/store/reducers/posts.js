@@ -12,6 +12,11 @@ const posts = (state = postsDefaultState, action) => {
         ...state,
         postList: action.payload,
       };
+    case actionTypes.GET_USER_POST_LIST:
+      return {
+        ...state,
+        userPostList: action.payload,
+      };
     case actionTypes.GET_POST_DETAILS:
       return {
         ...state,
