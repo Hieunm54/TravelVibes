@@ -162,7 +162,7 @@ const Home = () => {
           <div className="h-full overflow-y-scroll">
             {events.map((event) => {
               return (
-                <div className="pb-10 last:pb-0">
+                <div className="pb-7 last:pb-0">
                   <EventItem
                     key={event._id}
                     event={event}
