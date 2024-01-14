@@ -111,6 +111,7 @@ const EditEvent = () => {
   const handleDescriptionChange = (event) =>
     setDescriptionInput(event.target.value);
   const handleLocationInputChange = (event) => {
+    setLocation([]);
     setLocationInput(event.target.value);
     setIsSearchingLocation(true);
     getLocationSuggestions();
@@ -210,7 +211,17 @@ const EditEvent = () => {
               </div>
             </div>
             <div>
-              <Button type="submit">Update</Button>
+              <Button
+                disabled={
+                  !coverPhoto ||
+                  titleInput === "" ||
+                  datetimeInput === "" ||
+                  location.length === 0
+                }
+                type="submit"
+              >
+                Update
+              </Button>
             </div>
           </form>
         </section>
