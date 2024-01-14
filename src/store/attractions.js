@@ -32,14 +32,6 @@ const attractions = (state = attractionsDefaultState, action) => {
         ...state.slice(action.index + 2),
       ];
     case actionTypes.moveUpAttraction: {
-      console.log("Before", state);
-      console.log(
-        "After",
-        state.slice(0, action.index - 1),
-        state[action.index],
-        state[action.index - 1],
-        state.slice(action.index + 2)
-      );
       return [
         ...state.slice(0, action.index - 1),
         state[action.index],

@@ -77,7 +77,6 @@ const Attraction = () => {
   const getReviewList = async () => {
     try {
       const response = await getReviews(auth.token, id);
-      console.log(response.data);
       setReviews(response.data);
     } catch (e) {
       toast.error("Unable to retrieve reviews!");

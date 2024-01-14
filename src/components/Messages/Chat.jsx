@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { io } from "socket.io-client";
-import { MentionsInput, Mention } from "react-mentions";
 
 import { CONST } from "../../constaints";
 import Message from "./Message";
@@ -87,30 +86,6 @@ const Chat = ({ openNewChatModal }) => {
     };
   }, [dispatch, currentUser._id, receiverUser._id, chatId]);
 
-  // const processUserMessage = (message) => {
-  //   if (message.startsWith("/")) {
-  //     // Extract the command and parameters
-  //     const [command, ...params] = message.slice(1).split(" ");
-
-  //     // Check for different commands
-  //     switch (command) {
-  //       case "events":
-  //         // Fetch events from the server
-  //         console.log('');
-  //         break;
-  //       // Add more cases for other commands
-
-  //       default:
-  //         // Handle unknown command or provide user feedback
-  //         console.log(`Unknown command: ${command}`);
-  //         break;
-  //     }
-  //   } else {
-  //     // Regular chat message handling
-  //     sendMessageToServer(message);
-  //   }
-  // };
-
   const handleChange = (e) => {
     const textValue = e.target.value;
 
@@ -178,36 +153,6 @@ const Chat = ({ openNewChatModal }) => {
       </div>
     );
   }
-  const renderSuggestions = (
-    entry,
-    search,
-    highlightedDisplay,
-    index,
-    focused
-  ) => {
-    // Customize the styling of mentions based on their type (user or event)
-    const mentionStyle = {
-      fontWeight: entry.type === "event" ? "bold" : "normal",
-      color: entry.type === "event" ? "blue" : "black",
-    };
-
-    return (
-      <div
-        style={mentionStyle}
-        className={`mention ${focused ? "focused" : ""}`}
-      >
-        {highlightedDisplay}
-      </div>
-    );
-  };
-
-  // Function to open the modal when a mention is clicked
-  const handleMentionClick = (id, type) => {
-    if (type === "event") {
-      // Fetch data about the event using the id
-      console.log("Fetching data for event:", id);
-    }
-  };
 
   return (
     <div className="w-7/10 bg-white flex flex-col h-screen">
@@ -310,62 +255,3 @@ const Chat = ({ openNewChatModal }) => {
 };
 
 export default Chat;
-
-const MockSuggestion = [
-  {
-    id: "1",
-    display: "Minh Hieu",
-    type: "event",
-  },
-  {
-    id: "2",
-    display: "Fake",
-    type: "event",
-  },
-  {
-    id: "3",
-    display: "Levi Ackamen",
-    type: "event",
-  },
-  {
-    id: "4",
-    display: "Loid Forger",
-    type: "event",
-  },
-];
-
-const MockAttractionSuggestion = [
-  {
-    id: "1",
-    display: "Ho Guom",
-  },
-  {
-    id: "2",
-    display: "HTTL",
-  },
-  {
-    id: "3",
-    display: "Hoa Lo",
-  },
-  {
-    id: "4",
-    display: "Cau Long Bien",
-  },
-];
-
-const CustomMention = ({ display, type, id, onClick }) => {
-  const handleMentionClick = () => {
-    onClick(id, type);
-  };
-
-  return (
-    <span
-      style={{
-        backgroundColor: type === "event" ? "lightblue" : "transparent",
-      }}
-      onClick={handleMentionClick}
-    >
-      {display}
-    </span>
-  );
-};
