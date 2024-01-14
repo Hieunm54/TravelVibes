@@ -110,8 +110,8 @@ const Attraction = () => {
   }, []);
 
   return (
-    <div className="h-screen flex flex-col">
-      <div className="px-5 pt-10 pb-2 border-b border-gray-100 flex items-center justify-between">
+    <div className="h-screen flex flex-col bg-white pt-1 border-l border-gray-100">
+      <div className="p-4 flex items-center justify-between">
         <button
           className="inline-block hover:text-blue-500"
           onClick={handleGoBack}

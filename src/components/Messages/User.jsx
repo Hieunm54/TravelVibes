@@ -29,8 +29,8 @@ const User = ({ user, chatId, lastMessage }) => {
     >
       <div
         className={`flex px-4 py-3 border-t ${
-          match ? "bg-slate-300" : ""
-        } hover:bg-slate-200 cursor-pointer rounded-lg max-w-full`}
+          match ? "bg-gray-200" : ""
+        } hover:bg-slate-200 cursor-pointer max-w-full`}
       >
         <img
           src={`${CONST.IMAGE_URL}/${user.avatar}`}

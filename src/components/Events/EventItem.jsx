@@ -22,7 +22,7 @@ const EventItem = ({ event, onAddToJourney = null }) => {
 
   return (
     <>
-      <div className="block border-b pt-3 pb-4 px-4 border-b-gray-100 last:border-0 hover:bg-gray-100 w-full">
+      <div className="block pt-3 pb-4 px-4 hover:cursor-pointer w-full">
         <div className="flex flex-col justify-between h-full">
           <div onClick={(e) => handleChooseEvent(e, event._id)}>
             <img

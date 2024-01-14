@@ -2,9 +2,7 @@ import React from "react";
 
 const Feeds = ({ children, className }) => {
   return (
-    <div
-      className={`h-screen overflow-y-scroll flex flex-col items-center ${className}`}
-    >
+    <div className={`h-screen flex flex-col items-center pb-5 ${className}`}>
       {children}
     </div>
   );

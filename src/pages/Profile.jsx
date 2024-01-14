@@ -75,7 +75,7 @@ const Profile = () => {
 
   return (
     <Layout>
-      <div className="overflow-hidden h-screen">
+      <div className="overflow-hidden h-screen bg-white border-l border-gray-200">
         <div className="overflow-y-scroll h-screen flex flex-col items-center relative">
           {user && (
             <div className="grid grid-cols-3 gap-14 px-52 py-10">
@@ -138,7 +138,7 @@ const Profile = () => {
               </div>
             </div>
           )}
-          <ul className="sticky top-0 left-0 z-10 bg-white flex justify-center items-center space-x-5 border-t border-b border-gray-200 w-full p-2 text-lg">
+          <ul className="mb-10 sticky top-0 left-0 z-10 bg-white flex justify-center items-center space-x-5 border-t border-gray-200 w-full p-2 text-lg">
             <li
               className={
                 location.pathname === "/profile"

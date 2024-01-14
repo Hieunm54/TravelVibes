@@ -82,7 +82,7 @@ const Home = () => {
     <Layout>
       <div className="grid grid-cols-12 h-screen overflow-hidden">
         <Feeds className="col-span-8">
-          <h1 className="w-full p-4 font-bold text-xl border-b border-gray-100 sticky top-0 left-0 bg-white z-10">
+          <h1 className="w-full p-4 font-bold text-lg border-b border-gray-200 sticky top-0 left-0 bg-white z-10">
             Feeds
           </h1>
           <CommonModal
@@ -95,76 +95,80 @@ const Home = () => {
           {_.isEmpty(posts) ? (
             <div className="text-center">No posts yet</div>
           ) : (
-            posts.map((post) => (
-              <Card key={post._id}>
-                <div
-                  className="grid grid-cols-12 gap-3"
-                  onClick={(event) => handleChoosePost(event, post._id)}
-                >
-                  <CardAuthorAva
-                    size={10}
-                    src={`${CONST.IMAGE_URL}/${post.author.avatar}`}
-                  />
-                  <div className="col-span-11">
-                    <div className="flex">
-                      <CardAuthorName
-                        name={`${post.author.firstName} ${post.author.lastName}`}
-                      />
-                      <span className="px-1 text-gray-500">•</span>
-                      <time className="text-gray-500">
-                        {new Date(post.createdAt).toDateString()}
-                      </time>
-                    </div>
-                    <CardCaption className="mt-1">{post.caption}</CardCaption>
-                    <CardRoute>
-                      <RouteContainer>
-                        {post.attractions.map((attraction) => (
-                          <VisitingLocationContainer key={attraction._id}>
-                            <VisitingLocationMarker />
-                            <VisitingLocationInfoContainer>
-                              <VisitingLocationInfo
-                                name={attraction.name}
-                                address={attraction.address}
-                              />
-                            </VisitingLocationInfoContainer>
-                          </VisitingLocationContainer>
-                        ))}
-                      </RouteContainer>
-                    </CardRoute>
-                    <CardMap attractions={post.attractions} />
-                  </div>
-                </div>
-                <CardInteractionInfo>
-                  <div className="col-start-2 flex items-center space-x-5">
-                    <CardUpvoteButton
-                      postId={post._id}
-                      isUpvote={
-                        post.upvote.findIndex(
-                          (user) => user._id === currentUser._id
-                        ) >= 0
-                      }
-                      upvote={post.upvote}
+            <div className="pt-3 overflow-y-scroll">
+              {posts.map((post) => (
+                <Card key={post._id} className="border border-gray-200">
+                  <div
+                    className="grid grid-cols-12 gap-3"
+                    onClick={(event) => handleChoosePost(event, post._id)}
+                  >
+                    <CardAuthorAva
+                      size={10}
+                      src={`${CONST.IMAGE_URL}/${post.author.avatar}`}
                     />
-                    <CardCommentCount count={post.countComments} />
+                    <div className="col-span-11">
+                      <div className="flex">
+                        <CardAuthorName
+                          name={`${post.author.firstName} ${post.author.lastName}`}
+                        />
+                        <span className="px-1 text-gray-500">•</span>
+                        <time className="text-gray-500">
+                          {new Date(post.createdAt).toDateString()}
+                        </time>
+                      </div>
+                      <CardCaption className="mt-1">{post.caption}</CardCaption>
+                      <CardRoute>
+                        <RouteContainer>
+                          {post.attractions.map((attraction) => (
+                            <VisitingLocationContainer key={attraction._id}>
+                              <VisitingLocationMarker />
+                              <VisitingLocationInfoContainer>
+                                <VisitingLocationInfo
+                                  name={attraction.name}
+                                  address={attraction.address}
+                                />
+                              </VisitingLocationInfoContainer>
+                            </VisitingLocationContainer>
+                          ))}
+                        </RouteContainer>
+                      </CardRoute>
+                      <CardMap attractions={post.attractions} />
+                    </div>
                   </div>
-                </CardInteractionInfo>
-              </Card>
-            ))
+                  <CardInteractionInfo>
+                    <div className="col-start-2 flex items-center space-x-5">
+                      <CardUpvoteButton
+                        postId={post._id}
+                        isUpvote={
+                          post.upvote.findIndex(
+                            (user) => user._id === currentUser._id
+                          ) >= 0
+                        }
+                        upvote={post.upvote}
+                      />
+                      <CardCommentCount count={post.countComments} />
+                    </div>
+                  </CardInteractionInfo>
+                </Card>
+              ))}
+            </div>
           )}
         </Feeds>
 
-        <div className="col-span-4 border-l border-gray-100 h-screen overflow-y-scroll">
-          <div className="flex flex-col items-center">
-            <h1 className="w-full p-4 font-bold text-xl border-b border-gray-100 sticky top-0 left-0 bg-white z-10">
-              Upcoming Events
-            </h1>
+        <div className="col-span-4 flex flex-col items-center h-screen pb-5">
+          <h1 className="w-full p-4 font-bold text-lg border-b border-gray-200 sticky top-0 left-0 bg-white z-10">
+            Upcoming Events
+          </h1>
+          <div className="h-full overflow-y-scroll">
             {events.map((event) => {
               return (
-                <EventItem
-                  key={event._id}
-                  event={event}
-                  onAddToJourney={() => addToJourney(event)}
-                />
+                <div className="pb-10 last:pb-0">
+                  <EventItem
+                    key={event._id}
+                    event={event}
+                    onAddToJourney={() => addToJourney(event)}
+                  />
+                </div>
               );
             })}
           </div>

@@ -96,7 +96,7 @@ const Attraction = ({ id, onClose }) => {
   return (
     <>
       {details && (
-        <div className="grid grid-cols-12 h-screen overflow-hidden">
+        <div className="grid grid-cols-12 h-screen overflow-hidden bg-white">
           <section className="col-span-6 h-screen flex flex-col">
             <div className="py-3 border-b border-gray-200 px-5">
               <button onClick={onClose}>
