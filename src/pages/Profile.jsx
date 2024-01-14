@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import Layout from "../components/Layout";
 import CardAuthorAva from "../components/CardAuthorAva";
 import UserPosts from "../components/UserPosts";
-import { getUserProfile, updateUserProfile } from "../services/users";
 import SecondaryButtonGroup from "../components/SecondaryButtonGroup";
 import SecondaryButton from "../components/SecondaryButton";
 import FormInput from "../components/FormInput";
@@ -18,6 +17,8 @@ import {
   updateUserProfileAsync,
 } from "../store/actions/users";
 import { sGetUserInfo } from "../store/selectors";
+import { getUserPostListAsync } from "../store/actions/posts";
+import { getUserReviewListAsync } from "../store/actions/reviews";
 
 const Profile = () => {
   const user = useSelector(sGetUserInfo);
@@ -54,9 +55,11 @@ const Profile = () => {
     formData.append("description", bioInput);
     try {
       dispatch(updateUserProfileAsync(formData));
-      toast.success("Update bio success");
       setIsEditingBio(false);
       setBioInput("");
+      dispatch(getUserPostListAsync());
+      dispatch(getUserReviewListAsync());
+      toast.success("Update bio success");
     } catch (e) {
       toast.error("Unable to update user's avatar.");
     }

@@ -7,6 +7,8 @@ import { appRoutes, authRoutes } from "../enum/routes";
 import CommonModal from "./Modal";
 import { useState } from "react";
 import NotificationModal from "./Modal/NotificationModal";
+import { CONST } from "../constaints";
+import CardAuthorAva from "./CardAuthorAva";
 
 const Layout = ({ children }) => {
   const [isOpenNewChatPopUp, setIsOpenNewChatPopUp] = useState(false);
@@ -131,9 +133,11 @@ const Layout = ({ children }) => {
                 >
                   <NavLink to={appRoutes.PROFILE}>
                     <div className="flex items-center space-x-3">
-                      <FontAwesomeIcon
-                        icon="fa-solid fa-circle-user"
-                        className="text-xl w-5"
+                      <CardAuthorAva
+                        src={`${CONST.IMAGE_URL}/${
+                          auth.user.avatar ?? CONST.DEFAULT_AVATAR
+                        }`}
+                        size={6}
                       />
                       <span className="text-lg">Profile</span>
                     </div>
