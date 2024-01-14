@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { getUserPosts } from "../services/users";
@@ -19,12 +19,14 @@ import CardCommentCount from "../components/CardCommentCount";
 import { CONST } from "../constaints";
 import CommonModal from "./Modal";
 import Post from "../pages/Post";
+import { sGetUserInfo } from "../store/selectors";
 
 const UserPosts = () => {
   const [posts, setPosts] = useState([]);
   const auth = useSelector((state) => state.auth);
   const [selectedPostId, setSelectedPostId] = useState(0);
   const [openModal, setOpenModal] = useState(false);
+  const currentUser = useSelector(sGetUserInfo);
 
   const getUserPostList = async () => {
     try {
@@ -97,8 +99,12 @@ const UserPosts = () => {
             <div className="col-start-2 flex items-center space-x-5">
               <CardUpvoteButton
                 postId={post._id}
-                isUpvote={post.isUpvote}
-                upvoteCount={post.upvote.length}
+                isUpvote={
+                  post.upvote.findIndex(
+                    (user) => user._id === currentUser._id
+                  ) >= 0
+                }
+                upvote={post.upvote}
               />
               <CardCommentCount count={post.countComments} />
             </div>

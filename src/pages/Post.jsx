@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -24,13 +23,6 @@ import VisitingLocationMarker from "../components/VisitingLocationMarker";
 import FormInput from "../components/FormInput";
 import Button from "../components/Button";
 import Form from "../components/Form";
-import { deletePost, getPost, updatePost } from "../services/posts";
-import {
-  deleteComment,
-  getComments,
-  sendComment,
-  updateComment,
-} from "../services/comments";
 import SecondaryButtonGroup from "../components/SecondaryButtonGroup";
 import SecondaryButton from "../components/SecondaryButton";
 import AddVisitingLocationBtn from "../components/AddVisitingLocationBtn";
@@ -42,16 +34,22 @@ import { buttonStyle } from "../styles/button";
 import { CONST } from "../constaints";
 import { sGetPostDetail, sGetUserInfo } from "../store/selectors";
 import {
+  deleteCommentAsync,
+  deletePostAsync,
+  getCommentListAsync,
   getPostDetailsAsync,
-  updatePostAction,
+  sendCommentAsync,
+  updateCommentAsync,
   updatePostAsync,
 } from "../store/actions/posts";
 import DangerButton from "../components/Button/DangerButton";
 
 const Post = ({ id, onClose }) => {
-  const [post, setPost] = useState(null);
+  const [postDes, setPost] = useState(null);
+  const post = useSelector(sGetPostDetail);
+
   const [backupPost, setBackupPost] = useState(null);
-  const [comments, setComments] = useState([]);
+
   const [commentInput, setCommentInput] = useState("");
   const [editCommentInput, setEditCommentInput] = useState("");
   const [commentToBeEdited, setCommentToBeEdited] = useState(null);
@@ -62,7 +60,7 @@ const Post = ({ id, onClose }) => {
   const [attractionSuggestions, setAttractionSuggestions] = useState([]);
   const auth = useSelector((state) => state.auth);
   const currentUser = useSelector(sGetUserInfo);
-  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const { id: userId } = jwtDecode(auth.token);
 
@@ -83,9 +81,7 @@ const Post = ({ id, onClose }) => {
         ...post,
         caption: captionInput,
       };
-      await updatePost(auth.token, id, editedPost);
-      setPost(editedPost);
-      dispatch(updatePostAction(editedPost, editedPost._id));
+      dispatch(updatePostAsync(id, editedPost));
       setIsEditing(false);
     } catch (e) {
       toast.error("Unable to update post.");
@@ -98,6 +94,7 @@ const Post = ({ id, onClose }) => {
   const isMovingDownBtnDisabled = (index) =>
     index === post.attractions.length - 1;
   const handleMoveDownAttraction = (index) => {
+    // TODO dispatch handleMoveDownAttraction action
     setPost({
       ...post,
       attractions: [
@@ -111,6 +108,7 @@ const Post = ({ id, onClose }) => {
 
   const isMovingUpBtnDisabled = (index) => index == 0;
   const handleMoveUpAttraction = (index) => {
+    // TODO dispatch handleMoveUpAttraction action
     setPost({
       ...post,
       attractions: [
@@ -123,6 +121,8 @@ const Post = ({ id, onClose }) => {
   };
 
   const handleDeleteAttraction = (index) => {
+    // TODO dispatch handleMoveUpAttraction action
+
     setPost({
       ...post,
       attractions: [
@@ -144,6 +144,8 @@ const Post = ({ id, onClose }) => {
   };
 
   const handleAddAttraction = (attraction) => {
+    // TODO dispatch handleAddAttraction action
+
     setPost({
       ...post,
       attractions: [...post.attractions, attraction],
@@ -175,8 +177,8 @@ const Post = ({ id, onClose }) => {
 
   const handleDeletePost = async () => {
     try {
-      await deletePost(auth.token, id);
-      navigate("/");
+      dispatch(deletePostAsync(id));
+      onClose();
     } catch (e) {
       toast.error("Unable to delete post.");
     }
@@ -185,18 +187,11 @@ const Post = ({ id, onClose }) => {
   const handleSendComment = async (event) => {
     event.preventDefault();
     try {
-      await sendComment(auth.token, id, {
-        content: commentInput,
-      });
-      const getCommentList = async () => {
-        try {
-          const response = await getComments(auth.token, id);
-          setComments(response.data);
-        } catch (e) {
-          toast.error("Unable to retrieve comments.");
-        }
-      };
-      getCommentList();
+      dispatch(
+        sendCommentAsync(id, {
+          content: commentInput.trim(),
+        })
+      );
       setCommentInput("");
     } catch (e) {
       toast.error("Unable to send comment.");
@@ -211,15 +206,10 @@ const Post = ({ id, onClose }) => {
   const handleUpdateComment = async (event) => {
     event.preventDefault();
     try {
-      await updateComment(auth.token, id, commentToBeEdited._id, {
-        content: editCommentInput,
-      });
-      setComments(
-        comments.map((comment) =>
-          comment._id === commentToBeEdited._id
-            ? { ...comment, content: editCommentInput }
-            : comment
-        )
+      dispatch(
+        updateCommentAsync(id, commentToBeEdited._id, {
+          content: editCommentInput.trim(),
+        })
       );
       setCommentToBeEdited(null);
       setEditCommentInput("");
@@ -232,35 +222,16 @@ const Post = ({ id, onClose }) => {
 
   const handleDeleteComment = async (commentId) => {
     try {
-      await deleteComment(auth.token, id, commentId);
-      const index = comments.findIndex((comment) => comment._id === commentId);
-      setComments([...comments.slice(0, index), ...comments.slice(index + 1)]);
+      dispatch(deleteCommentAsync(id, commentId));
     } catch (e) {
       toast.error("Unable to delete comment.");
     }
   };
 
   useEffect(() => {
-    const getPostDetails = async () => {
-      try {
-        const response = await getPost(auth.token, id);
-        setPost(response.data);
-      } catch (e) {
-        toast.error("Unable to retrieve post details.");
-      }
-    };
-    getPostDetails();
-
-    const getCommentList = async () => {
-      try {
-        const response = await getComments(auth.token, id);
-        setComments(response.data);
-      } catch (e) {
-        toast.error("Unable to retrieve comments.");
-      }
-    };
-    getCommentList();
-  }, [auth.token, dispatch, id]);
+    dispatch(getPostDetailsAsync(id));
+    dispatch(getCommentListAsync(id));
+  }, [dispatch, id]);
 
   return (
     <>
@@ -415,10 +386,14 @@ const Post = ({ id, onClose }) => {
               <CardInteractionInfo>
                 <CardUpvoteButton
                   postId={post._id}
-                  isUpvote={post.isUpvote}
-                  upvoteCount={post.upvote.length}
+                  isUpvote={
+                    post.upvote.findIndex(
+                      (user) => user._id === currentUser._id
+                    ) >= 0
+                  }
+                  upvote={post.upvote}
                 />
-                <CardCommentCount count={comments.length} />
+                <CardCommentCount count={post.comments.length ?? 0} />
               </CardInteractionInfo>
             </div>
             <div className="border-t border-gray-300 mt-2 py-5 px-5 h-screen">
@@ -443,7 +418,7 @@ const Post = ({ id, onClose }) => {
                 </Button>
               </Form>
               <div className="flex flex-col space-y-4 mt-3 h-screen overflow-auto">
-                {comments
+                {post.comments
                   .slice(0)
                   .reverse()
                   .map((comment) => (

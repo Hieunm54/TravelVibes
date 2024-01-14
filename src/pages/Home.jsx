@@ -95,7 +95,6 @@ const Home = () => {
             posts.map((post) => (
               <Card key={post._id}>
                 <div
-                  // to={`/posts/${post._id}`}
                   className="grid grid-cols-12 gap-3"
                   onClick={(event) => handleChoosePost(event, post._id)}
                 >
@@ -137,11 +136,11 @@ const Home = () => {
                     <CardUpvoteButton
                       postId={post._id}
                       isUpvote={
-                        post.upvote.filter(
-                          (userId) => userId === currentUser._id
-                        ).length !== 0
+                        post.upvote.findIndex(
+                          (user) => user._id === currentUser._id
+                        ) >= 0
                       }
-                      upvoteCount={post.upvote.length}
+                      upvote={post.upvote}
                     />
                     <CardCommentCount count={post.countComments} />
                   </div>

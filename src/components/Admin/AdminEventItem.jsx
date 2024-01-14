@@ -22,10 +22,7 @@ const AdminEventItem = ({
     if (status === event.status) {
       return;
     }
-    console.log("hieu status ", status);
-
     dispatch(updateEventStatusAsync(event._id, status));
-    // setEventState(status);
     setIsSelectingEventState(false);
   };
 
