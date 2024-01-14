@@ -11,7 +11,6 @@ import Card from "../components/Card";
 import CardMap from "../components/CardMap";
 import CardRoute from "../components/CardRoute";
 import CardCaption from "../components/CardCaption";
-// import CardAuthor from "../components/CardAuthor";
 import CardAuthorAva from "../components/CardAuthorAva";
 import CardAuthorName from "../components/CardAuthorName";
 import CardInteractionInfo from "../components/CardInteractionInfo";
@@ -28,14 +27,13 @@ import {
   sGetUserInfo,
 } from "../store/selectors";
 import EventItem from "../components/Events/EventItem";
-import { jwtDecode } from "jwt-decode";
+import { addAttraction } from "../store/attractions";
 import Post from "./Post";
 import CommonModal from "../components/Modal";
 import { getPostListAsync } from "../store/actions/posts";
 import _ from "lodash";
 import { useNavigate } from "react-router-dom";
 import { appRoutes, authRoutes } from "../enum/routes";
-import { addAttraction } from "../store/attractions";
 import { getAttraction } from "../services/attractions";
 import { toast } from "react-toastify";
 
@@ -50,7 +48,6 @@ const Home = () => {
   const currentUser = useSelector(sGetUserInfo);
 
   const dispatch = useDispatch();
-  const attractions = useSelector((state) => state.attractions);
 
   useEffect(() => {
     if (auth.token) {
@@ -58,10 +55,6 @@ const Home = () => {
     }
     navigate(authRoutes.SIGN_IN);
   }, [auth.token, navigate]);
-
-  const toggleSaveEvent = (e, eventId) => {
-    e.stopPropagation();
-  };
 
   const addToJourney = async (event) => {
     try {
@@ -170,7 +163,6 @@ const Home = () => {
                 <EventItem
                   key={event._id}
                   event={event}
-                  onToggleSaveEvent={toggleSaveEvent}
                   onAddToJourney={() => addToJourney(event)}
                 />
               );

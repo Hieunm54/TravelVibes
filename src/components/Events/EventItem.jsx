@@ -1,17 +1,12 @@
 /* eslint-disable react/prop-types */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
 import { CONST, eventStates } from "../../constaints";
 import CommonModal from "../Modal";
 import { useState } from "react";
 import Event from "../../pages/Event";
 import moment from "moment";
 
-const EventItem = ({
-  event,
-  onToggleSaveEvent = null,
-  onAddToJourney = null,
-}) => {
+const EventItem = ({ event, onAddToJourney = null }) => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
 

@@ -16,7 +16,6 @@ const PostPageLayout = ({ children }) => {
   );
 
   const handlePopUpClose = () => {
-    console.log(hoveredMarker);
     setHoveredMarker(null);
   };
 
@@ -36,7 +35,7 @@ const PostPageLayout = ({ children }) => {
         {children}
       </section>
       <section className="col-span-6">
-        <Mapbox ref={mapRef}>
+        <Mapbox ref={mapRef} onLoad={() => updateBounds()}>
           <NavigationControl
             className="navigation-control"
             showCompass={true}
