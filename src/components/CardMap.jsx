@@ -16,7 +16,7 @@ const CardMap = ({ attractions }) => {
   useEffect(() => {
     if (!mapRef) return;
     updateBounds();
-  }, [mapRef]);
+  }, [attractions, mapRef]);
 
   return (
     <div className="h-56 mt-5">
