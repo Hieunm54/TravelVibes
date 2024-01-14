@@ -15,9 +15,9 @@ const mapConfig = {
 };
 
 const Mapbox = forwardRef((props, ref) => {
-  const { children, ...otherProps } = props;
+  const { children, onLoad, ...otherProps } = props;
   return (
-    <Map ref={ref} {...mapConfig} {...otherProps}>
+    <Map onLoad={onLoad} ref={ref} {...mapConfig} {...otherProps}>
       {children}
     </Map>
   );

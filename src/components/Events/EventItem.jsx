@@ -49,7 +49,7 @@ const EventItem = ({
           <div className="flex items-center justify-between mt-3">
             <button
               className="bg-rgb-blue rounded-md px-2 py-1 flex items-center space-x-2 text-rgb-white hover:bg-blue-300"
-              onClick={(e) => onAddToJourney(e, event._id)}
+              onClick={onAddToJourney}
             >
               <FontAwesomeIcon icon="fa-solid fa-circle-plus" />
               <span>Add</span>
