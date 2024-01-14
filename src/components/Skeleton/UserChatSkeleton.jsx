@@ -8,7 +8,7 @@ const UserChatSkeleton = () => {
       {loopArray.map((item) => (
         <div
           key={item}
-          className="flex px-4 py-3 border-t border-gray-300 bg-gray-300
+          className="flex px-4 py-3 border-t border-gray-100 bg-gray-300
            focus:outline-none focus:ring focus:bg-slate-300 cursor-pointer rounded-lg max-w-full"
         >
           <div className="w-10 h-10">

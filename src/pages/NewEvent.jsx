@@ -96,7 +96,7 @@ const NewEvent = () => {
 
   return (
     <Layout>
-      <div className="grid grid-cols-12 h-screen overflow-hidden">
+      <div className="grid grid-cols-12 h-screen overflow-hidden bg-white border-l border-gray-200">
         <section className="col-span-6 border-r-2 border-gray-300 px-5 h-screen overflow-y-scroll">
           <form
             className="flex flex-col space-y-5"

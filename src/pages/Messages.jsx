@@ -15,8 +15,8 @@ const Messages = () => {
 
   return (
     <Layout>
-      <div className="flex">
-        <div className="w-3/10 h-screen flex flex-col border-2">
+      <div className="flex bg-white">
+        <div className="w-3/10 h-screen flex flex-col border-l border-l-gray-200 border-r border-r-gray-100">
           <div className="border-b mt-3">
             <div className="flex justify-between items-baseline px-4">
               <h2 className="text-lg font-bold mb-4 pt-3">{displayName}</h2>

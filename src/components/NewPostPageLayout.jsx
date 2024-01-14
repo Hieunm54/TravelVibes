@@ -31,7 +31,7 @@ const PostPageLayout = ({ children }) => {
 
   return (
     <div className="grid grid-cols-12 h-screen overflow-hidden">
-      <section className="col-span-6 border-r-2 border-gray-300">
+      <section className="col-span-6 border-r-2 border-gray-300 bg-white">
         {children}
       </section>
       <section className="col-span-6">

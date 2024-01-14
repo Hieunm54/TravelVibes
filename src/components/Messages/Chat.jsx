@@ -232,7 +232,7 @@ const Chat = ({ openNewChatModal }) => {
       </div>
 
       {/* Input area  */}
-      <div className="flex items-center bg-white border-t border-gray-300 p-3">
+      <div className="flex items-center bg-white border-t border-gray-100 p-3">
         {/* <button className="mr-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"

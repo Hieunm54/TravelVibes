@@ -31,8 +31,8 @@ const Attractions = () => {
   };
 
   return (
-    <div className="h-screen overflow-y-hidden">
-      <div className="px-5 pt-10 pb-2 flex items-center space-x-6 border-b border-gray-300">
+    <div className="h-screen overflow-y-hidden bg-white pt-1 border-l border-gray-100">
+      <div className="p-4 flex items-center space-x-6">
         <BackButton to={appRoutes.NEW_POST} />
         <input
           value={attractionInput}

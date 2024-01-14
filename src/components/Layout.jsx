@@ -25,13 +25,19 @@ const Layout = ({ children }) => {
       {!auth.token ? (
         <Navigate to="/sign-in" />
       ) : (
-        <main className="grid grid-cols-5 h-screen">
-          <aside className="border-r border-gray-100 px-5">
-            <h1 className="w-full py-4 px-4 font-bold text-2xl font-['Lemon']">
+        <main className="grid grid-cols-5 h-screen bg-gray-100">
+          <aside className="">
+            <h1
+              className={`${
+                location.pathname === appRoutes.HOME
+                  ? "bg-white border-b border-gray-200"
+                  : ""
+              } w-full px-8 py-4 font-bold text-xl font-['Lemon']`}
+            >
               <span className="text-blue-800">Travel</span>
               <span className="text-blue-500">Vibes</span>
             </h1>
-            <nav className="mt-3">
+            <nav className="px-5 mt-3">
               <ul className="flex flex-col space-y-2">
                 <li
                   className={`hover:bg-gray-200 px-3 py-1 rounded-full ${
@@ -40,10 +46,12 @@ const Layout = ({ children }) => {
                 >
                   <NavLink to={appRoutes.HOME}>
                     <div className="flex items-center space-x-3">
-                      <FontAwesomeIcon
-                        icon="fa-solid fa-house"
-                        className="text-xl w-5"
-                      />
+                      <span className="w-6 flex justify-center">
+                        <FontAwesomeIcon
+                          icon="fa-solid fa-house"
+                          className="text-xl"
+                        />
+                      </span>
                       <span className="text-lg">Home</span>
                     </div>
                   </NavLink>
@@ -66,10 +74,12 @@ const Layout = ({ children }) => {
                 >
                   <NavLink to={appRoutes.NEW_POST}>
                     <div className="flex items-center space-x-3">
-                      <FontAwesomeIcon
-                        icon="fa-solid fa-location-arrow"
-                        className="text-xl w-5"
-                      />
+                      <span className="w-6 flex justify-center">
+                        <FontAwesomeIcon
+                          icon="fa-solid fa-location-arrow"
+                          className="text-xl"
+                        />
+                      </span>
                       <span className="text-lg">Share your trip</span>
                     </div>
                   </NavLink>
@@ -81,10 +91,12 @@ const Layout = ({ children }) => {
                 >
                   <NavLink to={appRoutes.MESSAGES}>
                     <div className="flex items-center space-x-3">
-                      <FontAwesomeIcon
-                        icon="fa-brands fa-facebook-messenger"
-                        className="text-xl w-5"
-                      />
+                      <span className="w-6 flex justify-center">
+                        <FontAwesomeIcon
+                          icon="fa-brands fa-facebook-messenger"
+                          className="text-xl"
+                        />
+                      </span>
                       <span className="text-lg">Messages</span>
                     </div>
                   </NavLink>
@@ -96,10 +108,12 @@ const Layout = ({ children }) => {
                 >
                   <NavLink to={appRoutes.NEW_EVENT}>
                     <div className="flex items-center space-x-3">
-                      <FontAwesomeIcon
-                        icon="fa-solid fa-calendar-plus"
-                        className="text-xl w-5"
-                      />
+                      <span className="w-6 flex justify-center">
+                        <FontAwesomeIcon
+                          icon="fa-solid fa-calendar-plus"
+                          className="text-xl"
+                        />
+                      </span>
                       <span className="text-lg">Create an event</span>
                     </div>
                   </NavLink>
@@ -115,10 +129,12 @@ const Layout = ({ children }) => {
                     className="flex items-center space-x-3 cursor-pointer"
                     onClick={() => setIsOpenNewChatPopUp((prev) => !prev)}
                   >
-                    <FontAwesomeIcon
-                      icon="fa-solid fa-bell"
-                      className="text-xl w-5"
-                    />
+                    <span className="w-6 flex justify-center">
+                      <FontAwesomeIcon
+                        icon="fa-solid fa-bell"
+                        className="text-xl"
+                      />
+                    </span>
                     <span className="text-lg">Notification</span>
                   </div>
                 </li>
@@ -149,10 +165,12 @@ const Layout = ({ children }) => {
                     className="hover:bg-gray-200 rounded-full"
                   >
                     <div className="flex items-center space-x-3">
-                      <FontAwesomeIcon
-                        icon="fa-solid fa-right-from-bracket"
-                        className="text-xl w-5"
-                      />
+                      <span className="w-6 flex justify-center">
+                        <FontAwesomeIcon
+                          icon="fa-solid fa-right-from-bracket"
+                          className="text-xl"
+                        />
+                      </span>
                       <span className="text-lg">Log out</span>
                     </div>
                   </button>

@@ -39,7 +39,7 @@ const Review = ({
   return (
     <div
       onClick={onClick}
-      className="border-b last:border-0 border-gray-100 hover:bg-gray-100 grid grid-cols-12 gap-3 px-60 pt-5 pb-4 hover:cursor-pointer"
+      className="grid grid-cols-12 gap-3 px-60 pt-5 pb-4 hover:cursor-pointer"
     >
       <CardAuthorAva size={10} src={avatar} />
       <div className="col-span-11">
