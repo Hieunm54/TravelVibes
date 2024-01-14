@@ -10,11 +10,12 @@ export default {
       backgroundColor: {
         "rgb-blue": "rgb(55, 151, 240)",
         "rgb-black": "rgba(0, 0, 0, 0.65)",
-        "rgb-cover-gray": "#fff",
+        "rgb-cover-gray": "rgba(228,230,233,255)",
       },
       textColor: {
         "rgb-white": "rgb(255, 255, 255)",
         "sm-white": "rgb(115, 115, 115)",
+        "rgb-blue": "#0b88ff",
       },
       backgroundImage: {
         hanoi: "url('src/assets/hanoi.jpeg')",

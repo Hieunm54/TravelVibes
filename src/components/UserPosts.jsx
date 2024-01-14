@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 import RouteContainer from "../components/RouteContainer";
@@ -18,12 +18,14 @@ import CardCommentCount from "../components/CardCommentCount";
 import { CONST } from "../constaints";
 import CommonModal from "./Modal";
 import Post from "../pages/Post";
+import { sGetUserInfo } from "../store/selectors";
 import { sGetUserPostList } from "../store/selectors";
 import { getUserPostListAsync } from "../store/actions/posts";
 
 const UserPosts = () => {
   const [selectedPostId, setSelectedPostId] = useState(0);
   const [openModal, setOpenModal] = useState(false);
+  const currentUser = useSelector(sGetUserInfo);
 
   const posts = useSelector(sGetUserPostList);
 
@@ -37,7 +39,7 @@ const UserPosts = () => {
 
   useEffect(() => {
     dispatch(getUserPostListAsync());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="flex flex-col space-y-5 items-center">
@@ -94,8 +96,12 @@ const UserPosts = () => {
               <div className="col-start-2 flex items-center space-x-5">
                 <CardUpvoteButton
                   postId={post._id}
-                  isUpvote={post.isUpvote}
-                  upvoteCount={post.upvote.length}
+                  isUpvote={
+                    post.upvote.findIndex(
+                      (user) => user._id === currentUser._id
+                    ) >= 0
+                  }
+                  upvote={post.upvote}
                 />
                 <CardCommentCount count={post.countComments} />
               </div>

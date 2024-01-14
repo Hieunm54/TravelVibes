@@ -1,23 +1,17 @@
-import React, { useState } from "react";
+/* eslint-disable react/prop-types */
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { toggleUpvote } from "../services/posts";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { jwtDecode } from "jwt-decode";
+import { sGetUserInfo } from "../store/selectors";
+import { toggleUpvoteAsync } from "../store/actions/posts";
 
-const CardUpvoteButton = ({ postId, isUpvote, upvoteCount }) => {
-  const auth = useSelector((state) => state.auth);
-  const [upvoted, setUpvoted] = useState(isUpvote);
-  const [count, setCount] = useState(upvoteCount);
-  const { id } = jwtDecode(auth.token);
+const CardUpvoteButton = ({ postId, isUpvote, upvote = [] }) => {
+  const dispatch = useDispatch();
 
   const handleToggleUpvote = async () => {
     try {
-      const response = await toggleUpvote(auth.token, postId);
-      setUpvoted(
-        response.data.post.upvote.filter((userId) => userId === id).length !== 0
-      );
-      setCount(response.data.upvote.length);
+      dispatch(toggleUpvoteAsync(postId));
     } catch (e) {
       toast.error("Unable to upvote/downvote.");
     }
@@ -30,9 +24,9 @@ const CardUpvoteButton = ({ postId, isUpvote, upvoteCount }) => {
     >
       <FontAwesomeIcon
         icon="fa-solid fa-up-long"
-        className={`${upvoted ? "text-blue-500" : ""}`}
+        className={`${isUpvote ? "text-blue-500" : ""}`}
       />
-      <p>{count}</p>
+      <p>{upvote.length}</p>
     </button>
   );
 };

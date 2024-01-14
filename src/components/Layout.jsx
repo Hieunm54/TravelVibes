@@ -1,13 +1,20 @@
+/* eslint-disable react/prop-types */
 import { useSelector } from "react-redux";
 import { NavLink, Navigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { appRoutes, authRoutes } from "../enum/routes";
+import CommonModal from "./Modal";
+import { useState } from "react";
+import NotificationModal from "./Modal/NotificationModal";
 import { CONST } from "../constaints";
 import CardAuthorAva from "./CardAuthorAva";
 
 const Layout = ({ children }) => {
+  const [isOpenNewChatPopUp, setIsOpenNewChatPopUp] = useState(false);
+
   const auth = useSelector((state) => state.auth);
+
   const handleLogOut = () => {
     localStorage.clear();
     window.location = authRoutes.SIGN_IN;
@@ -104,15 +111,16 @@ const Layout = ({ children }) => {
                       : ""
                   }`}
                 >
-                  <NavLink to={appRoutes.NOTIFICATION}>
-                    <div className="flex items-center space-x-3">
-                      <FontAwesomeIcon
-                        icon="fa-solid fa-bell"
-                        className="text-xl w-5"
-                      />
-                      <span className="text-lg">Notification</span>
-                    </div>
-                  </NavLink>
+                  <div
+                    className="flex items-center space-x-3 cursor-pointer"
+                    onClick={() => setIsOpenNewChatPopUp((prev) => !prev)}
+                  >
+                    <FontAwesomeIcon
+                      icon="fa-solid fa-bell"
+                      className="text-xl w-5"
+                    />
+                    <span className="text-lg">Notification</span>
+                  </div>
                 </li>
                 <li
                   className={`text-4xl hover:bg-gray-200 px-3 py-1 rounded-full ${
@@ -129,7 +137,7 @@ const Layout = ({ children }) => {
                         src={`${CONST.IMAGE_URL}/${
                           auth.user.avatar ?? CONST.DEFAULT_AVATAR
                         }`}
-                        size={5}
+                        size={6}
                       />
                       <span className="text-lg">Profile</span>
                     </div>
@@ -153,6 +161,13 @@ const Layout = ({ children }) => {
             </nav>
           </aside>
           <div className="col-span-4">{children}</div>
+          <CommonModal
+            isOpen={isOpenNewChatPopUp}
+            onClose={() => setIsOpenNewChatPopUp(false)}
+            className="py-5 h-2/3 w-1/3 z-50"
+          >
+            <NotificationModal />
+          </CommonModal>
         </main>
       )}
     </>

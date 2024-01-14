@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { appRoutes } from "../enum/routes";
 import { getEventDetailAsync } from "../store/actions/events";
 import { sGetEventDetails, sGetUserInfo } from "../store/selectors";
-import { CONST } from "../constaints";
+import { CONST, eventStates } from "../constaints";
 import { formatDisplayName } from "../utils/formatDisplayName";
 import _ from "lodash";
 import moment from "moment";
@@ -63,7 +63,18 @@ const Event = ({ id, onClose }) => {
                 <time className="font-bold text-xl text-red-500">
                   {moment(eventDetails.date).format(CONST.READABLE_TIME)}
                 </time>
-                <h3 className="font-bold text-4xl pb-2">{eventDetails.name}</h3>
+                <div className="flex items-end space-x-4 pb-2">
+                  <h3 className="font-bold text-4xl">{eventDetails.name}</h3>
+                  <span
+                    className={`px-2 py-1 rounded-md text-rgb-white ${
+                      eventStates.filter(
+                        (state) => state.name === eventDetails.status
+                      )[0].color
+                    }`}
+                  >
+                    {eventDetails.status}
+                  </span>
+                </div>
                 <div className="border-t border-gray-200 grid grid-cols-3 gap-10 pt-5">
                   <p className="col-span-2 border-r border-gray-200 pr-10">
                     {eventDetails.description}
