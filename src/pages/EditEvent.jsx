@@ -166,6 +166,7 @@ const EditEvent = () => {
             <FormInput
               type="datetime-local"
               name="Date and Time"
+              min={new Date().toISOString().slice(0, 16)}
               placeholder="When is your event?"
               value={datetimeInput}
               onChange={handleDatetimeInput}

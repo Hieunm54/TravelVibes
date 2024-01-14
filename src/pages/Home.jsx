@@ -11,7 +11,6 @@ import Card from "../components/Card";
 import CardMap from "../components/CardMap";
 import CardRoute from "../components/CardRoute";
 import CardCaption from "../components/CardCaption";
-// import CardAuthor from "../components/CardAuthor";
 import CardAuthorAva from "../components/CardAuthorAva";
 import CardAuthorName from "../components/CardAuthorName";
 import CardInteractionInfo from "../components/CardInteractionInfo";
@@ -35,8 +34,8 @@ import { getPostListAsync } from "../store/actions/posts";
 import _ from "lodash";
 import { useNavigate } from "react-router-dom";
 import { appRoutes, authRoutes } from "../enum/routes";
-import { toast } from "react-toastify";
 import { getAttraction } from "../services/attractions";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const [selectedPostId, setSelectedPostId] = useState(0);
@@ -56,10 +55,6 @@ const Home = () => {
     }
     navigate(authRoutes.SIGN_IN);
   }, [auth.token, navigate]);
-
-  const toggleSaveEvent = (e, eventId) => {
-    e.stopPropagation();
-  };
 
   const addToJourney = async (event) => {
     try {
@@ -168,7 +163,6 @@ const Home = () => {
                 <EventItem
                   key={event._id}
                   event={event}
-                  onToggleSaveEvent={toggleSaveEvent}
                   onAddToJourney={() => addToJourney(event)}
                 />
               );
