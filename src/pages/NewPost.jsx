@@ -128,7 +128,12 @@ const NewPost = () => {
               <AddVisitingLocationBtn onClick={handleAddNewLocation} />
             </RouteContainer>
             <ButtonGroup>
-              <Button onClick={handleCreatePost}>Share</Button>
+              <Button
+                disabled={captionInput === "" && attractions.length === 0}
+                onClick={handleCreatePost}
+              >
+                Share
+              </Button>
             </ButtonGroup>
           </div>
         ) : (
