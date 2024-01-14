@@ -97,11 +97,12 @@ const NewEvent = () => {
   return (
     <Layout>
       <div className="grid grid-cols-12 h-screen overflow-hidden">
-        <section className="col-span-6 border-r-2 border-gray-300 px-5 py-10 h-screen overflow-y-scroll">
+        <section className="col-span-6 border-r-2 border-gray-300 px-5 h-screen overflow-y-scroll">
           <form
             className="flex flex-col space-y-5"
             onSubmit={handleCreateEvent}
           >
+            <h2 className="font-bold text-3xl pt-3">Create an event</h2>
             <div>
               <label>Cover</label>
               <input
