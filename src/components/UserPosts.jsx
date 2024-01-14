@@ -37,6 +37,11 @@ const UserPosts = () => {
     setOpenModal(true);
   };
 
+  const handleClosePost = () => {
+    setOpenModal(false);
+    dispatch(getUserPostListAsync());
+  };
+
   useEffect(() => {
     dispatch(getUserPostListAsync());
   }, [dispatch]);
@@ -48,7 +53,7 @@ const UserPosts = () => {
         onClose={() => setOpenModal(false)}
         className="p-5 h-[90%] w-[90%] overflow-auto z-50"
       >
-        <Post id={selectedPostId} onClose={() => setOpenModal(false)} />
+        <Post id={selectedPostId} onClose={handleClosePost} />
       </CommonModal>
       {_.isEmpty(posts) ? (
         <div className="text-center">No posts yet</div>

@@ -15,6 +15,10 @@ export const actionTypes = {
   DELETE_COMMENT: "DELETE_COMMENT",
   TOGGLE_UPVOTE: "TOGGLE_UPVOTE",
   GET_USER_POST_LIST: "GET_USER_POST_LIST",
+  MOVE_DOWN_ATTRACTION: "MOVE_DOWN_ATTRACTION",
+  MOVE_UP_ATTRACTION: "MOVE_UP_ATTRACTION",
+  DELETE_ATTRACTION: "DELETE_ATTRACTION",
+  ADD_ATTRACTION: "ADD_ATTRACTION",
 };
 
 export const getPostList = (payload) => {
@@ -308,5 +312,33 @@ export const toggleUpvoteAsync = (postId) => {
     } catch (error) {
       dispatch(asyncTaskStopAction(taskId, error));
     }
+  };
+};
+
+export const moveDownAttraction = (index) => {
+  return {
+    type: actionTypes.MOVE_DOWN_ATTRACTION,
+    payload: index,
+  };
+};
+
+export const moveUpAttraction = (index) => {
+  return {
+    type: actionTypes.MOVE_UP_ATTRACTION,
+    payload: index,
+  };
+};
+
+export const deleteAttraction = (index) => {
+  return {
+    type: actionTypes.DELETE_ATTRACTION,
+    payload: index,
+  };
+};
+
+export const addAttraction = (attraction) => {
+  return {
+    type: actionTypes.ADD_ATTRACTION,
+    payload: { attraction },
   };
 };

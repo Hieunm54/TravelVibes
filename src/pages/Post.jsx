@@ -41,6 +41,10 @@ import {
   sendCommentAsync,
   updateCommentAsync,
   updatePostAsync,
+  moveUpAttraction,
+  moveDownAttraction,
+  deleteAttraction,
+  addAttraction,
 } from "../store/actions/posts";
 import DangerButton from "../components/Button/DangerButton";
 
@@ -94,42 +98,16 @@ const Post = ({ id, onClose }) => {
   const isMovingDownBtnDisabled = (index) =>
     index === post.attractions.length - 1;
   const handleMoveDownAttraction = (index) => {
-    // TODO dispatch handleMoveDownAttraction action
-    setPost({
-      ...post,
-      attractions: [
-        ...post.attractions.slice(0, index),
-        post.attractions[index + 1],
-        post.attractions[index],
-        ...post.attractions.slice(index + 2),
-      ],
-    });
+    dispatch(moveDownAttraction(index));
   };
 
   const isMovingUpBtnDisabled = (index) => index == 0;
   const handleMoveUpAttraction = (index) => {
-    // TODO dispatch handleMoveUpAttraction action
-    setPost({
-      ...post,
-      attractions: [
-        ...post.attractions.slice(0, index - 1),
-        post.attractions[index],
-        post.attractions[index - 1],
-        ...post.attractions.slice(index + 1),
-      ],
-    });
+    dispatch(moveUpAttraction(index));
   };
 
   const handleDeleteAttraction = (index) => {
-    // TODO dispatch handleMoveUpAttraction action
-
-    setPost({
-      ...post,
-      attractions: [
-        ...post.attractions.slice(0, index),
-        ...post.attractions.slice(index + 1),
-      ],
-    });
+    dispatch(deleteAttraction(index));
   };
 
   const getAttractionSuggestions = async () => {
@@ -144,12 +122,7 @@ const Post = ({ id, onClose }) => {
   };
 
   const handleAddAttraction = (attraction) => {
-    // TODO dispatch handleAddAttraction action
-
-    setPost({
-      ...post,
-      attractions: [...post.attractions, attraction],
-    });
+    dispatch(addAttraction(attraction));
     setIsFindingAttraction(false);
     setAttractionSuggestions([]);
   };
