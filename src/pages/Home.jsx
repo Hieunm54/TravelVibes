@@ -34,7 +34,10 @@ import CommonModal from "../components/Modal";
 import { getPostListAsync } from "../store/actions/posts";
 import _ from "lodash";
 import { useNavigate } from "react-router-dom";
-import { authRoutes } from "../enum/routes";
+import { appRoutes, authRoutes } from "../enum/routes";
+import { addAttraction } from "../store/attractions";
+import { getAttraction } from "../services/attractions";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const [selectedPostId, setSelectedPostId] = useState(0);
@@ -47,6 +50,7 @@ const Home = () => {
   const currentUser = useSelector(sGetUserInfo);
 
   const dispatch = useDispatch();
+  const attractions = useSelector((state) => state.attractions);
 
   useEffect(() => {
     if (auth.token) {
@@ -59,8 +63,14 @@ const Home = () => {
     e.stopPropagation();
   };
 
-  const addToJourney = (e, eventId) => {
-    e.stopPropagation();
+  const addToJourney = async (event) => {
+    try {
+      const response = await getAttraction(auth.token, event.attraction._id);
+      dispatch(addAttraction(response.data));
+      navigate(appRoutes.NEW_POST);
+    } catch (e) {
+      toast.error("Unable to retrieve attraction details.");
+    }
   };
 
   const handleChoosePost = (event, id) => {
@@ -162,7 +172,7 @@ const Home = () => {
                   key={event._id}
                   event={event}
                   onToggleSaveEvent={toggleSaveEvent}
-                  onAddToJourney={addToJourney}
+                  onAddToJourney={() => addToJourney(event)}
                 />
               );
             })}
