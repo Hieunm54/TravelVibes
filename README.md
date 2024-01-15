@@ -25,3 +25,7 @@ Before you begin, ensure you have met the following requirements:
     ```
 
 4.  Start the server:`npm run dev`
+
+### Deployment:
+
+`https://travel-vibes.vercel.app`
