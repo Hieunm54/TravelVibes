@@ -37,7 +37,12 @@ const SignIn = () => {
 
   return (
     <main className="h-screen grid grid-cols-2">
-      <div className="bg-hanoi bg-cover bg-center bg-no-repeat w-full h-screen relative">
+      <div
+        style={{
+          backgroundImage: `url('${CONST.IMAGE_URL}/uploads/hanoi.jpeg')`,
+        }}
+        className="bg-cover bg-center bg-no-repeat w-full h-screen relative"
+      >
         <div className="h-screen w-1/2 absolute top-0 right-0 bg-gradient-to-l from-white to-transparent"></div>
       </div>
       <div className="flex flex-col justify-center">

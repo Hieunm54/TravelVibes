@@ -1,8 +1,8 @@
 import React from "react";
 
-const SecondaryButton = ({ children, onClick }) => {
+const SecondaryButton = ({ children, onClick, ...otherProps }) => {
   return (
-    <button className="hover:text-blue-500" onClick={onClick}>
+    <button className="hover:text-blue-500" onClick={onClick} {...otherProps}>
       {children}
     </button>
   );
