@@ -36,7 +36,7 @@ const NewMessageModal = ({ onClose }) => {
         return;
       }
 
-      dispatch(searchUsersAsync({ q: searchTerm }));
+      dispatch(searchUsersAsync({ q: searchTerm.trim() }));
     }, 1000);
 
     return () => clearTimeout(delayDebounceFn);
@@ -51,9 +51,7 @@ const NewMessageModal = ({ onClose }) => {
 
   const handleInputChange = (event) => {
     event.preventDefault();
-    const searchValue = event.target.value.trim();
-
-    setSearchTerm(searchValue);
+    setSearchTerm(event.target.value);
   };
 
   const handleChooseUser = (user) => {

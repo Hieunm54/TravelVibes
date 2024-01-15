@@ -20,10 +20,10 @@ const Message = ({ user, content }) => {
         />
       )}
       <div
-        className={`px-3 py-2 bg-gray-300 max-w-1/2 overflow-wrap-break-word ${
+        className={`px-3 py-2 bg-gray-300 max-w-1/2 overflow-wrap-break-word rounded-t-xl ${
           isMyMessage
-            ? "rounded-l-lg bg-rgb-blue text-rgb-white"
-            : "rounded-r-lg"
+            ? "rounded-l-xl bg-rgb-blue text-rgb-white"
+            : "rounded-r-xl"
         }`}
       >
         {content}
