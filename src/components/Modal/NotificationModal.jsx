@@ -5,7 +5,6 @@ import NotificationSkeleton from "../Skeleton/NotificationSkeleton";
 import { useEffect } from "react";
 
 const socket = io(CONST.API_URL);
-// const socket = io("https://travel-vibes.onrender.com:3000");
 
 const NotificationModal = () => {
   const handleChooseNotification = (objectID) => {

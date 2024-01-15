@@ -157,15 +157,13 @@ const Chat = ({ openNewChatModal }) => {
   return (
     <div className="w-7/10 bg-white flex flex-col h-screen">
       {/* header of chat */}
-      <div className="flex border-b p-8  items-center">
+      <div className="flex border-b py-3 px-4 items-center">
         <img
-          className="rounded-full"
+          className="rounded-full w-12 h-12"
           src={`${CONST.IMAGE_URL}/${
             receiverUser.avatar ?? CONST.DEFAULT_AVATAR
           }`}
           alt="Avatar"
-          width={45}
-          // height={45}
         />
         <h3 className="ml-3 font-bold">{displayName}</h3>
       </div>
@@ -239,7 +237,7 @@ const Chat = ({ openNewChatModal }) => {
           ref={textareaRef}
         />
         <button
-          className={`ml-2 bg-blue-500 text-white px-4 py-2 rounded ${
+          className={`ml-2 bg-blue-500 text-white px-4 py-2 rounded-md ${
             isSendButtonDisable
               ? "bg-blue-200 focus:outline-none"
               : "hover:bg-sky-400 bg-sky-500"

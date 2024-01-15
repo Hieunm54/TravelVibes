@@ -51,9 +51,7 @@ const NewMessageModal = ({ onClose }) => {
 
   const handleInputChange = (event) => {
     event.preventDefault();
-    const searchValue = event.target.value;
-
-    setSearchTerm(searchValue);
+    setSearchTerm(event.target.value);
   };
 
   const handleChooseUser = (user) => {

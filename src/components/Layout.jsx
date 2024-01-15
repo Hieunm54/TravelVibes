@@ -86,7 +86,14 @@ const Layout = ({ children }) => {
                 </li>
                 <li
                   className={`hover:bg-gray-200 px-3 py-1 rounded-full ${
-                    location.pathname === appRoutes.MESSAGES ? "font-bold" : ""
+                    location.pathname === appRoutes.MESSAGES ||
+                    location.pathname.match(
+                      new RegExp(
+                        appRoutes.MESSAGES.replace(":id", "[a-zA-Z0-9]*$")
+                      )
+                    )
+                      ? "font-bold"
+                      : ""
                   }`}
                 >
                   <NavLink to={appRoutes.MESSAGES}>
