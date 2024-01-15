@@ -130,6 +130,59 @@ const posts = (state = postsDefaultState, action) => {
         post: clonePost,
       };
     }
+    case actionTypes.MOVE_DOWN_ATTRACTION: {
+      const postWithUpdatedAttractionList = {
+        ...state.post,
+        attractions: [
+          ...state.post.attractions.slice(0, action.payload),
+          state.post.attractions[action.payload + 1],
+          state.post.attractions[action.payload],
+          ...state.post.attractions.slice(action.payload + 2),
+        ],
+      };
+      return {
+        ...state,
+        post: postWithUpdatedAttractionList,
+      };
+    }
+    case actionTypes.MOVE_UP_ATTRACTION: {
+      const postWithUpdatedAttractionList = {
+        ...state.post,
+        attractions: [
+          ...state.post.attractions.slice(0, action.payload - 1),
+          state.post.attractions[action.payload],
+          state.post.attractions[action.payload - 1],
+          ...state.post.attractions.slice(action.payload + 1),
+        ],
+      };
+      return {
+        ...state,
+        post: postWithUpdatedAttractionList,
+      };
+    }
+    case actionTypes.DELETE_ATTRACTION: {
+      const postWithUpdatedAttractionList = {
+        ...state.post,
+        attractions: [
+          ...state.post.attractions.slice(0, action.payload),
+          ...state.post.attractions.slice(action.payload + 1),
+        ],
+      };
+      return {
+        ...state,
+        post: postWithUpdatedAttractionList,
+      };
+    }
+    case actionTypes.ADD_ATTRACTION: {
+      const postWithUpdatedAttractionList = {
+        ...state.post,
+        attractions: [...state.post.attractions, action.payload.attraction],
+      };
+      return {
+        ...state,
+        post: postWithUpdatedAttractionList,
+      };
+    }
     default:
       return state;
   }
