@@ -1,5 +1,6 @@
 import React from "react";
 import Carousel from "react-multi-carousel";
+import { CONST } from "../constaints";
 
 const responsive = {
   superLargeDesktop: {
@@ -27,14 +28,17 @@ const AttractionInfo = ({ name, images, description, address }) => {
       <h3 className="font-bold text-3xl">{name}</h3>
       <div>
         <Carousel responsive={responsive} className="mt-3">
-          {images.map((image, index) => (
-            <img
-              key={index}
-              src={image}
-              className="block w-full rounded-sm"
-              alt={name}
-            />
-          ))}
+          {images.map((image, index) => {
+            return (
+              <div
+                style={{
+                  backgroundImage: `url('${CONST.IMAGE_URL}/${image}')`,
+                }}
+                className="bg-no-repeat bg-center bg-cover w-full h-72"
+                key={index}
+              ></div>
+            );
+          })}
         </Carousel>
       </div>
       <p className="mt-5">{description}</p>
