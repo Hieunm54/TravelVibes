@@ -234,7 +234,13 @@ const Post = ({ id, onClose }) => {
                   <SecondaryButtonGroup className="mt-1">
                     {isEditing ? (
                       <>
-                        <SecondaryButton onClick={handleUpdatePost}>
+                        <SecondaryButton
+                          disabled={
+                            editCommentInput === "" &&
+                            post.attractions.length === 0
+                          }
+                          onClick={handleUpdatePost}
+                        >
                           Save
                         </SecondaryButton>
                         <SecondaryButton onClick={handleCancelEditingPost}>
