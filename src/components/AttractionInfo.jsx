@@ -31,7 +31,7 @@ const AttractionInfo = ({ name, images, description, address }) => {
             <img
               key={index}
               src={image}
-              className="block w-full rounded-sm"
+              className="block w-full max-h-full rounded-sm"
               alt={name}
             />
           ))}
