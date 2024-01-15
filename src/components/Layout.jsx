@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useSelector } from "react-redux";
-import { NavLink, Navigate } from "react-router-dom";
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { appRoutes, authRoutes } from "../enum/routes";
@@ -12,12 +12,12 @@ import CardAuthorAva from "./CardAuthorAva";
 
 const Layout = ({ children }) => {
   const [isOpenNewChatPopUp, setIsOpenNewChatPopUp] = useState(false);
-
+  const navigate = useNavigate();
   const auth = useSelector((state) => state.auth);
 
   const handleLogOut = () => {
     localStorage.clear();
-    window.location = authRoutes.SIGN_IN;
+    navigate(authRoutes.SIGN_IN);
   };
 
   return (
