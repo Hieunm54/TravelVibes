@@ -1,8 +1,27 @@
-# React + Vite
+# Project Name
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The Frontend client for TravelVibes webapp.
 
-Currently, two official plugins are available:
+## Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Before you begin, ensure you have met the following requirements:
+
+- Node.js installed
+- npm (Node Package Manager) installed
+
+### Installation
+
+1.  Running this command
+    `npm install`
+2.  Create new account in Mapbox and get access token
+
+3.  Create .env file with the following format
+
+    ```
+    VITE_MAPBOX_ACCESS_TOKEN=<>
+    VITE_API_URL=
+    VITE_S3_IMAGE_URL=
+    VITE_DEV_ENV=
+    ```
+
+4.  Start the server:`npm run dev`
