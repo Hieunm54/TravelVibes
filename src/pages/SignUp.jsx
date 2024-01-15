@@ -78,7 +78,17 @@ const SignUp = () => {
             onChange={(event) => setPassword(event.target.value)}
           />
           <div className="flex flex-col space-y-2">
-            <Button>Sign Up</Button>
+            <Button
+              disabled={
+                firstName === "" ||
+                lastName === "" ||
+                phoneNumber === "" ||
+                email === "" ||
+                password === ""
+              }
+            >
+              Sign Up
+            </Button>
             <p className="text-center flex space-x-1 items-center justify-center">
               <span>Already had an account?</span>
               <Link
