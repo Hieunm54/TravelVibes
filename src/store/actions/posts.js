@@ -301,7 +301,6 @@ export const toggleUpvoteAsync = (postId) => {
     try {
       dispatch(asyncTaskStartAction(taskId));
       const token = getState().auth.token;
-
       const response = await PostServices.toggleUpvote(token, postId);
 
       if (response.status === 201) {

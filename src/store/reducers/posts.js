@@ -3,6 +3,7 @@ import { actionTypes } from "../actions/posts";
 
 export const postsDefaultState = {
   postList: [],
+  userPostList: [],
   post: {
     author: {
       avatar: CONST.DEFAULT_AVATAR,
@@ -116,8 +117,14 @@ const posts = (state = postsDefaultState, action) => {
       const { postId, data } = action.payload;
       // update postList
       const clonePostList = [...state.postList];
-      const index = clonePostList.findIndex((p) => p._id === postId);
-      clonePostList[index] = data.post;
+      const postIndex = clonePostList.findIndex((p) => p._id === postId);
+      clonePostList[postIndex] = data.post;
+
+      const cloneUserPostList = [...state.userPostList];
+      const userPostIndex = cloneUserPostList.findIndex(
+        (p) => p._id === postId
+      );
+      cloneUserPostList[userPostIndex] = data.post;
 
       //update current post if post id is match
       const clonePost = { ...state.post };
@@ -127,6 +134,7 @@ const posts = (state = postsDefaultState, action) => {
       return {
         ...state,
         postList: clonePostList,
+        userPostList: cloneUserPostList,
         post: clonePost,
       };
     }
