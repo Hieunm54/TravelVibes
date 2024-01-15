@@ -125,7 +125,7 @@ const Layout = ({ children }) => {
                     </div>
                   </NavLink>
                 </li>
-                <li
+                {/* <li
                   className={`hover:bg-gray-200 px-3 py-1 rounded-full ${
                     location.pathname === appRoutes.NOTIFICATION
                       ? "font-bold"
@@ -144,7 +144,7 @@ const Layout = ({ children }) => {
                     </span>
                     <span className="text-lg">Notification</span>
                   </div>
-                </li>
+                </li> */}
                 <li
                   className={`text-4xl hover:bg-gray-200 px-3 py-1 rounded-full ${
                     location.pathname === appRoutes.PROFILE ||

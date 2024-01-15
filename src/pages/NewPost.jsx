@@ -129,7 +129,7 @@ const NewPost = () => {
             </RouteContainer>
             <ButtonGroup>
               <Button
-                disabled={captionInput === "" && attractions.length === 0}
+                disabled={captionInput === "" || attractions.length === 0}
                 onClick={handleCreatePost}
               >
                 Share

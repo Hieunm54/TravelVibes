@@ -8,7 +8,6 @@ const socket = io(CONST.API_URL);
 
 const NotificationModal = () => {
   const handleChooseNotification = (objectID) => {
-    console.log("hieu check ", objectID);
     // Emit a notification event
     socket.emit("notification", { message: "New notification!", objectID });
   };
@@ -16,7 +15,6 @@ const NotificationModal = () => {
   useEffect(() => {
     // Listen for new notifications
     socket.on("newNotification", (data) => {
-      console.log("New Notification:", data);
       // Handle the notification on the client side (e.g., display a pop-up, update UI, etc.)
     });
   }, []);

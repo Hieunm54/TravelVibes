@@ -32,7 +32,7 @@ const NewMessageModal = ({ onClose }) => {
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      if (!searchTerm) {
+      if (!searchTerm || searchTerm.trim() === "") {
         return;
       }
 
