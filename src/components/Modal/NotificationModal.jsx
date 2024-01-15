@@ -4,7 +4,7 @@ import NotificationItem from "../NotificationItem";
 import NotificationSkeleton from "../Skeleton/NotificationSkeleton";
 import { useEffect } from "react";
 
-const socket = io("http://localhost:3000");
+const socket = io(CONST.API_URL);
 
 const NotificationModal = () => {
   const handleChooseNotification = (objectID) => {
