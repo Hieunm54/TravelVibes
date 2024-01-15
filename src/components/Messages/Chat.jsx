@@ -19,7 +19,7 @@ import {
   getChatListAsync,
 } from "../../store/actions/messages";
 
-const socket = io("http://localhost:3000");
+const socket = io(CONST.API_URL);
 
 // eslint-disable-next-line react/prop-types
 const Chat = ({ openNewChatModal }) => {

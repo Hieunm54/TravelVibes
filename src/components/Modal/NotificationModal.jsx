@@ -4,11 +4,11 @@ import NotificationItem from "../NotificationItem";
 import NotificationSkeleton from "../Skeleton/NotificationSkeleton";
 import { useEffect } from "react";
 
-const socket = io("http://localhost:3000");
+const socket = io(CONST.API_URL);
+// const socket = io("https://travel-vibes.onrender.com:3000");
 
 const NotificationModal = () => {
   const handleChooseNotification = (objectID) => {
-    console.log("hieu check ", objectID);
     // Emit a notification event
     socket.emit("notification", { message: "New notification!", objectID });
   };
@@ -16,7 +16,6 @@ const NotificationModal = () => {
   useEffect(() => {
     // Listen for new notifications
     socket.on("newNotification", (data) => {
-      console.log("New Notification:", data);
       // Handle the notification on the client side (e.g., display a pop-up, update UI, etc.)
     });
   }, []);

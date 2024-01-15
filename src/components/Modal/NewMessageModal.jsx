@@ -32,11 +32,11 @@ const NewMessageModal = ({ onClose }) => {
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      if (!searchTerm) {
+      if (!searchTerm || searchTerm.trim() === "") {
         return;
       }
 
-      dispatch(searchUsersAsync({ q: searchTerm }));
+      dispatch(searchUsersAsync({ q: searchTerm.trim() }));
     }, 1000);
 
     return () => clearTimeout(delayDebounceFn);
@@ -51,7 +51,7 @@ const NewMessageModal = ({ onClose }) => {
 
   const handleInputChange = (event) => {
     event.preventDefault();
-    const searchValue = event.target.value.trim();
+    const searchValue = event.target.value;
 
     setSearchTerm(searchValue);
   };
