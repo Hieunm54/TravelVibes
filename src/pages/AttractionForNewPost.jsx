@@ -109,7 +109,7 @@ const Attraction = () => {
   }, []);
 
   return (
-    <div className="h-screen flex flex-col bg-white pt-1 border-l border-gray-100">
+    <div className="h-screen flex flex-col bg-white pt-1 border-l border-gray-200">
       <div className="p-4 flex items-center justify-between">
         <button
           className="inline-block hover:text-blue-500"
