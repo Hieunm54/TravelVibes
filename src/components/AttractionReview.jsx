@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CONST } from "../constaints";
@@ -61,7 +62,7 @@ const AttractionReview = ({
             <img
               key={image._id}
               src={`${CONST.IMAGE_URL}/${image.fileName}`}
-              className="block w-full rounded-sm"
+              className="block rounded-sm w-full h-32 px-1"
               alt={`${authorName}'s photos`}
             />
           ))}

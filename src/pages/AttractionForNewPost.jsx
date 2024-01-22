@@ -59,7 +59,8 @@ const Attraction = () => {
 
   const handlePhotosSelected = (evt) => {
     if (evt.target.files && evt.target.files[0]) {
-      setReviewPhotos(Array.from(evt.target.files));
+      const newPhotos = reviewPhotos.concat(Array.from(evt.target.files));
+      setReviewPhotos(newPhotos);
     }
   };
 
@@ -193,7 +194,10 @@ const Attraction = () => {
                           onClick={() => handleDeleteReviewPhoto(index)}
                         />
                       </span>
-                      <img src={URL.createObjectURL(photo)} />
+                      <img
+                        src={URL.createObjectURL(photo)}
+                        className="block rounded-sm w-full h-32 px-1"
+                      />
                     </div>
                   ))}
                   <input
@@ -231,7 +235,7 @@ const Attraction = () => {
             </form>
           )}
           <div className="mt-2">
-            {reviews.reverse().map((review) => (
+            {reviews.map((review) => (
               <AttractionReview
                 key={review._id}
                 avatar={`${CONST.IMAGE_URL}/${review.user.avatar}`}
