@@ -168,7 +168,7 @@ const Attraction = ({ id, onClose }) => {
                       <label>Photos</label>
                       <div className="flex items-center flex-wrap">
                         {reviewPhotos.map((photo, index) => (
-                          <div className="w-1/3 relative">
+                          <div key={photo} className="w-1/3 relative">
                             <span className="absolute top-0 right-1">
                               <FontAwesomeIcon
                                 icon="fa-solid fa-circle-xmark"
