@@ -36,10 +36,13 @@ import { useNavigate } from "react-router-dom";
 import { appRoutes, authRoutes } from "../enum/routes";
 import { getAttraction } from "../services/attractions";
 import { toast } from "react-toastify";
+import RefreshButton from "../components/Button/RefreshButton";
 
 const Home = () => {
   const [selectedPostId, setSelectedPostId] = useState(0);
   const [openModal, setOpenModal] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+
   const navigate = useNavigate();
 
   const auth = useSelector((state) => state.auth);
@@ -77,6 +80,37 @@ const Home = () => {
     dispatch(getApprovedEventsAsync());
     dispatch(getAllMyEventsAsync());
   }, [auth.token, dispatch]);
+
+  const handleRefresh = () => {
+    dispatch(getApprovedEventsAsync());
+  };
+
+  const handleChange = (event) => {
+    const textValue = event.target.value;
+    setSearchValue(textValue);
+  };
+
+  const renderEventList = () => {
+    let filteredEvents = events;
+
+    if (searchValue.trim() !== "") {
+      filteredEvents = events.filter((event) =>
+        event.name.toLowerCase().includes(searchValue.trim().toLowerCase())
+      );
+    }
+
+    return filteredEvents.length === 0 ? (
+      <div className="flex justify-start font-medium px-4">No events match</div>
+    ) : (
+      filteredEvents.map((event) => (
+        <EventItem
+          key={event._id}
+          event={event}
+          onAddToJourney={() => addToJourney(event)}
+        />
+      ))
+    );
+  };
 
   return (
     <Layout>
@@ -159,8 +193,17 @@ const Home = () => {
           <h1 className="w-full p-4 font-bold text-lg border-b border-gray-200 sticky top-0 left-0 bg-white z-10">
             Upcoming Events
           </h1>
-          <div className="h-full overflow-y-scroll">
-            {events.map((event) => {
+          <div className="h-full overflow-y-scroll w-full">
+            <div className="p-4 flex justify-start sticky top-0 z-10">
+              <input
+                className="flex-1 border mr-2 rounded-xl p-2 resize-none max-w-sm focus:outline-none"
+                placeholder="Search"
+                value={searchValue}
+                onChange={handleChange}
+              />
+              <RefreshButton onRefresh={handleRefresh} />
+            </div>
+            {/* {events.map((event) => {
               return (
                 <div key={event._id} className="pb-7 last:pb-0">
                   <EventItem
@@ -170,7 +213,8 @@ const Home = () => {
                   />
                 </div>
               );
-            })}
+            })} */}
+            {renderEventList()}
           </div>
         </div>
       </div>
